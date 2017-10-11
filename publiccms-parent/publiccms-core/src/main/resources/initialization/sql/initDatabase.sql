@@ -99,33 +99,22 @@ CREATE TABLE `cms_content` (
   `description` varchar(300) default NULL COMMENT '简介',
   `tag_ids` text default NULL COMMENT '标签',
   `cover` varchar(255) default NULL COMMENT '封面',
-  `childs` int(11) NOT NULL COMMENT '内容页数',
+  `childs` int(11) NOT NULL COMMENT '子内容数',
   `scores` int(11) NOT NULL COMMENT '分数',
   `comments` int(11) NOT NULL COMMENT '评论数',
   `clicks` int(11) NOT NULL COMMENT '点击数',
   `publish_date` datetime NOT NULL COMMENT '发布日期',
+  `check_date` datetime default NULL COMMENT '审核日期',
+  `update_date` datetime default NULL COMMENT '更新日期',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `sort` int(11) NOT NULL default '0' COMMENT '顺序',
   `status` int(11) NOT NULL COMMENT '状态：0、草稿 1、已发布 2、待审核',
   `disabled` tinyint(1) NOT NULL COMMENT '是否删除',
   PRIMARY KEY  (`id`),
-  KEY `publish_date` (`publish_date`),
-  KEY `user_id` (`user_id`),
-  KEY `category_id` (`category_id`),
-  KEY `model_id` (`model_id`),
-  KEY `parent_id` (`parent_id`),
-  KEY `status` (`status`),
-  KEY `sort` (`sort`),
-  KEY `childs` (`childs`),
-  KEY `scores` (`scores`),
-  KEY `comments` (`comments`),
-  KEY `clicks` (`clicks`),
-  KEY `title` (`title`),
-  KEY `check_user_id` (`check_user_id`),
-  KEY `site_id` (`site_id`),
-  KEY `has_files` (`has_files`),
-  KEY `has_images` (`has_images`),
-  KEY `only_url` (`only_url`)
+  KEY `check_date` (`check_date`,`update_date`),
+  KEY `scores` (`scores`,`comments`,`clicks`),
+  KEY `status` (`site_id`,`status`,`category_id`,`disabled`,`model_id`,`parent_id`,`sort`,`publish_date`),
+  KEY `only_url` (`only_url`,`has_images`,`has_files`,`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='内容';
 
 -- ----------------------------
@@ -514,23 +503,6 @@ CREATE TABLE `home_comment_content` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='评论内容';
 
 -- ----------------------------
--- Table structure for home_dialog
--- ----------------------------
-DROP TABLE IF EXISTS `home_dialog`;
-CREATE TABLE `home_dialog` (
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `item_type` varchar(20) NOT NULL COMMENT '项目类型',
-  `item_id` bigint(20) NOT NULL COMMENT '项目ID',
-  `messages` int(11) NOT NULL COMMENT '消息数',
-  `last_message_date` datetime NOT NULL COMMENT '最新消息日期',
-  `readed_message_date` datetime NOT NULL COMMENT '阅读日期',
-  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  PRIMARY KEY  (`user_id`,`item_type`,`item_id`),
-  KEY `last_message_date` (`disabled`,`last_message_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='对话';
-
--- ----------------------------
 -- Table structure for home_directory
 -- ----------------------------
 DROP TABLE IF EXISTS `home_directory`;
@@ -613,21 +585,6 @@ CREATE TABLE `home_group` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='群组';
 
 -- ----------------------------
--- Table structure for home_group_active
--- ----------------------------
-DROP TABLE IF EXISTS `home_group_active`;
-CREATE TABLE `home_group_active` (
-  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
-  `group_id` bigint(11) NOT NULL COMMENT '站点ID',
-  `item_type` varchar(20) NOT NULL COMMENT '项目类型',
-  `item_id` bigint(20) NOT NULL COMMENT '项目ID',
-  `user_id` bigint(20) NOT NULL COMMENT '发布用户',
-  `create_date` datetime NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `item_type` (`group_id`,`user_id`,`item_type`,`item_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间动态';
-
--- ----------------------------
 -- Table structure for home_group_apply
 -- ----------------------------
 DROP TABLE IF EXISTS `home_group_apply`;
@@ -685,22 +642,6 @@ CREATE TABLE `home_group_user` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='群组用户';
 
 -- ----------------------------
--- Table structure for home_message
--- ----------------------------
-DROP TABLE IF EXISTS `home_message`;
-CREATE TABLE `home_message` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `user_id` bigint(20) NOT NULL COMMENT '所属用户',
-  `item_type` varchar(20) NOT NULL COMMENT '项目类型',
-  `item_id` bigint(20) NOT NULL COMMENT '项目ID',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  `content` longtext NOT NULL COMMENT '内容',
-  PRIMARY KEY  (`id`),
-  KEY `create_date` (`create_date`),
-  KEY `user_id` (`user_id`,`item_type`,`item_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户消息';
-
--- ----------------------------
 -- Table structure for home_score
 -- ----------------------------
 DROP TABLE IF EXISTS `home_score`;
@@ -737,7 +678,7 @@ CREATE TABLE `home_user` (
   `attention_ids` text COMMENT '关注用户',
   `attentions` int(11) NOT NULL COMMENT '关注数',
   `fans` int(11) NOT NULL COMMENT '粉丝数',
-  `last_login_date` datetime default NULL COMMENT '上次登陆日期',
+  `last_login_date` datetime default NULL COMMENT '上次登录日期',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   PRIMARY KEY  (`user_id`),
@@ -754,7 +695,7 @@ CREATE TABLE `log_login` (
   `name` varchar(50) NOT NULL COMMENT '用户名',
   `user_id` bigint(20) default NULL COMMENT '用户ID',
   `ip` varchar(64) NOT NULL COMMENT 'IP',
-  `channel` varchar(50) NOT NULL COMMENT '登陆渠道',
+  `channel` varchar(50) NOT NULL COMMENT '登录渠道',
   `result` tinyint(1) NOT NULL COMMENT '结果',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `error_password` varchar(100) default NULL COMMENT '错误密码',
@@ -765,7 +706,7 @@ CREATE TABLE `log_login` (
   KEY `ip` (`ip`),
   KEY `site_id` (`site_id`),
   KEY `channel` (`channel`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='登陆日志';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='登录日志';
 
 -- ----------------------------
 -- Table structure for log_operate
@@ -1045,8 +986,8 @@ INSERT INTO `sys_moudle` VALUES ('6', '与我相关', null, null, '<i class=\"ic
 INSERT INTO `sys_moudle` VALUES ('7', '修改密码', 'myself/password', 'changePassword', '<i class=\"icon-key icon-large\"></i>', '6', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('8', '我的内容', 'myself/contentList', null, '<i class=\"icon-book icon-large\"></i>', '6', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('9', '我的操作日志', 'myself/logOperate', null, '<i class=\"icon-list-alt icon-large\"></i>', '6', '1', '0');
-INSERT INTO `sys_moudle` VALUES ('10', '我的登陆日志', 'myself/logLogin', null, '<i class=\"icon-signin icon-large\"></i>', '6', '1', '0');
-INSERT INTO `sys_moudle` VALUES ('11', '我的登陆授权', 'myself/userTokenList', null, '<i class=\"icon-unlock-alt icon-large\"></i>', '6', '1', '0');
+INSERT INTO `sys_moudle` VALUES ('10', '我的登录日志', 'myself/logLogin', null, '<i class=\"icon-signin icon-large\"></i>', '6', '1', '0');
+INSERT INTO `sys_moudle` VALUES ('11', '我的登录授权', 'myself/userTokenList', null, '<i class=\"icon-unlock-alt icon-large\"></i>', '6', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('12', '内容管理', 'cmsContent/list', 'sysUser/lookup', '<i class=\"icon-book icon-large\"></i>', '2', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('13', '内容扩展', null, null, '<i class=\"icon-road icon-large\"></i>', '2', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('14', '标签管理', 'cmsTag/list', 'cmsTagType/lookup', '<i class=\"icon-tag icon-large\"></i>', '13', '1', '0');
@@ -1073,7 +1014,7 @@ INSERT INTO `sys_moudle` VALUES ('34', '增加/修改', 'cmsTagType/add', 'cmsTa
 INSERT INTO `sys_moudle` VALUES ('35', '删除', null, 'cmsTagType/delete', null, '33', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('36', '增加/修改', 'cmsCategoryType/add', 'cmsCategoryType/save', null, '32', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('37', '删除', null, 'cmsCategoryType/delete', null, '32', '1', '0');
-INSERT INTO `sys_moudle` VALUES ('38', '文件管理', null, null, '<i class=\"icon-folder-close-alt icon-large\"></i>', '5', '1', '0');
+INSERT INTO `sys_moudle` VALUES ('38', '文件管理', null, null, '<i class=\"icon-folder-close-alt icon-large\"></i>', '126', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('39', '模板文件管理', 'cmsTemplate/list', 'cmsTemplate/directory', '<i class=\"icon-code icon-large\"></i>', '38', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('40', '修改模板元数据', 'cmsTemplate/metadata', 'cmsTemplate/saveMetadata', null, '39', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('41', '修改模板', 'cmsTemplate/content', 'cmsTemplate/save,cmsTemplate/chipLookup,cmsWebFile/lookup,placeTemplate/form,cmsWebFile/contentForm,cmsTemplate/demo,cmsTemplate/help,cmsTemplate/upload,cmsTemplate/doUpload', null, '39', '1', '0');
@@ -1088,7 +1029,7 @@ INSERT INTO `sys_moudle` VALUES ('49', '增加/修改推荐位数据', 'cmsPlace
 INSERT INTO `sys_moudle` VALUES ('50', '删除推荐位数据', null, 'cmsPlace/delete', null, '107', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('51', '刷新推荐位数据', null, 'cmsPlace/refresh', null, '107', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('52', '审核推荐位数据', null, 'cmsPlace/check', null, '107', '1', '0');
-INSERT INTO `sys_moudle` VALUES ('53', '发布推荐位', null, 'cmsTemplate/publishPlace', null, '107', '1', '0');
+INSERT INTO `sys_moudle` VALUES ('53', '发布推荐位', 'cmsPlace/publish_place', 'cmsTemplate/publishPlace', null, '107', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('54', '清空推荐位数据', null, 'cmsPlace/clear', null, '107', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('55', '查看推荐位源码', 'cmsTemplate/placeContent', null, null, '39', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('56', '应用授权', 'sysApp/list', NULL, '<i class=\"icon-linux icon-large\"></i>', '62', '1', '0');
@@ -1137,7 +1078,7 @@ INSERT INTO `sys_moudle` VALUES ('98', '禁用', NULL, 'sysAppClient/disable', N
 INSERT INTO `sys_moudle` VALUES ('99', '抽奖管理', 'cmsLottery/list', NULL, '<i class=\"icon-ticket icon-large\"></i>', '109', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('100', '修改', 'sysDomain/config', 'sysDomain/saveConfig,cmsTemplate/directoryLookup,cmsTemplate/lookup', null, '84', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('101', '站点配置', 'sysConfigData/list', null, '<i class=\"icon-cog icon-large\"></i>', '46', '1', '0');
-INSERT INTO `sys_moudle` VALUES ('102', '修改', 'cmsContent/add', 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor', null, '8', '1', '0');
+INSERT INTO `sys_moudle` VALUES ('102', '修改', 'cmsContent/add', 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload', null, '8', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('103', '删除', null, 'cmsContent/delete', null, '8', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('104', '刷新', null, 'cmsContent/refresh', null, '8', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('105', '生成', null, 'cmsContent/publish', null, '8', '1', '0');
@@ -1153,15 +1094,17 @@ INSERT INTO `sys_moudle` VALUES ('114', '查看', 'cmsContent/view', null, null,
 INSERT INTO `sys_moudle` VALUES ('115', '查看', 'cmsPlace/view', null, null, '107', '0', '0');
 INSERT INTO `sys_moudle` VALUES ('116', '修改类型', 'cmsCategory/changeTypeParameters', 'cmsCategory/changeType', null, '24', '0', '0');
 INSERT INTO `sys_moudle` VALUES ('117', '内容回收站', 'cmsRecycleContent/list', 'sysUser/lookup', '<i class=\"icon-trash icon-large\"></i>', '13', '1', '0');
-INSERT INTO `sys_moudle` VALUES ('118', '删除', NULL, 'cmsContent/realDelete', NULL, '155', '0', '0');
-INSERT INTO `sys_moudle` VALUES ('119', '还原', NULL, 'cmsContent/recycle', NULL, '155', '0', '0');
+INSERT INTO `sys_moudle` VALUES ('118', '删除', NULL, 'cmsContent/realDelete', NULL, '117', '0', '0');
+INSERT INTO `sys_moudle` VALUES ('119', '还原', NULL, 'cmsContent/recycle', NULL, '117', '0', '0');
 INSERT INTO `sys_moudle` VALUES ('120', '置顶', 'cmsContent/sortParameters', 'cmsContent/sort', NULL, '12', '0', '0');
 INSERT INTO `sys_moudle` VALUES ('121', '人员管理', 'sysDept/userList', 'sysDept/addUser,sysDept/saveUser,sysDept/enableUser,sysDept/disableUser', NULL, '72', '0', '0');
-INSERT INTO `sys_moudle` VALUES ('122', '数据字典管理', 'cmsDictionary/list', null, '<i class=\"icon-book icon-large\"></i>', '62', '1', '0');
+INSERT INTO `sys_moudle` VALUES ('122', '数据字典', 'cmsDictionary/list', null, '<i class=\"icon-book icon-large\"></i>', '62', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('123', '添加', 'cmsDictionary/add', 'cmsDictionary/save', null, '122', '0', '0');
 INSERT INTO `sys_moudle` VALUES ('124', '删除', null, 'cmsDictionary/delete', null, '122', '0', '0');
-INSERT INTO `sys_moudle` VALUES ('125', '撤销审核', null, 'cmsContent/uncheck', null, '12', '1', '0');
-INSERT INTO `sys_moudle` VALUES ('130', '评论管理', 'homeComment/list', null, '<i class=\"icon-comment-alt icon-large\"></i>', '109', '1', '0');
+INSERT INTO `sys_moudle` VALUES ('125', '撤销审核', null, 'cmsContent/uncheck', null, '12', '0', '0');
+INSERT INTO `sys_moudle` VALUES ('126', '文件', null, null, '<i class=\"icon-folder-close-alt icon-large\"></i>', null, '1', '1');
+INSERT INTO `sys_moudle` VALUES ('127', '推荐位数据', 'cmsPlace/dataList', null, null , '107', '1', '1');
+INSERT INTO `sys_moudle` VALUES ('128', '用户数据监控', 'report/user', NULL, '<i class=\"icon-male icon-large\"></i>', '46', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('131', '网站文件管理', 'cmsWebFile/list', null, '<i class=\"icon-globe icon-large\"></i>', '38', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('132', '新建目录', 'cmsWebFile/directory', 'cmsWebFile/createDirectory', null, '131', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('133', '上传文件', 'cmsWebFile/upload', 'cmsWebFile/doUpload', null, '131', '1', '0');
@@ -1170,7 +1113,7 @@ INSERT INTO `sys_moudle` VALUES ('135', '解压缩', null, 'cmsWebFile/unzip,cms
 INSERT INTO `sys_moudle` VALUES ('136', '节点管理', 'sysCluster/list', NULL, '<i class=\"icon-code-fork icon-large\"></i>', '62', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('138', '修改配置', 'sysConfigData/edit', 'sysConfigData/save', null, '101', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('139', '清空配置', null, 'sysConfigData/delete', null, '101', '1', '0');
-INSERT INTO `sys_moudle` VALUES ('140', '站点配置管理', 'sysConfig/list', null, '<i class=\"icon-cogs icon-large\"></i>', '62', '1', '0');
+INSERT INTO `sys_moudle` VALUES ('140', '站点配置', 'sysConfig/list', null, '<i class=\"icon-cogs icon-large\"></i>', '62', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('142', '保存配置', null, 'sysConfig/save', null, '140', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('143', '修改配置', 'sysConfig/add', null, null, '140', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('144', '删除配置', null, 'sysConfig/delete', null, '140', '1', '0');
@@ -1334,7 +1277,7 @@ CREATE TABLE `sys_user` (
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '管理员', '1', '1', 'master@sanluan.com', '0', '1', '0', '2017-01-01 00:00:00', '127.0.0.1', '0', '2017-01-01 00:00:00');
-INSERT INTO `sys_user` VALUES ('2', '2', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', '2', '3', '', '0', '1', '0', '2017-01-01 00:00:00', '127.0.0.1', '0', '2017-01-01 00:00:00');
+INSERT INTO `sys_user` VALUES ('2', '2', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', '2', '2', '', '0', '1', '0', '2017-01-01 00:00:00', '127.0.0.1', '0', '2017-01-01 00:00:00');
 
 
 -- ----------------------------
@@ -1342,12 +1285,12 @@ INSERT INTO `sys_user` VALUES ('2', '2', 'admin', '21232f297a57a5a743894a0e4a801
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_token`;
 CREATE TABLE `sys_user_token` (
-  `auth_token` varchar(40) NOT NULL COMMENT '登陆授权',
+  `auth_token` varchar(40) NOT NULL COMMENT '登录授权',
   `site_id` int(11) NOT NULL COMMENT '站点ID',
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `channel` varchar(50) NOT NULL COMMENT '渠道',
   `create_date` datetime NOT NULL COMMENT '创建日期',
-  `login_ip` varchar(20) NOT NULL COMMENT '登陆IP',
+  `login_ip` varchar(20) NOT NULL COMMENT '登录IP',
   PRIMARY KEY  (`auth_token`),
   KEY `user_id` (`user_id`),
   KEY `create_date` (`create_date`),

@@ -1,6 +1,6 @@
 package config.boot;
 
-import static org.publiccms.common.constants.CommonConstants.applicationContext;
+import static com.publiccms.common.constants.CommonConstants.applicationContext;
 
 import java.util.concurrent.TimeUnit;
 
@@ -39,19 +39,20 @@ public class SprintBootApplication {
     }
 
     /**
-     * @return
+     * @return servlet container
      */
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
         TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
-        factory.setPort(8080);// 设置端口
+        factory.setPort(Integer.valueOf(System.getProperty("cms.port", "8080")));// 设置端口
+        factory.setContextPath(System.getProperty("cms.contextPath", ""));// 设置上下文
         factory.setDisplayName("PublicCMS");// 设置显示名称
         factory.setSessionTimeout(20, TimeUnit.MINUTES);// 设置session超时时间
         return factory;
     }
 
     /**
-     * @return
+     * @return web servlet initializer
      */
     @Bean
     public ServletContextInitializer webInitializer() {
@@ -66,7 +67,7 @@ public class SprintBootApplication {
     }
 
     /**
-     * @return
+     * @return admin servlet initializer
      */
     @Bean
     public ServletContextInitializer adminInitializer() {
@@ -79,7 +80,7 @@ public class SprintBootApplication {
     }
 
     /**
-     * @return
+     * @return api servlet initializer 
      */
     @Bean
     public ServletContextInitializer apiInitializer() {
@@ -92,7 +93,7 @@ public class SprintBootApplication {
     }
 
     /**
-     * @return
+     * @return install servlet initializer
      */
     @Bean
     public ServletContextInitializer installationInitializer() {
@@ -105,7 +106,7 @@ public class SprintBootApplication {
     }
 
     /**
-     * @return
+     * @return resource servlet initializer
      */
     @Bean
     public ServletContextInitializer resourceInitializer() {

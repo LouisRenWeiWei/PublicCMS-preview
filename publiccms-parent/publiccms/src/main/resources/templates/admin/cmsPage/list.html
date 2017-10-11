@@ -13,7 +13,7 @@
 					<a href="javascript:;" onclick="return false;">${a.fileName}</a>
 					<ul><@pageTree path/></ul>
 				<#else>
-					<a href="cmsPage/metadata.html?path=${path?url}" target="ajax" rel="pageBox">
+					<a href="cmsPage/metadata.html?path=${path!}" target="ajax" rel="pageBox">
 						${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}
 					</a>
 				</#if>

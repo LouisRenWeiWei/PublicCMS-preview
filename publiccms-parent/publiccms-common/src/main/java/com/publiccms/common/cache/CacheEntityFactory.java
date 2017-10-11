@@ -40,7 +40,7 @@ public class CacheEntityFactory {
     /**
      * @param name
      * @param type
-     * @return
+     * @return cache entity
      * @throws ClassNotFoundException
      * @throws IllegalAccessException
      * @throws InstantiationException
@@ -66,7 +66,7 @@ public class CacheEntityFactory {
 
     /**
      * @param name
-     * @return
+     * @return cache entity
      * @throws ClassNotFoundException
      * @throws IllegalAccessException
      * @throws InstantiationException

@@ -88,13 +88,13 @@ public class SourceGenerator implements Base {
     public static void main(String[] arg) throws ClassNotFoundException, IOException {
         SourceGenerator sourceGenerator = new SourceGenerator();
         boolean overwrite = false;// 是否覆盖已有代码
-        String basePackage = "org.publiccms";// 基础包名
+        String basePackage = "com.publiccms";// 基础包名
         // 生成所有实体类的代码
         // sourceMaker.generate(basePackage, overwrite);
         // 生成某个包所有实体类的代码
         // sourceMaker.generate(basePackage, "trade", overwrite);
         // 生成某个实体类的代码
-        sourceGenerator.generate(Class.forName("org.publiccms.entities.cms.CmsDictionary"), basePackage, overwrite);
+        sourceGenerator.generate(Class.forName("com.publiccms.entities.cms.CmsDictionary"), basePackage, overwrite);
     }
 
     /**

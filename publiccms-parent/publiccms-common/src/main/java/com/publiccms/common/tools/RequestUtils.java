@@ -23,7 +23,7 @@ public class RequestUtils implements Base {
     /**
      * @param parameterMap
      * @param key
-     * @return
+     * @return parameter value
      */
     public static String getValue(Map<String, String[]> parameterMap, String key) {
         String[] values = parameterMap.get(key);
@@ -36,11 +36,9 @@ public class RequestUtils implements Base {
     /**
      * 获取转码路径
      * 
-     * Get Encoded Path
-     * 
      * @param path
      * @param queryString
-     * @return
+     * @return encoded path
      */
     public static String getEncodePath(String path, String queryString) {
         String url = path;
@@ -58,10 +56,8 @@ public class RequestUtils implements Base {
     /**
      * 获取UserAgent
      * 
-     * Get UserAgent
-     * 
      * @param request
-     * @return
+     * @return user agent
      */
     public static String getUserAgent(HttpServletRequest request) {
         return request.getHeader("user-agent");
@@ -69,7 +65,7 @@ public class RequestUtils implements Base {
 
     /**
      * @param request
-     * @return
+     * @return accept
      */
     public static String getAccept(HttpServletRequest request) {
         return request.getHeader("Accept");
@@ -78,7 +74,7 @@ public class RequestUtils implements Base {
     /**
      * @param cookies
      * @param name
-     * @return
+     * @return cookie
      */
     public static Cookie getCookie(Cookie[] cookies, String name) {
         if (notEmpty(cookies)) {
@@ -98,7 +94,7 @@ public class RequestUtils implements Base {
      * @param value
      * @param expiry
      * @param domain
-     * @return
+     * @return cookie
      */
     public static Cookie addCookie(String contextPath, HttpServletResponse response, String name, String value, Integer expiry,
             String domain) {
@@ -132,7 +128,7 @@ public class RequestUtils implements Base {
 
     /**
      * @param request
-     * @return
+     * @return ip address
      */
     public static String getIpAddress(HttpServletRequest request) {
         if (null != request) {

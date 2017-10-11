@@ -1,7 +1,7 @@
 package com.publiccms.common.tools;
 
 import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.DateFormatUtil.getDateFormat;
+import static com.publiccms.common.tools.DateFormatUtils.getDateFormat;
 import static org.apache.commons.lang3.StringUtils.split;
 import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 
@@ -47,7 +47,7 @@ public class TemplateModelUtils implements Base {
 
     /**
      * @param model
-     * @return
+     * @return java bean value
      * @throws TemplateModelException
      */
     public static Object converBean(TemplateModel model) throws TemplateModelException {
@@ -64,7 +64,7 @@ public class TemplateModelUtils implements Base {
 
     /**
      * @param model
-     * @return
+     * @return string value
      * @throws TemplateModelException
      */
     public static String converString(TemplateModel model) throws TemplateModelException {
@@ -83,7 +83,7 @@ public class TemplateModelUtils implements Base {
 
     /**
      * @param model
-     * @return
+     * @return map value
      * @throws TemplateModelException
      */
     public static TemplateHashModelEx converMap(TemplateModel model) throws TemplateModelException {
@@ -97,7 +97,7 @@ public class TemplateModelUtils implements Base {
 
     /**
      * @param model
-     * @return
+     * @return int value
      * @throws TemplateModelException
      */
     public static Integer converInteger(TemplateModel model) throws TemplateModelException {
@@ -123,7 +123,7 @@ public class TemplateModelUtils implements Base {
 
     /**
      * @param model
-     * @return
+     * @return short value
      * @throws TemplateModelException
      */
     public static Short converShort(TemplateModel model) throws TemplateModelException {
@@ -149,7 +149,7 @@ public class TemplateModelUtils implements Base {
 
     /**
      * @param model
-     * @return
+     * @return long value
      * @throws TemplateModelException
      */
     public static Long converLong(TemplateModel model) throws TemplateModelException {
@@ -175,7 +175,7 @@ public class TemplateModelUtils implements Base {
 
     /**
      * @param model
-     * @return
+     * @return double value
      * @throws TemplateModelException
      */
     public static Double converDouble(TemplateModel model) throws TemplateModelException {
@@ -201,7 +201,7 @@ public class TemplateModelUtils implements Base {
 
     /**
      * @param model
-     * @return
+     * @return string array value
      * @throws TemplateModelException
      */
     public static String[] converStringArray(TemplateModel model) throws TemplateModelException {
@@ -226,7 +226,7 @@ public class TemplateModelUtils implements Base {
 
     /**
      * @param model
-     * @return
+     * @return bool value
      * @throws TemplateModelException
      */
     public static Boolean converBoolean(TemplateModel model) throws TemplateModelException {
@@ -250,7 +250,7 @@ public class TemplateModelUtils implements Base {
 
     /**
      * @param model
-     * @return
+     * @return data value
      * @throws TemplateModelException
      * @throws ParseException
      */

@@ -11,6 +11,11 @@ import org.springframework.web.servlet.support.AbstractDispatcherServletInitiali
 
 import com.publiccms.common.servlet.ErrorToNotFoundDispatcherServlet;
 
+/**
+ *
+ * BaseServletInitializer
+ *
+ */
 public abstract class BaseServletInitializer extends AbstractDispatcherServletInitializer implements Base {
 
     @Override

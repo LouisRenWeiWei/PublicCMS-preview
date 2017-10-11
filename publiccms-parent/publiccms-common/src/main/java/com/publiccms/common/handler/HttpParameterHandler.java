@@ -1,7 +1,7 @@
 package com.publiccms.common.handler;
 
 import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.DateFormatUtil.getDateFormat;
+import static com.publiccms.common.tools.DateFormatUtils.getDateFormat;
 import static com.publiccms.common.tools.TemplateModelUtils.FULL_DATE_FORMAT_STRING;
 import static com.publiccms.common.tools.TemplateModelUtils.FULL_DATE_LENGTH;
 import static com.publiccms.common.tools.TemplateModelUtils.SHORT_DATE_FORMAT_STRING;

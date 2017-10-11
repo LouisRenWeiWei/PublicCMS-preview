@@ -103,7 +103,7 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
     }
 
     /**
-     * @return
+     * @return cache size
      */
     public int getSize() {
         return size;

@@ -35,6 +35,8 @@
 			targetProject="src/main/resources/" />
 		<javaClientGenerator targetPackage="org.publliccms.mapper"
 			targetProject="src/main/java/" type="XMLMAPPER" />
-		<table tableName="cms_category"></table>
+		<table tableName="cms_category">
+		  <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+		</table>
 	</context>
 </generatorConfiguration>

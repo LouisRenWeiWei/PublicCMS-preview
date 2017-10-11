@@ -12,8 +12,8 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a href="cmsWebFile/directory.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="200"><i class="icon-folder-close-alt icon-large"></i> 新建目录</a></li>
-			<li><a href="cmsWebFile/upload.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="200"><i class="icon-upload icon-large"></i> 上传文件</a></li>
+			<li><a href="cmsWebFile/directory.html?path=${(path)!}" target="dialog" mask="true" width="500" height="200"><i class="icon-folder-close-alt icon-large"></i> 新建目录</a></li>
+			<li><a href="cmsWebFile/upload.html?path=${(path)!}" target="dialog" mask="true" width="500" height="200"><i class="icon-upload icon-large"></i> 上传文件</a></li>
 			<li><a href="cmsWebFile/delete.do" title="确定要删除这些文件吗?" target="selectedTodo" rel="paths"><i class="icon-trash icon-large"></i> 批量删除</a></li>
 		</ul>
 	</div>
@@ -65,11 +65,11 @@
 				<td><@t.fileSize a.size/></td>
 				<td>
 					<#if a.directory>
-						<a href="cmsWebFile/zip.do?path=${filePath}" title="确定要压缩这个目录吗?" target="ajaxTodo">压缩目录</a>
+						<a href="cmsWebFile/zip.do?path=${filePath?url}" title="确定要压缩这个目录吗?" target="ajaxTodo">压缩目录</a>
 					<#else>
 						<#if a.fileName?ends_with('.zip')>
-							<a href="cmsWebFile/unzip?path=${filePath}" title="确定要解压缩这个文件么?" target="ajaxTodo">解压缩</a>
-							<a href="cmsWebFile/unzipHere?path=${filePath}" title="确定要解压缩这个文件到当前目录么?" target="ajaxTodo">解压缩到当前目录</a>
+							<a href="cmsWebFile/unzip?path=${filePath?url}" title="确定要解压缩这个文件么?" target="ajaxTodo">解压缩</a>
+							<a href="cmsWebFile/unzipHere?path=${filePath?url}" title="确定要解压缩这个文件到当前目录么?" target="ajaxTodo">解压缩到当前目录</a>
 						</#if>
 						<a href="${site.sitePath+filePath}" target="_blank" title="查看">查看</a>
 					</#if>

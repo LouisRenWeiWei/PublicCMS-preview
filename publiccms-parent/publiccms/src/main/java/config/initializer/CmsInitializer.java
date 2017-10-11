@@ -1,6 +1,6 @@
 package config.initializer;
 
-import static org.publiccms.common.constants.CommonConstants.applicationContext;
+import static com.publiccms.common.constants.CommonConstants.applicationContext;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.AbstractContextLoaderInitializer;

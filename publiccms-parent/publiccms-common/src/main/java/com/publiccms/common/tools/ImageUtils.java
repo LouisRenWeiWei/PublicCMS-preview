@@ -1,6 +1,7 @@
 package com.publiccms.common.tools;
 
 import static com.publiccms.common.tools.CommonUtils.notEmpty;
+import static com.publiccms.common.tools.VerificationUtils.base64Encode;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -11,8 +12,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
-
-import org.apache.commons.codec.binary.Base64;
 
 import com.publiccms.common.base.Base;
 
@@ -27,7 +26,7 @@ public class ImageUtils implements Base {
      * @param width
      * @param height
      * @param text
-     * @return
+     * @return base64 encoded picture
      * @throws IOException
      */
     public static String getImageData(int width, int height, String text) throws IOException {
@@ -36,7 +35,7 @@ public class ImageUtils implements Base {
         byteArrayOutputStream.close();
         StringBuilder sb = new StringBuilder();
         sb.append("data:image/png;base64,");
-        sb.append(Base64.encodeBase64String(byteArrayOutputStream.toByteArray()));
+        sb.append(base64Encode(byteArrayOutputStream.toByteArray()));
         return sb.toString();
     }
 

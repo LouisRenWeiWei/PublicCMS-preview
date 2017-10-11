@@ -19,7 +19,7 @@ public class HtmlUtils implements Base {
 
     /**
      * @param string
-     * @return
+     * @return result
      */
     public static String removeHtmlTag(String string) {
         if (notEmpty(string)) {

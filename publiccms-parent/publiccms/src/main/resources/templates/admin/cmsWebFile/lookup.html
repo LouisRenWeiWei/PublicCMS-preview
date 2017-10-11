@@ -79,7 +79,7 @@
 				<td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:30px;"></div></td>
 				<td>
 					<#if a.directory>
-						<a href="cmsWebFile/lookup.html?path=${filePath}&editor=${editor!'cmsTemplateEditor'}" target="dialog" mask="true" title="${filePath}">
+						<a href="cmsWebFile/lookup.html?path=${filePath?url}&editor=${editor!'cmsTemplateEditor'}" target="dialog" mask="true" title="${filePath}">
 							${a.fileName}
 						</a>
 					<#else>

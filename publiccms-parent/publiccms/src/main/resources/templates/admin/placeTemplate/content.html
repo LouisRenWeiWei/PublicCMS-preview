@@ -13,8 +13,8 @@ function refreshcmsTemplatePlace(){
 			<#if site.useSsi>
 				<li><a class="button" href="cmsTemplate/publishPlace.do?path=${path!}" target="ajaxTodo">发布</a></li>
 			</#if>
-			<li><a class="button" href="cmsTemplate/deletePlace.do?path=${path!}&navTabId=placeTemplate/list" title="确定要删除该页面片段吗?" target="ajaxTodo">删除页面片段</a></li>
-			<li><a class="button" href="placeTemplate/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace">页面片段元数据</a></li>
+			<li><a class="button" href="cmsTemplate/deletePlace.do?path=${path!}&navTabId=placeTemplate/list" title="确定要删除该页面片段吗?" target="ajaxTodo">删除</a></li>
+			<li><a class="button" href="placeTemplate/metadata.html?path=${path!}" target="ajax" rel="cmsTemplatePlace">元数据管理</a></li>
 			<li><button type="submit" class="buttonActive">保存</button></li>
 		</ul>
 	</div>
@@ -22,9 +22,9 @@ function refreshcmsTemplatePlace(){
 	 	<a class="button" href="cmsTemplate/ftlLookup.html?editor=cmsTemplatePlaceEditor" target="dialog" mask="true">模板片段</a>
 	 	<a class="button" href="placeTemplate/lookup.html?editor=cmsTemplatePlaceEditor" target="dialog" mask="true">页面片段</a>
 	 	<a class="button" href="cmsWebFile/lookup.html?editor=cmsTemplatePlaceEditor" target="dialog" mask="true">网站文件</a>
-		<a class="button" href="cmsTemplate/help.html?path=${('/include'+path?url)!}&editor=cmsTemplatePlaceEditor" target="dialog" mask="true">模板帮助</a>
+		<a class="button" href="cmsTemplate/help.html?path=${'/include'+path!}&editor=cmsTemplatePlaceEditor" target="dialog" mask="true">模板帮助</a>
 	</h2>
-	<div class="pageFormContent" layoutH="100">
+	<div class="pageFormContent" layoutH="109">
    		<div>
 			<input name="path" type="hidden" value="${'/include'+path}"/>
 			<textarea name="content" id="cmsTemplatePlaceEditor"><@_templateContent path='/include'+path>${(object)!}</@_templateContent></textarea>

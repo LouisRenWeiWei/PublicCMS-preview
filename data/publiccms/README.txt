@@ -1,31 +1,11 @@
-ï»¿indexes
-	å…¨æ–‡æœç´¢ç´¢å¼•æ–‡ä»¶ç›®å½•
+ÄúĞèÒª×¼±¸ÒÔÏÂ»·¾³£º
+jre 7¼°ÒÔÉÏ°æ±¾
+mysql 5¼°ÒÔÉÏ°æ±¾
+ÔËĞĞstartup½Å±¾Æô¶¯ºó£¬·ÃÎÊhttp://localhost:8080/publiccms/
+ÔÄ¶ÁÊÚÈ¨Ğí¿ÉĞ­Òé£¬¸ù¾İÒ³ÃæÌáÊ¾ÌîĞ´Êı¾İ¿âĞÅÏ¢£¬²¢³õÊ¼»¯Êı¾İ¿â
 
-task
-	ä»»åŠ¡è®¡åˆ’è„šæœ¬ç›®å½•
-
-template
-	ç«™ç‚¹æ¨¡æ¿ç›®å½•
-
-web
-	é™æ€æ–‡ä»¶ç›®å½•
-
-install.lock
-	å®‰è£…é”ï¼Œå‚è€ƒå†…å®¹ï¼š
-
-2017.0801
-
-database.properties
-	æ•°æ®åº“é…ç½®,å‚è€ƒå†…å®¹ï¼š
-
-jdbc.driverClassName=com.mysql.jdbc.Driver
-jdbc.url=jdbc\:mysql\://localhost/public_cms?useUnicode\=true&characterEncoding\=UTF-8&zeroDateTimeBehavior\=round&useSSL\=false
-jdbc.username=publiccms
-jdbc.password=publiccms_password
-cpool.maxIdleTime=25
-cpool.checkoutTimeout=10000
-cpool.acquireIncrement=10
-cpool.autoCommitOnClose=true
-cpool.maxIdleTimeExcessConnections=1800
-cpool.maxPoolSize=20
-cpool.minPoolSize=5
+You need to prepare the following environment:
+JRE7 and above
+MySQL 5 and above
+Run the startup script to start, visit http://localhost:8080/publiccms/
+Read the license agreement,Fill in the database information according to the page prompt and initialize the database

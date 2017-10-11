@@ -1,15 +1,12 @@
 apply plugin: "war"
-/** delete this line for spring boot
 apply plugin: 'org.springframework.boot'
-delete this line for spring boot */
 
-group = 'org.publiccms'
+group = 'com.publiccms'
 
 dependencies {
-    /** 商业版插件
-    compile project(':publiccms-improve')
-    商业版插件 **/
     compile project(':publiccms-core')
+    compile project(':publiccms-oauth')
+	compile project(':publiccms-redis')
     testCompile(
         // http://mvnrepository.com/artifact/junit/junit
         "junit:junit:4.12",
@@ -22,10 +19,7 @@ dependencies {
         "javax.servlet:javax.servlet-api:3.1.0"
     )
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
-    /** delete this line for spring boot
     compile(
-    delete this line for spring boot */
-    compileOnly( // delete this line for spring boot
         "org.springframework.boot:spring-boot-starter-web:1.5.4.RELEASE") {
         exclude group:"org.springframework.boot", module: 'spring-boot-starter-logging'
     }

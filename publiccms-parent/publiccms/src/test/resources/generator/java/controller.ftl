@@ -37,7 +37,7 @@ public class ${entityName}${controllerSuffix} extends AbstractController {
      * @param entity
      * @param request
      * @param session
-     * @return
+     * @return operate result
      */
     @RequestMapping("save")
     public String save(${entityName} entity, HttpServletRequest request, HttpSession session) {
@@ -60,7 +60,7 @@ public class ${entityName}${controllerSuffix} extends AbstractController {
      * @param ids
      * @param request
      * @param session
-     * @return
+     * @return operate result
      */
     @RequestMapping("delete")
     public String delete(Integer[] ids, HttpServletRequest request, HttpSession session) {

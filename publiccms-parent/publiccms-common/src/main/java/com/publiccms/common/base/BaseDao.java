@@ -1,13 +1,11 @@
 package com.publiccms.common.base;
 
 import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static org.apache.commons.lang3.time.DateUtils.addDays;
 import static org.apache.commons.logging.LogFactory.getLog;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +38,7 @@ import com.publiccms.common.handler.QueryHandler;
  * @param <E>
  * 
  */
-public abstract class BaseDao<E> implements Base  {
+public abstract class BaseDao<E> implements Base {
     protected final Log log = getLog(getClass());
     /**
      * 分面名称搜索前缀
@@ -63,59 +61,39 @@ public abstract class BaseDao<E> implements Base  {
     private Class<E> clazz;
 
     /**
-     * 明天
-     * 
-     * Tomorrow
-     * 
-     * @param date
-     * @return
-     */
-    public static Date tomorrow(Date date) {
-        return addDays(date, 1);
-    }
-
-    /**
-     * 获取查询处理器
-     * 
-     * Get queryhandler
+     * 查询处理器
      * 
      * @param sql
-     * @return
+     * @return queryhandler
      */
     public static QueryHandler getQueryHandler(String sql) {
         return new QueryHandler(sql);
     }
 
     /**
-     * 获取查询处理器
+     * 查询处理器
      * 
-     * Get queryhandler
-     * 
-     * @return
+     * @return queryhandler
      */
     public static QueryHandler getQueryHandler() {
         return new QueryHandler();
     }
 
     /**
-     * 获取删除查询处理器
-     * 
-     * Get delete queryhandler
+     * 删除查询处理器
      * 
      * @param sql
-     * @return
+     * @return delete queryhandler
      */
     public static QueryHandler getDeleteQueryHandler(String sql) {
         return getQueryHandler("delete").append(sql);
     }
 
     /**
-     * 获取统计查询处理器
-     * 
-     * Get count queryhandler
+     * 统计查询处理器
      * 
      * @param sql
-     * @return
+     * @return count queryhandler
      */
     public static QueryHandler getCountQueryHandler(String sql) {
         return getQueryHandler("select count(*)").append(sql);
@@ -124,10 +102,8 @@ public abstract class BaseDao<E> implements Base  {
     /**
      * Like查询
      * 
-     * like Search
-     * 
      * @param var
-     * @return
+     * @return like query
      */
     public static String like(String var) {
         return "%" + var + "%";
@@ -136,10 +112,8 @@ public abstract class BaseDao<E> implements Base  {
     /**
      * 左Like查询
      * 
-     * Left like search
-     * 
      * @param var
-     * @return
+     * @return left like query
      */
     public static String leftLike(String var) {
         return "%" + var;
@@ -148,10 +122,8 @@ public abstract class BaseDao<E> implements Base  {
     /**
      * 右Like查询
      * 
-     * Right like search
-     * 
      * @param var
-     * @return
+     * @return right like query
      */
     public static String rightLike(String var) {
         return var + "%";
@@ -160,10 +132,8 @@ public abstract class BaseDao<E> implements Base  {
     /**
      * 获取实体
      * 
-     * Get entity
-     * 
      * @param id
-     * @return
+     * @return entity
      */
     public E getEntity(Serializable id) {
         return null != id ? (E) getSession().get(getEntityClass(), id) : null;
@@ -172,11 +142,9 @@ public abstract class BaseDao<E> implements Base  {
     /**
      * 获取实体
      * 
-     * Get entity
-     * 
      * @param id
      * @param primaryKeyName
-     * @return
+     * @return entity
      */
     public E getEntity(Serializable id, String primaryKeyName) {
         QueryHandler queryHandler = getQueryHandler("from").append(getEntityClass().getSimpleName()).append("bean");
@@ -187,10 +155,8 @@ public abstract class BaseDao<E> implements Base  {
     /**
      * 获取实体集合
      * 
-     * Get entity list
-     * 
      * @param ids
-     * @return
+     * @return entity list
      */
     public List<E> getEntitys(Serializable[] ids) {
         return getEntitys(ids, "id");
@@ -199,11 +165,9 @@ public abstract class BaseDao<E> implements Base  {
     /**
      * 获取实体集合
      * 
-     * Get entity list
-     * 
      * @param ids
      * @param pk
-     * @return
+     * @return entity list
      */
     @SuppressWarnings("unchecked")
     public List<E> getEntitys(Serializable[] ids, String pk) {
@@ -219,10 +183,8 @@ public abstract class BaseDao<E> implements Base  {
     /**
      * 保存
      * 
-     * Save
-     * 
      * @param entity
-     * @return
+     * @return id
      */
     public Serializable save(E entity) {
         return getSession().save(init(entity));
@@ -245,10 +207,8 @@ public abstract class BaseDao<E> implements Base  {
     /**
      * 获取实体
      * 
-     * Get entity
-     * 
      * @param queryHandler
-     * @return
+     * @return entity
      */
     @SuppressWarnings("unchecked")
     protected E getEntity(QueryHandler queryHandler) {
@@ -262,10 +222,8 @@ public abstract class BaseDao<E> implements Base  {
     /**
      * 更新
      * 
-     * Update
-     * 
      * @param query
-     * @return
+     * @return number of data affected
      */
     protected int update(QueryHandler queryHandler) {
         return getQuery(queryHandler).executeUpdate();
@@ -274,10 +232,8 @@ public abstract class BaseDao<E> implements Base  {
     /**
      * 刪除
      * 
-     * Delete
-     * 
      * @param query
-     * @return
+     * @return number of data deleted
      */
     protected int delete(QueryHandler queryHandler) {
         return update(queryHandler);
@@ -286,10 +242,8 @@ public abstract class BaseDao<E> implements Base  {
     /**
      * 获取列表
      * 
-     * Get list
-     * 
      * @param query
-     * @return
+     * @return results list
      */
     protected List<?> getList(QueryHandler queryHandler) {
         try {
@@ -304,18 +258,20 @@ public abstract class BaseDao<E> implements Base  {
      * @param pageIndex
      * @param pageSize
      * @param maxResults
-     * @return
+     * @return results page
      */
     protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize, Integer maxResults) {
         PageHandler page;
         if (notEmpty(pageSize)) {
-            int totalCount = countResult(queryHandler);
-            page = new PageHandler(pageIndex, pageSize, totalCount, maxResults);
+            page = new PageHandler(pageIndex, pageSize, countResult(queryHandler), maxResults);
             queryHandler.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
+            if (0 != pageSize) {
+                page.setList(getList(queryHandler));
+            }
         } else {
             page = new PageHandler(pageIndex, pageSize, 0, maxResults);
+            page.setList(getList(queryHandler));
         }
-        page.setList(getList(queryHandler));
         return page;
     }
 
@@ -323,7 +279,7 @@ public abstract class BaseDao<E> implements Base  {
      * @param queryHandler
      * @param pageIndex
      * @param pageSize
-     * @return
+     * @return page
      */
     protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize) {
         return getPage(queryHandler, pageIndex, pageSize, null);
@@ -331,18 +287,18 @@ public abstract class BaseDao<E> implements Base  {
 
     /**
      * @param query
-     * @return
+     * @return number of results
      */
-    protected int countResult(QueryHandler queryHandler) {
-        return ((Number) getCountQuery(queryHandler).list().iterator().next()).intValue();
+    protected long countResult(QueryHandler queryHandler) {
+        return ((Number) getCountQuery(queryHandler).list().iterator().next()).longValue();
     }
 
     /**
      * @param query
-     * @return
+     * @return number of data
      */
-    protected int count(QueryHandler queryHandler) {
-        return ((Number) getQuery(queryHandler).list().iterator().next()).intValue();
+    protected long count(QueryHandler queryHandler) {
+        return ((Number) getQuery(queryHandler).list().iterator().next()).longValue();
     }
 
     private Query getQuery(QueryHandler queryHandler) {
@@ -361,7 +317,7 @@ public abstract class BaseDao<E> implements Base  {
     }
 
     /**
-     * @return
+     * @return future
      */
     public Future<?> reCreateIndex() {
         FullTextSession fullTextSession = getFullTextSession();
@@ -371,7 +327,7 @@ public abstract class BaseDao<E> implements Base  {
     /**
      * @param fields
      * @param text
-     * @return
+     * @return full text query
      */
     protected FullTextQuery getQuery(String[] fields, String text) {
         return getFacetQuery(fields, null, text, 0);
@@ -382,7 +338,7 @@ public abstract class BaseDao<E> implements Base  {
      * @param facetFields
      * @param text
      * @param facetCount
-     * @return
+     * @return full text query
      */
     protected FullTextQuery getFacetQuery(String[] fields, String[] facetFields, String text, int facetCount) {
         FullTextSession fullTextSession = getFullTextSession();
@@ -405,7 +361,7 @@ public abstract class BaseDao<E> implements Base  {
      * @param fullTextQuery
      * @param pageIndex
      * @param pageSize
-     * @return
+     * @return results page
      */
     protected PageHandler getPage(FullTextQuery fullTextQuery, Integer pageIndex, Integer pageSize) {
         return getPage(fullTextQuery, pageIndex, pageSize, null);
@@ -416,7 +372,7 @@ public abstract class BaseDao<E> implements Base  {
      * @param pageIndex
      * @param pageSize
      * @param maxResults
-     * @return
+     * @return results page
      */
     protected PageHandler getPage(FullTextQuery fullTextQuery, Integer pageIndex, Integer pageSize, Integer maxResults) {
         PageHandler page = new PageHandler(pageIndex, pageSize, fullTextQuery.getResultSize(), maxResults);
@@ -433,7 +389,7 @@ public abstract class BaseDao<E> implements Base  {
      * @param valueMap
      * @param pageIndex
      * @param pageSize
-     * @return
+     * @return facet results page
      */
     protected FacetPageHandler getFacetPage(FullTextQuery fullTextQuery, String[] facetFields, Map<String, List<String>> valueMap,
             Integer pageIndex, Integer pageSize) {
@@ -447,7 +403,7 @@ public abstract class BaseDao<E> implements Base  {
      * @param pageIndex
      * @param pageSize
      * @param maxResults
-     * @return
+     * @return facet results page
      */
     protected FacetPageHandler getFacetPage(FullTextQuery fullTextQuery, String[] facetFields, Map<String, List<String>> valueMap,
             Integer pageIndex, Integer pageSize, Integer maxResults) {

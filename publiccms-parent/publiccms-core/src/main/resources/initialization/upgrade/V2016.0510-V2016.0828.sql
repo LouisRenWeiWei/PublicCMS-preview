@@ -58,8 +58,8 @@ UPDATE `sys_moudle` set `name` = '与我相关', `attached` = '<i class="icon-us
 UPDATE `sys_moudle` set `name` = '修改密码', `attached` = '<i class="icon-key icon-large"></i>' WHERE `id` = 7;
 UPDATE `sys_moudle` set `name` = '我的内容', `attached` = '<i class="icon-book icon-large"></i>' WHERE `id` = 8;
 UPDATE `sys_moudle` set `name` = '我的操作日志', `attached` = '<i class="icon-list-alt icon-large"></i>' WHERE `id` = 9;
-UPDATE `sys_moudle` set `name` = '我的登陆日志', `attached` = '<i class="icon-signin icon-large"></i>' WHERE `id` = 10;
-UPDATE `sys_moudle` set `name` = ' 我的登陆授权', `attached` = '<i class="icon-unlock-alt icon-large"></i>' WHERE `id` = 11;
+UPDATE `sys_moudle` set `name` = '我的登录日志', `attached` = '<i class="icon-signin icon-large"></i>' WHERE `id` = 10;
+UPDATE `sys_moudle` set `name` = ' 我的登录授权', `attached` = '<i class="icon-unlock-alt icon-large"></i>' WHERE `id` = 11;
 UPDATE `sys_moudle` set `name` = '内容管理', `attached` = '<i class="icon-book icon-large"></i>' WHERE `id` = 12;
 UPDATE `sys_moudle` set `name` = '内容扩展', `attached` = '<i class="icon-road icon-large"></i>' WHERE `id` = 13;
 UPDATE `sys_moudle` set `name` = '标签管理', `attached` = '<i class="icon-tag icon-large"></i>' WHERE `id` = 14;

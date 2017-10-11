@@ -33,7 +33,7 @@ public interface RenderHandler {
     /**
      * 获取Writer
      * 
-     * @return
+     * @return writer
      * @throws IOException
      */
     public Writer getWriter() throws IOException;
@@ -41,14 +41,14 @@ public interface RenderHandler {
     /**
      * @param key
      * @param value
-     * @return
+     * @return render handler
      */
     public RenderHandler put(String key, Object value);
 
     /**
      * @param name
      * @param defaultValue
-     * @return
+     * @return string value
      * @throws Exception
      */
     public String getString(String name, String defaultValue) throws Exception;
@@ -56,7 +56,7 @@ public interface RenderHandler {
     /**
      * @param name
      * 
-     * @return
+     * @return string value
      * @throws Exception
      */
     public String getString(String name) throws Exception;
@@ -64,7 +64,7 @@ public interface RenderHandler {
     /**
      * @param name
      * 
-     * @return
+     * @return character value
      * @throws Exception
      */
     public Character getCharacter(String name) throws Exception;
@@ -72,7 +72,7 @@ public interface RenderHandler {
     /**
      * @param name
      * @param defaultValue
-     * @return
+     * @return int value
      * @throws Exception
      * @throws Exception
      */
@@ -81,7 +81,7 @@ public interface RenderHandler {
     /**
      * @param name
      * 
-     * @return
+     * @return int value
      * @throws Exception
      */
     public Integer getInteger(String name) throws Exception;
@@ -89,7 +89,7 @@ public interface RenderHandler {
     /**
      * @param name
      * 
-     * @return
+     * @return short value
      * @throws Exception
      */
     public Short getShort(String name) throws Exception;
@@ -97,7 +97,7 @@ public interface RenderHandler {
     /**
      * @param name
      * 
-     * @return
+     * @return long value
      * @throws Exception
      */
     public Long getLong(String name) throws Exception;
@@ -105,7 +105,7 @@ public interface RenderHandler {
     /**
      * @param name
      * 
-     * @return
+     * @return double value
      * @throws Exception
      */
     public Double getDouble(String name) throws Exception;
@@ -113,7 +113,7 @@ public interface RenderHandler {
     /**
      * @param name
      * 
-     * @return
+     * @return int array value
      * @throws Exception
      */
     public Integer[] getIntegerArray(String name) throws Exception;
@@ -121,7 +121,7 @@ public interface RenderHandler {
     /**
      * @param name
      * 
-     * @return
+     * @return long array value
      * @throws Exception
      */
     public Long[] getLongArray(String name) throws Exception;
@@ -129,7 +129,7 @@ public interface RenderHandler {
     /**
      * @param name
      * 
-     * @return
+     * @return string array value
      * @throws Exception
      */
     public String[] getStringArray(String name) throws Exception;
@@ -137,7 +137,7 @@ public interface RenderHandler {
     /**
      * @param name
      * @param defaultValue
-     * @return
+     * @return bool value
      * @throws Exception
      */
     public boolean getBoolean(String name, boolean defaultValue) throws Exception;
@@ -145,7 +145,7 @@ public interface RenderHandler {
     /**
      * @param name
      * 
-     * @return
+     * @return bool value
      * @throws Exception
      */
     public Boolean getBoolean(String name) throws Exception;
@@ -153,7 +153,7 @@ public interface RenderHandler {
     /**
      * @param name
      * 
-     * @return
+     * @return date value
      * @throws Exception
      */
     public Date getDate(String name) throws Exception;
@@ -162,19 +162,19 @@ public interface RenderHandler {
      * @param name
      * @param defaultValue 
      * 
-     * @return
+     * @return date value
      * @throws Exception
      */
     public Date getDate(String name, Date defaultValue) throws Exception;
 
     /**
-     * @return
+     * @return locale
      * @throws Exception
      */
     public Locale getLocale() throws Exception;
 
     /**
-     * @return
+     * @return request
      * @throws IOException
      * @throws Exception
      */
@@ -182,14 +182,14 @@ public interface RenderHandler {
 
     /**
      * @param name
-     * @return
+     * @return attribute
      * @throws IOException
      * @throws Exception
      */
     public Object getAttribute(String name) throws IOException, Exception;
 
     /**
-     * 
+     * set renderd
      */
     public void setRenderd();
 

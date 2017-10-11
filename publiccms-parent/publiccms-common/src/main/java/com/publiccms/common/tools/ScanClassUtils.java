@@ -29,7 +29,7 @@ public class ScanClassUtils {
     /**
      * @param cls
      * @param packages
-     * @return
+     * @return classes list
      * @throws IOException
      * @throws ClassNotFoundException
      */
@@ -45,7 +45,7 @@ public class ScanClassUtils {
 
     /**
      * @param packagesToScan
-     * @return
+     * @return classes set
      * @throws IOException
      * @throws ClassNotFoundException
      */

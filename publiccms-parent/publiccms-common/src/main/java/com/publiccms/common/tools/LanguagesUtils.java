@@ -21,7 +21,7 @@ public final class LanguagesUtils {
      *            国际化代码
      * @param args
      *            替换参数
-     * @return
+     * @return international message
      */
     public static String getMessage(ApplicationContext applicationContext, Locale locale, String code, Object... args) {
         String result;

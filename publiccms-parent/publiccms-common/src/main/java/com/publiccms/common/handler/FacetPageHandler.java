@@ -28,14 +28,14 @@ public class FacetPageHandler extends PageHandler {
     private static final long serialVersionUID = 1L;
 
     /**
-     * @return
+     * @return facet result map
      */
     public Map<String, Map<String, Integer>> getFacetMap() {
         return map;
     }
 
     /**
-     * @return
+     * @return whether the facet results
      */
     public boolean getFacetResult() {
         return facetResult;

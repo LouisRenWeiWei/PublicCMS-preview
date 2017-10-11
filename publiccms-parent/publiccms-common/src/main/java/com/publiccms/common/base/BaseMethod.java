@@ -42,7 +42,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx, Base {
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return map value
      * @throws TemplateModelException
      */
     public static TemplateHashModelEx getMap(int index, List<TemplateModel> arguments) throws TemplateModelException {
@@ -52,7 +52,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx, Base {
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return string value
      * @throws TemplateModelException
      */
     public static String getString(int index, List<TemplateModel> arguments) throws TemplateModelException {
@@ -62,7 +62,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx, Base {
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return int value
      * @throws TemplateModelException
      */
     public static Integer getInteger(int index, List<TemplateModel> arguments) throws TemplateModelException {
@@ -72,7 +72,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx, Base {
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return short value
      * @throws TemplateModelException
      */
     public static Short getShort(int index, List<TemplateModel> arguments) throws TemplateModelException {
@@ -82,7 +82,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx, Base {
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return long value
      * @throws TemplateModelException
      */
     public static Long getLong(int index, List<TemplateModel> arguments) throws TemplateModelException {
@@ -92,7 +92,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx, Base {
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return double value
      * @throws TemplateModelException
      */
     public static Double getDouble(int index, List<TemplateModel> arguments) throws TemplateModelException {
@@ -102,7 +102,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx, Base {
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return string array value
      * @throws TemplateModelException
      */
     public static String[] getStringArray(int index, List<TemplateModel> arguments) throws TemplateModelException {
@@ -112,7 +112,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx, Base {
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return int array value
      * @throws TemplateModelException
      */
     public static Integer[] getIntegerArray(int index, List<TemplateModel> arguments) throws TemplateModelException {
@@ -131,7 +131,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx, Base {
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return long array value
      * @throws TemplateModelException
      */
     public static Long[] getLongArray(int index, List<TemplateModel> arguments) throws TemplateModelException {
@@ -150,7 +150,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx, Base {
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return bool value
      * @throws TemplateModelException
      */
     public static Boolean getBoolean(int index, List<TemplateModel> arguments) throws TemplateModelException {
@@ -160,7 +160,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx, Base {
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return date
      * @throws TemplateModelException
      * @throws ParseException
      */
@@ -169,24 +169,24 @@ public abstract class BaseMethod implements TemplateMethodModelEx, Base {
     }
 
     /**
-     * @return
+     * @return whether to enable http 
      */
     public boolean httpEnabled() {
         return true;
     }
 
     /**
-     * @return
+     * @return min paramters number
      */
     public abstract int minParamtersNumber();
 
     /**
-     * @return
+     * @return whether to need app token
      */
     public abstract boolean needAppToken();
 
     /**
-     * @return
+     * @return name
      */
     public String getName() {
         return this.name;

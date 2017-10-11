@@ -4,14 +4,10 @@
 	<groupId>com.publiccms</groupId>
 	<artifactId>publiccms-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>V4.0.20170801</version>
+	<version>V4.0.20170812</version>
 	<modules>
-		<!-- 商业版插件
-        <module>publiccms-improve</module>
-        <module>publiccms-improve-oauth</module>
-        <module>publiccms-improve-oracle</module>
-        <module>publiccms-improve-redis</module>
-		商业版插件 -->
+        <module>publiccms-oauth</module>
+        <module>publiccms-redis</module>
         <module>publiccms</module>
         <module>publiccms-core</module>
         <module>publiccms-common</module>
@@ -274,19 +270,15 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>1.5.4.RELEASE</version>
-				<executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
 			</plugin>
 			<!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-maven-plugin -->
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>9.2.21.v20170120</version>
+				<configuration>
+		          <war>publiccms/target/publiccms.war</war>
+		        </configuration>
 			</plugin>
 			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
 			<plugin>

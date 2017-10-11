@@ -15,7 +15,9 @@ INSERT INTO `sys_moudle` VALUES ('110', '修改模板元数据', 'placeTemplate/
 INSERT INTO `sys_moudle` VALUES ('111', '修改模板', 'placeTemplate/content', 'cmsTemplate/help,cmsTemplate/chipLookup,cmsWebFile/lookup,cmsWebFile/contentForm,placeTemplate/form', NULL, '42', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('112', '页面管理', 'cmsPage/list', 'cmsPage/metadata,sysUser/lookup,cmsContent/lookup,cmsContent/lookup_list,cmsCategory/lookup', '<i class=\"icon-globe icon-large\"></i>', '30', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('113', '刷新缓存', NULL, 'clearCache', '', NULL, '0', '1');
-ALTER TABLE `sys_extend_field` DROP COLUMN `dictionary_type`, MODIFY COLUMN `dictionary_id`  bigint(20) NULL DEFAULT NULL COMMENT '数据字典ID' AFTER `default_value`;
+ALTER TABLE `sys_extend_field`
+	DROP COLUMN `dictionary_type`,
+	MODIFY COLUMN `dictionary_id`  bigint(20) NULL DEFAULT NULL COMMENT '数据字典ID' AFTER `default_value`;
 INSERT INTO `sys_moudle` VALUES ('114', '查看', 'cmsContent/view', null, null, '12', '0', '0');
 INSERT INTO `sys_moudle` VALUES ('115', '查看', 'cmsPlace/view', null, null, '107', '0', '0');
 INSERT INTO `sys_moudle` VALUES ('116', '修改类型', 'cmsCategory/changeTypeParameters', 'cmsCategory/changeType', null, '24', '0', '0');
@@ -24,8 +26,11 @@ INSERT INTO `sys_moudle` VALUES ('118', '删除', NULL, 'cmsContent/realDelete',
 INSERT INTO `sys_moudle` VALUES ('119', '还原', NULL, 'cmsContent/recycle', NULL, '155', '0', '0');
 INSERT INTO `sys_moudle` VALUES ('120', '置顶', 'cmsContent/sortParameters', 'cmsContent/sort', NULL, '12', '0', '0');
 INSERT INTO `sys_moudle` VALUES ('121', '人员管理', 'sysDept/userList', 'sysDept/addUser,sysDept/saveUser,sysDept/enableUser,sysDept/disableUser', NULL, '72', '0', '0');
-ALTER TABLE `cms_content` ADD `sort`  INT NOT NULL DEFAULT 0 COMMENT  '顺序' AFTER `status`,ADD INDEX `sort` (`sort`);
-ALTER TABLE `sys_dept` ADD `max_sort`  INT NOT NULL DEFAULT 1000 COMMENT  '最大内容置顶级别' AFTER `user_id`;
+ALTER TABLE `cms_content`
+	ADD COLUMN `sort`  INT NOT NULL DEFAULT 0 COMMENT  '顺序' AFTER `status`,
+	ADD INDEX `sort` (`sort`);
+ALTER TABLE `sys_dept`
+	ADD COLUMN `max_sort`  INT NOT NULL DEFAULT 1000 COMMENT  '最大内容置顶级别' AFTER `user_id`;
 UPDATE `sys_moudle` SET name = '模板文件管理' WHERE  `sys_moudle`.`id` =39;
 UPDATE `sys_moudle` SET name = '文件管理',attached = '<i class=\"icon-folder-close-alt icon-large\"></i>' WHERE  `sys_moudle`.`id` =38;
 INSERT INTO `sys_moudle` VALUES ('122', '数据字典管理', 'cmsDictionary/list', null, '<i class=\"icon-book icon-large\"></i>', '62', '1', '0');

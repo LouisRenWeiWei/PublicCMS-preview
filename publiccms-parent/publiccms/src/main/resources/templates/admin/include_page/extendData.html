@@ -47,14 +47,14 @@
 			<#if 'view'=type>
 				${(value)!}
 			<#else>
-				<textarea name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" </#if>cols="80" rows="5">${(value)!}</textarea>
+				<textarea name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" </#if>cols="80" rows="4">${(value)!}</textarea>
 			</#if>
 			<#break>
 		<#case 'editor'>
 			<#if 'view'=type>
 				${(value?no_esc)!}
 			<#else>
-				<textarea name="${inputName}" <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" </#if>style="width: 100%;" rows="20">${(value)!}</textarea>
+				<textarea name="${inputName}" <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" </#if>cols="80" rows="20">${(value)!}</textarea>
 			</#if>
 			<#break>
 		<#case 'template'>
@@ -129,7 +129,7 @@
 			<@_dictionary id=extend.dictionaryId><#assign dictionary=object/></@_dictionary>
 			<#if dictionary?has_content>
 				<#if 'view'=type>
-					<#if dictionary.multiple><@_dictionaryData dictionaryId=extend.dictionaryId values=value><#list map?keys as k>${map[k].text}<#sep>,</#list></@_dictionaryData><#else><@_dictionaryData dictionaryId=extend.dictionaryId value=value>${object.text}</@_dictionaryData></#if>
+					<#if dictionary.multiple><@_dictionaryData dictionaryId=extend.dictionaryId values=value><#list map as k,data>${data.text}<#sep>,</#list></@_dictionaryData><#else><@_dictionaryData dictionaryId=extend.dictionaryId value=value>${object.text}</@_dictionaryData></#if>
 				<#else>
 					<#if dictionary.multiple>
 						<#assign values=value?split(',')/>
@@ -154,7 +154,7 @@
 			<#if 'view'=type>
 				${(value)!}
 			<#else>
-				<input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" dateFmt="yyyy-MM-dd" </#if>type="text" size="20" value="${(value)!}"/>
+				<input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" dateFmt="yyyy-MM-dd" </#if>type="text" size="10" value="${(value)!}"/>
 				<#if 'customform'!=type><a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a></#if>
 			</#if>
 			<#break>
@@ -182,7 +182,7 @@
 	<dl class="nowrap">
 		<dt>${(e.name)}:</dt>
 		<dd<#if 'editor'=e.inputType> id="content"</#if>>
-			<@input name e e?index extendValues[e.id.code]!/>
+			<@input name e e?index extendValues[e.id.code] type/>
 			<span class="info">${(e.description)!}</span>
 		</dd>
 	</dl>

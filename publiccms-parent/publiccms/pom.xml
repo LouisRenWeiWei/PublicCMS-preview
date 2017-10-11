@@ -4,24 +4,26 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>publiccms</artifactId>
 	<packaging>war</packaging>
-	<groupId>org.publiccms</groupId>
 	<parent>
 		<groupId>com.publiccms</groupId>
 		<artifactId>publiccms-parent</artifactId>
-		<version>V4.0.20170801</version>
+		<version>V4.0.20170812</version>
 	</parent>
 	<dependencies>
-		<!-- 商业版插件
 		<dependency>
 			<groupId>com.publiccms</groupId>
-			<artifactId>publiccms-improve</artifactId>
-			<version>V4.0.20170801</version>
-		</dependency>
-		商业版插件 -->
-		<dependency>
-			<groupId>org.publiccms</groupId>
 			<artifactId>publiccms-core</artifactId>
-			<version>V4.0.20170801</version>
+			<version>V4.0.20170812</version>
+		</dependency>
+		<dependency>
+			<groupId>com.publiccms</groupId>
+			<artifactId>publiccms-oauth</artifactId>
+			<version>V4.0.20170812</version>
+		</dependency>
+		<dependency>
+			<groupId>com.publiccms</groupId>
+			<artifactId>publiccms-redis</artifactId>
+			<version>V4.0.20170812</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -46,7 +48,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<scope>provided</scope> <!-- delete this line for spring boot -->
 			<exclusions>
 				<exclusion>
 					<groupId>org.springframework.boot</groupId>
@@ -57,7 +58,6 @@
 	</dependencies>
 	<build>
 		<plugins>
-			<!-- delete this line for spring boot
 			<plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -69,7 +69,6 @@
                     </execution>
                 </executions>
             </plugin>
-            delete this line for spring boot -->
         </plugins>
 	</build>
 </project>

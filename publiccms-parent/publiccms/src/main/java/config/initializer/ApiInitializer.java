@@ -8,8 +8,8 @@ import com.publiccms.common.base.BaseServletInitializer;
 import config.spring.ApiConfig;
 
 /**
- * 
- * WebInitializer Servlet3.0 工程入口类
+ * <p>Servlet3.0 工程入口类</p>
+ * <p>WebInitializer</p>
  *
  */
 public class ApiInitializer extends BaseServletInitializer implements WebApplicationInitializer, Base {

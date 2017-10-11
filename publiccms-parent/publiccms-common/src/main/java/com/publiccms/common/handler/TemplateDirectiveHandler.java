@@ -122,7 +122,7 @@ public class TemplateDirectiveHandler extends BaseHandler implements Base {
 
     /**
      * @param name
-     * @return
+     * @return map value
      * @throws TemplateModelException
      */
     public TemplateHashModelEx getMap(String name) throws TemplateModelException {

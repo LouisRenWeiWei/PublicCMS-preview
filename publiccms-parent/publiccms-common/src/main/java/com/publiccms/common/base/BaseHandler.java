@@ -155,9 +155,7 @@ public abstract class BaseHandler implements RenderHandler {
     /**
      * 获取结果集大小
      * 
-     * Get size
-     * 
-     * @return
+     * @return results size
      */
     public int getSize() {
         return map.size();
@@ -170,7 +168,7 @@ public abstract class BaseHandler implements RenderHandler {
     protected abstract String getStringWithoutRegrister(String name) throws Exception;
 
     protected abstract Boolean getBooleanWithoutRegrister(String name) throws Exception;
-    
+
     protected abstract Date getDateWithoutRegrister(String name) throws Exception;
 
     @Override
@@ -264,7 +262,7 @@ public abstract class BaseHandler implements RenderHandler {
     protected boolean getBooleanWithoutRegrister(String name, boolean defaultValue) {
         try {
             Boolean result = getBooleanWithoutRegrister(name);
-            return notEmpty(result) ? result : defaultValue;
+            return null != result ? result : defaultValue;
         } catch (Exception e) {
             return defaultValue;
         }
@@ -281,19 +279,19 @@ public abstract class BaseHandler implements RenderHandler {
         regristerParamter(PARAMETER_TYPE_BOOLEAN, name, defaultValue);
         return getBooleanWithoutRegrister(name, defaultValue);
     }
-    
+
     @Override
     public Date getDate(String name) throws Exception {
         regristerParamter(PARAMETER_TYPE_BOOLEAN, name);
         return getDateWithoutRegrister(name);
     }
-    
+
     @Override
     public Date getDate(String name, Date defaultValue) throws Exception {
         regristerParamter(PARAMETER_TYPE_BOOLEAN, name, defaultValue);
         try {
             Date result = getDateWithoutRegrister(name);
-            return notEmpty(result) ? result : defaultValue;
+            return null != result ? result : defaultValue;
         } catch (Exception e) {
             return defaultValue;
         }

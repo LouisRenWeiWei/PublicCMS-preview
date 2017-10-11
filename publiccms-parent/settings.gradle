@@ -1,5 +1,6 @@
 rootProject.name = 'publiccms-parent'
-/** 商业版插件
-include 'publiccms-improve','publiccms-improve-oauth','publiccms-improve-oracle','publiccms-improve-redis'
-商业版插件 **/
-include 'publiccms','publiccms-core','publiccms-common'
+include 'publiccms'
+include 'publiccms-core'
+include 'publiccms-common'
+include 'publiccms-oauth'
+include 'publiccms-redis'

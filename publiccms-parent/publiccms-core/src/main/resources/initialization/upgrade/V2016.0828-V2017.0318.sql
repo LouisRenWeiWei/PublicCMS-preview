@@ -421,7 +421,7 @@ CREATE TABLE `home_user` (
   `attention_ids` text COMMENT '关注用户',
   `attentions` int(11) NOT NULL COMMENT '关注数',
   `fans` int(11) NOT NULL COMMENT '粉丝数',
-  `last_login_date` datetime default NULL COMMENT '上次登陆日期',
+  `last_login_date` datetime default NULL COMMENT '上次登录日期',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   PRIMARY KEY  (`user_id`),
@@ -461,7 +461,11 @@ UPDATE `sys_moudle` SET name = '文件管理',attached='<i class="icon-folder-cl
 
 -- 20161206 --
 UPDATE `sys_moudle` SET parent_id = 38 WHERE id = 81;
-ALTER TABLE `sys_config` DROP COLUMN `id`,DROP PRIMARY KEY,DROP INDEX `site_id`,ADD PRIMARY KEY (`site_id`, `code`, `subcode`);
+ALTER TABLE `sys_config`
+	DROP COLUMN `id`,
+	DROP PRIMARY KEY,
+	DROP INDEX `site_id`,
+	ADD PRIMARY KEY (`site_id`, `code`, `subcode`);
 ALTER TABLE `sys_config` RENAME `sys_config_data`;
 
 -- 20161208 --
@@ -480,7 +484,11 @@ ALTER TABLE `sys_config_data` CHANGE COLUMN `subcode` `item_code`  varchar(50) C
 ALTER TABLE `sys_cluster` ADD COLUMN `cms_version`  varchar(20) NULL AFTER `master`;
 
 -- 20161215 --
-ALTER TABLE `sys_domain` DROP COLUMN `id`,DROP PRIMARY KEY,DROP INDEX `name`,ADD PRIMARY KEY (`name`);
+ALTER TABLE `sys_domain`
+	DROP COLUMN `id`,
+	DROP PRIMARY KEY,
+	DROP INDEX `name`,
+	ADD PRIMARY KEY (`name`);
 ALTER TABLE `sys_site` DROP COLUMN `resource_path`;
 INSERT INTO `sys_moudle` VALUES ('131', '网站文件管理', 'cmsWebFile/list', null, '<i class=\"icon-globe icon-large\"></i>', '38', '0');
 INSERT INTO `sys_moudle` VALUES ('132', '新建目录', 'cmsWebFile/directory', 'cmsWebFile/createDirectory', null, '131', '0');
@@ -495,7 +503,19 @@ INSERT INTO `sys_moudle` VALUES ('142', '保存配置', null, 'sysConfig/save', 
 INSERT INTO `sys_moudle` VALUES ('143', '修改配置', 'sysConfig/add', null, null, '140', '0');
 INSERT INTO `sys_moudle` VALUES ('144', '删除配置', null, 'sysConfig/delete', null, '140', '0');
 DROP TABLE IF EXISTS `sys_ftp_user`;
-ALTER TABLE `sys_app_client`  DROP COLUMN `allow_push`, DROP COLUMN `push_token` ,DROP COLUMN `id`, DROP PRIMARY KEY, ADD PRIMARY KEY (`site_id`, `channel`, `uuid`),DROP INDEX `site_id`,DROP INDEX `disabled`,DROP INDEX `create_date`,DROP INDEX `channel`, DROP INDEX `user_id` ,ADD INDEX `user_id` (`user_id`, `disabled`, `create_date`),MODIFY COLUMN `client_version` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '版本' AFTER `user_id`;
+ALTER TABLE `sys_app_client`
+	DROP COLUMN `allow_push`,
+	DROP COLUMN `push_token`,
+	DROP COLUMN `id`,
+	DROP PRIMARY KEY,
+	ADD PRIMARY KEY (`site_id`, `channel`, `uuid`),
+	DROP INDEX `site_id`,
+	DROP INDEX `disabled`,
+	DROP INDEX `create_date`,
+	DROP INDEX `channel`,
+	DROP INDEX `user_id`,
+	ADD INDEX `user_id` (`user_id`, `disabled`, `create_date`),
+	MODIFY COLUMN `client_version` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '版本' AFTER `user_id`;
 ALTER TABLE `sys_app` ADD COLUMN `authorized_apis`  text NULL COMMENT '授权API' AFTER `app_secret`;
 UPDATE `sys_moudle` SET name = '运营' WHERE id = 45;
 UPDATE `sys_moudle` SET parent_id = 5 WHERE id = 61;
@@ -526,11 +546,14 @@ INSERT INTO `sys_moudle` VALUES ('152', '删除', NULL, 'cmsVote/delete', NULL, 
 INSERT INTO `sys_moudle` VALUES ('153', '查看', 'cmsVote/view', NULL, NULL, '1013', '0');
 INSERT INTO `sys_moudle` VALUES ('154', '投票用户', 'cmsVoteUser/list', 'sysUser/lookup', NULL, '1013', '0');
 ALTER TABLE `sys_moudle` ORDER BY  `id`;
-UPDATE `sys_moudle` SET name = '我的登陆授权' where id = 11;
+UPDATE `sys_moudle` SET name = '我的登录授权' where id = 11;
 UPDATE `sys_moudle` SET authorized_url='cmsTemplate/save,cmsTemplate/chipLookup,cmsResource/lookup,cmsWebFile/lookup,cmsTemplate/demo,cmsTemplate/help,cmsTemplate/upload,cmsTemplate/doUpload' WHERE id = 41;
 UPDATE `sys_moudle` SET authorized_url='cmsContent/lookup,cmsPage/lookup,cmsPage/lookup_content_list,file/doUpload,cmsPlace/save' WHERE id = 49;
 DELETE FROM sys_config_data;
-ALTER TABLE `sys_config_data` DROP COLUMN `item_code`,DROP PRIMARY KEY,ADD PRIMARY KEY (`site_id`, `code`);
+ALTER TABLE `sys_config_data`
+	DROP COLUMN `item_code`,
+	DROP PRIMARY KEY,
+	ADD PRIMARY KEY (`site_id`, `code`);
 -- 20170214 --
 UPDATE `sys_moudle` SET sort = 1 where id = 3;
 UPDATE `sys_moudle` SET sort = 1 where id = 5;

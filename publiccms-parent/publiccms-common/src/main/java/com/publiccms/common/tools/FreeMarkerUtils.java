@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.channels.FileLock;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -81,11 +82,10 @@ public class FreeMarkerUtils implements Base {
                 parent.mkdirs();
             }
             try (FileOutputStream outputStream = new FileOutputStream(destFile, append);
-                    Writer out = new OutputStreamWriter(outputStream, DEFAULT_CHARSET);) {
+                    FileLock fileLock = outputStream.getChannel().tryLock();) {
+                Writer out = new OutputStreamWriter(outputStream, DEFAULT_CHARSET);
                 t.process(model, out);
             }
-            destFile.setReadable(true, false);
-            destFile.setWritable(true, false);
             log.info(destFilePath + "    saved!");
         } else {
             log.error(destFilePath + "    already exists!");
@@ -95,7 +95,7 @@ public class FreeMarkerUtils implements Base {
     /**
      * @param template
      * @param configuration
-     * @return
+     * @return render result
      * @throws TemplateException
      * @throws IOException
      */
@@ -108,7 +108,7 @@ public class FreeMarkerUtils implements Base {
      * @param template
      * @param configuration
      * @param model
-     * @return
+     * @return render result
      * @throws IOException
      * @throws TemplateException
      */
@@ -141,13 +141,13 @@ public class FreeMarkerUtils implements Base {
      * @param templateContent
      * @param configuration
      * @param model
-     * @return
+     * @return render result
      * @throws IOException
      * @throws TemplateException
      */
     public static String generateStringByString(String templateContent, Configuration configuration, Map<String, Object> model)
             throws IOException, TemplateException {
-        Template tpl = new Template(String.valueOf(templateContent.hashCode()), templateContent, configuration);
+        Template tpl = new Template(null, templateContent, configuration);
         StringWriter writer = new StringWriter();
         tpl.process(model, writer);
         return writer.toString();

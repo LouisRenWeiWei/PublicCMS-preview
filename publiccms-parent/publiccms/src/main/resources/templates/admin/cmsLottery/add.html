@@ -15,14 +15,14 @@
 		<dl>
 			<dt>开始日期:</dt>
 			<dd>
-				<input class="required date" name="startDate" type="text" size="15" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.startDate)!}"/>
+				<input type="text" name="startDate" class="required date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.startDate)!}"/>
 				<a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a>
 			</dd>
 		</dl>
 		<dl>
 			<dt>结束日期:</dt>
 			<dd>
-				<input class="required date" name="endDate" type="text" size="15" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.endDate)!}"/>
+				<input type="text" name="endDate" class="required date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.endDate)!}"/>
 				<a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a>
 			</dd>
 		</dl>
@@ -48,7 +48,7 @@
 		</dl>
 		<dl class="nowrap">
 			<dt>描述:</dt>
-			<dd><textarea class="required" name="description" maxlength="300" style="width: 100%;" rows="5"/>${(a.description)!}</textarea></dd>
+			<dd><textarea class="required" name="description" maxlength="300" cols="80" rows="5"/>${(a.description)!}</textarea></dd>
 		</dl>
 	</div>
 </form>

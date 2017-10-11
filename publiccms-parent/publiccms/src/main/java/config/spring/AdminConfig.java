@@ -1,8 +1,8 @@
 package config.spring;
 
-import org.publiccms.common.interceptor.AdminContextInterceptor;
-import org.publiccms.common.view.AdminFreeMarkerView;
-import org.publiccms.logic.component.cache.CacheComponent;
+import com.publiccms.common.interceptor.AdminContextInterceptor;
+import com.publiccms.common.view.AdminFreeMarkerView;
+import com.publiccms.logic.component.cache.CacheComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,7 +23,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "org.publiccms.controller.admin", useDefaultFilters = false, includeFilters = {
+@ComponentScan(basePackages = "com.publiccms.controller.admin", useDefaultFilters = false, includeFilters = {
         @ComponentScan.Filter(value = { Controller.class }) })
 public class AdminConfig extends WebMvcConfigurerAdapter {
     /**
@@ -39,7 +39,7 @@ public class AdminConfig extends WebMvcConfigurerAdapter {
     /**
      * 视图层解析器,SpringBoot不支持jsp的加载路径
      * 
-     * @return
+     * @return jsp view resolver
      */
     @Bean
     public ViewResolver jspViewResolver() {
@@ -55,7 +55,7 @@ public class AdminConfig extends WebMvcConfigurerAdapter {
     /**
      * 视图层解析器
      * 
-     * @return
+     * @return FreeMarker view resolver
      */
     @Bean
     public ViewResolver viewResolver() {
@@ -72,7 +72,7 @@ public class AdminConfig extends WebMvcConfigurerAdapter {
     /**
      * 拦截器
      * 
-     * @return
+     * @return admin servlet interceptor
      */
     @Bean
     public AdminContextInterceptor adminInitializingInterceptor() {

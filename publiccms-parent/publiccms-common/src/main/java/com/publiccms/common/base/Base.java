@@ -7,13 +7,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  *
- * Json
+ * Base
  * 
  */
 public interface Base {
 
     /**
-     * 
+     * Json Mapper
      */
     public static final ObjectMapper objectMapper = new ObjectMapper();
     /**
