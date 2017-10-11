@@ -24,4 +24,4 @@ https://github.com/sanluan/PublicCMS-preview
 
 ## 授权协议变更
 
-PublicCMS已经修改秀气协议为非商用免费，商用付费，您可以在启动程序后看到详细的授权协议
+PublicCMS已经修改授权协议为非商用免费，商用付费，您可以在启动程序后看到详细的授权协议
