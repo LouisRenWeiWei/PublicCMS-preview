@@ -22,8 +22,9 @@ import com.publiccms.entities.sys.SysConfigDataId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.sys.SysConfigDataService;
-import com.publiccms.views.pojo.ExtendField;
-import com.publiccms.views.pojo.SysConfig;
+import com.publiccms.views.pojo.entities.ExtendField;
+import com.publiccms.views.pojo.entities.SysConfig;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

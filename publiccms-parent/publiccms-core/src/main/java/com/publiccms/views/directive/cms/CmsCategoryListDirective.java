@@ -4,13 +4,14 @@ package com.publiccms.views.directive.cms;
 
 import java.io.IOException;
 
-import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.logic.service.cms.CmsCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.logic.service.cms.CmsCategoryService;
+import com.publiccms.views.pojo.query.CmsCategoryQuery;
 
 /**
  *
@@ -22,16 +23,21 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Boolean disabled = false;
-        Boolean hidden = false;
-        Boolean queryAll = handler.getBoolean("queryAll");
+        CmsCategoryQuery queryEntity = new CmsCategoryQuery();
+        queryEntity.setQueryAll(handler.getBoolean("queryAll"));
         if (handler.getBoolean("advanced", false)) {
-            disabled = handler.getBoolean("disabled", false);
-            hidden = handler.getBoolean("hidden");
+            queryEntity.setDisabled(handler.getBoolean("disabled", false));
+            queryEntity.setHidden(handler.getBoolean("hidden"));
+        } else {
+            queryEntity.setDisabled(false);
+            queryEntity.setHidden(false);
         }
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getInteger("parentId"), queryAll,
-                handler.getInteger("typeId"), handler.getBoolean("allowContribute"), hidden, disabled,
-                handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
+        queryEntity.setSiteId(getSite(handler).getId());
+        queryEntity.setParentId(handler.getInteger("parentId"));
+        queryEntity.setTypeId(handler.getInteger("typeId"));
+        queryEntity.setAllowContribute(handler.getBoolean("allowContribute"));
+
+        PageHandler page = service.getPage(queryEntity, handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
         handler.put("page", page).render();
     }
 

@@ -16,7 +16,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsDictionaryDataService;
 import com.publiccms.logic.service.cms.CmsDictionaryService;
 import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.views.pojo.CmsDictionaryParamters;
+import com.publiccms.views.pojo.model.CmsDictionaryParamters;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

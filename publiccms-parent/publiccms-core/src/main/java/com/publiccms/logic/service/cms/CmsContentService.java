@@ -15,11 +15,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Future;
 
-import com.publiccms.entities.cms.CmsCategory;
-import com.publiccms.entities.cms.CmsContent;
-import com.publiccms.logic.dao.cms.CmsCategoryDao;
-import com.publiccms.logic.dao.cms.CmsContentDao;
-import com.publiccms.views.pojo.CmsContentStatistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +22,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.entities.cms.CmsCategory;
+import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.logic.dao.cms.CmsCategoryDao;
+import com.publiccms.logic.dao.cms.CmsContentDao;
+import com.publiccms.views.pojo.entities.CmsContentStatistics;
+import com.publiccms.views.pojo.query.CmsContentQuery;
 
 /**
  *
@@ -102,22 +103,8 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     /**
-     * @param siteId
-     * @param status
-     * @param categoryId
+     * @param queryEntity
      * @param containChild
-     * @param categoryIds
-     * @param disabled
-     * @param modelIds
-     * @param parentId
-     * @param emptyParent
-     * @param onlyUrl
-     * @param hasImages
-     * @param hasFiles
-     * @param title
-     * @param userId
-     * @param startPublishDate
-     * @param endPublishDate
      * @param orderField
      * @param orderType
      * @param pageIndex
@@ -125,13 +112,10 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Integer[] status, Integer categoryId, Boolean containChild, Integer[] categoryIds,
-            Boolean disabled, String[] modelIds, Long parentId, Boolean emptyParent, Boolean onlyUrl, Boolean hasImages,
-            Boolean hasFiles, String title, Long userId, Date startPublishDate, Date endPublishDate,
-            String orderField, String orderType, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, status, categoryId, getCategoryIds(containChild, categoryId, categoryIds), disabled, modelIds,
-                parentId, emptyParent, onlyUrl, hasImages, hasFiles, title, userId, startPublishDate, endPublishDate,
-                orderField, orderType, pageIndex, pageSize);
+    public PageHandler getPage(CmsContentQuery queryEntity, Boolean containChild, String orderField, String orderType,
+            Integer pageIndex, Integer pageSize) {
+        queryEntity.setCategoryIds(getCategoryIds(containChild, queryEntity.getCategoryId(), queryEntity.getCategoryIds()));
+        return dao.getPage(queryEntity, orderField, orderType, pageIndex, pageSize);
     }
 
     /**
@@ -155,7 +139,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param siteId
      * @param userId
      * @param ids
-     * @param refresh 
+     * @param refresh
      * @return
      */
     public List<CmsContent> check(int siteId, Long userId, Serializable[] ids, Boolean refresh) {
@@ -297,8 +281,8 @@ public class CmsContentService extends BaseService<CmsContent> {
         for (CmsContent entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && !entity.isDisabled()) {
                 if (0 < entity.getChilds()) {
-                    for (CmsContent child : (List<CmsContent>) getPage(siteId, null, null, null, null, false, null,
-                            entity.getId(), null, null, null, null, null, null, null, null, null, null, null, null)
+                    for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
+                            entity.getId(), null, null, null, null, null, null, null, null), null, null, null, null, null)
                                     .getList()) {
                         child.setDisabled(true);
                         entityList.add(child);
@@ -340,8 +324,8 @@ public class CmsContentService extends BaseService<CmsContent> {
         for (CmsContent entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && entity.isDisabled()) {
                 if (0 < entity.getChilds()) {
-                    for (CmsContent child : (List<CmsContent>) getPage(siteId, null, null, null, null, false, null,
-                            entity.getId(), null, null, null, null, null, null, null, null, null, null, null, null)
+                    for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
+                            entity.getId(), null, null, null, null, null, null, null, null), false, null, null, null, null)
                                     .getList()) {
                         child.setDisabled(false);
                         entityList.add(child);
@@ -365,8 +349,8 @@ public class CmsContentService extends BaseService<CmsContent> {
         for (CmsContent entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && entity.isDisabled()) {
                 if (0 < entity.getChilds()) {
-                    for (CmsContent child : (List<CmsContent>) getPage(siteId, null, null, null, null, false, null,
-                            entity.getId(), null, null, null, null, null, null, null, null, null, null, null, null)
+                    for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
+                            entity.getId(), null, null, null, null, null, null, null, null), false, null, null, null, null)
                                     .getList()) {
                         delete(child.getId());
                     }

@@ -1,4 +1,4 @@
-package com.publiccms.views.pojo;
+package com.publiccms.views.pojo.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

@@ -1,6 +1,6 @@
 <#assign dealCount=0/>
 <#macro deal parentId>
-	<@_categoryList parentId=parentId count=100>
+	<@_categoryList advanced=true parentId=parentId count=100>
 		<#list page.list as a>
 			<@_contentList categoryId=a.id containChild=a.containChild endPublishDate=.now count=a.pageSize>
 				<@_publishCategory id=a.id totalPage=page.totalPage><#assign dealCount++/></@_publishCategory>

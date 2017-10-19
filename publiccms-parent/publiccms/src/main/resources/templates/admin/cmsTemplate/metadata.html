@@ -3,7 +3,10 @@
 	<div class="formBar">
 		<ul>
 			<#if !a?has_content>
-				<li><a class="button" href="cmsTemplate/demo.html" target="dialog" mask="true">模板实例</a></li>
+                <li><a class="button" href="cmsTemplate/demo.html" target="dialog" mask="true">模板实例</a></li>
+			<#else>
+				<li><a class="button" href="cmsTemplate/delete.do?path=${(path?url)!}&navTabId=cmsTemplate/list" title="确定要删除该模板吗?" target="ajaxTodo">删除</a></li>
+				<li><a class="button" href="cmsTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox">模板内容编辑</a></li>
 			</#if>
 			<li><button type="submit" class="buttonActive">保存</button></li>
 		</ul>
@@ -111,9 +114,13 @@
 &lt;/head&gt;
 &lt;body&gt;
 	&lt;main&gt;New PublicCMS Template&lt;/main&gt;
+<@_version>
+	<#if !authorizationEdition>
 	&lt;footer&gt;
-		&lt;p&gt;Powered by &lt;a href=&quot;http://www.publiccms.com/&quot;&gt;Public CMS&lt;/a&gt; &lt;/p&gt;
+		&lt;p&gt;Powered by &lt;a href=&quot;http://www.publiccms.com/&quot;&gt;PublicCMS&lt;/a&gt; &lt;/p&gt;
 	&lt;/footer&gt;
+	</#if>
+</@_version>
 &lt;/body&gt;
 &lt;/html&gt;</textarea>
 	</div>

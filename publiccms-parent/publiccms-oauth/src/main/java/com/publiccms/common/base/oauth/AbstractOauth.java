@@ -32,7 +32,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.view.pojo.oauth.OauthAccess;
 import com.publiccms.view.pojo.oauth.OauthConfig;
-import com.publiccms.views.pojo.ExtendField;
+import com.publiccms.views.pojo.entities.ExtendField;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.publiccms.common.base.Base;

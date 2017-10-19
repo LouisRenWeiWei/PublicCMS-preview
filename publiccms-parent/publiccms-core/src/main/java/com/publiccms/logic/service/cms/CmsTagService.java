@@ -11,7 +11,8 @@ import java.util.Set;
 
 import com.publiccms.entities.cms.CmsTag;
 import com.publiccms.logic.dao.cms.CmsTagDao;
-import com.publiccms.views.pojo.CmsTagStatistics;
+import com.publiccms.views.pojo.entities.CmsTagStatistics;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

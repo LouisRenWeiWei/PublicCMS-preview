@@ -16,6 +16,8 @@ import java.util.Map;
 
 import org.hibernate.search.FullTextQuery;
 import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.views.pojo.query.CmsContentQuery;
+
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
@@ -38,8 +40,8 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param siteId
      * @param text
      * @param tagId
-     * @param startPublishDate 
-     * @param endPublishDate 
+     * @param startPublishDate
+     * @param endPublishDate
      * @param pageIndex
      * @param pageSize
      * @return results page
@@ -65,8 +67,8 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param userIds
      * @param text
      * @param tagId
-     * @param startPublishDate 
-     * @param endPublishDate 
+     * @param startPublishDate
+     * @param endPublishDate
      * @param pageIndex
      * @param pageSize
      * @return results page
@@ -124,74 +126,59 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     }
 
     /**
-     * @param siteId
-     * @param status
-     * @param categoryId
-     * @param categoryIds
-     * @param disabled
-     * @param modelIds
-     * @param parentId
-     * @param emptyParent
-     * @param onlyUrl
-     * @param hasImages
-     * @param hasFiles
-     * @param title
-     * @param userId
-     * @param startPublishDate
-     * @param endPublishDate
+     * @param queryEntitry
      * @param orderField
      * @param orderType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, Integer[] status, Integer categoryId, Integer[] categoryIds, Boolean disabled,
-            String[] modelIds, Long parentId, Boolean emptyParent, Boolean onlyUrl, Boolean hasImages, Boolean hasFiles,
-            String title, Long userId, Date startPublishDate, Date endPublishDate, String orderField,
-            String orderType, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(CmsContentQuery queryEntitry, String orderField, String orderType, Integer pageIndex,
+            Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
-        if (notEmpty(siteId)) {
-            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        if (notEmpty(queryEntitry.getSiteId())) {
+            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", queryEntitry.getSiteId());
         }
-        if (notEmpty(status)) {
-            queryHandler.condition("bean.status in (:status)").setParameter("status", status);
+        if (notEmpty(queryEntitry.getStatus())) {
+            queryHandler.condition("bean.status in (:status)").setParameter("status", queryEntitry.getStatus());
         }
-        if (notEmpty(categoryIds)) {
-            queryHandler.condition("bean.categoryId in (:categoryIds)").setParameter("categoryIds", categoryIds);
-        } else if (notEmpty(categoryId)) {
-            queryHandler.condition("bean.categoryId = :categoryId").setParameter("categoryId", categoryId);
+        if (notEmpty(queryEntitry.getCategoryIds())) {
+            queryHandler.condition("bean.categoryId in (:categoryIds)").setParameter("categoryIds",
+                    queryEntitry.getCategoryIds());
+        } else if (notEmpty(queryEntitry.getCategoryId())) {
+            queryHandler.condition("bean.categoryId = :categoryId").setParameter("categoryId", queryEntitry.getCategoryId());
         }
-        if (null != disabled) {
-            queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", disabled);
+        if (null != queryEntitry.getDisabled()) {
+            queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", queryEntitry.getDisabled());
         }
-        if (notEmpty(modelIds)) {
-            queryHandler.condition("bean.modelId in (:modelIds)").setParameter("modelIds", modelIds);
+        if (notEmpty(queryEntitry.getModelIds())) {
+            queryHandler.condition("bean.modelId in (:modelIds)").setParameter("modelIds", queryEntitry.getModelIds());
         }
-        if (notEmpty(parentId)) {
-            queryHandler.condition("bean.parentId = :parentId").setParameter("parentId", parentId);
-        } else if (null != emptyParent && emptyParent) {
+        if (notEmpty(queryEntitry.getParentId())) {
+            queryHandler.condition("bean.parentId = :parentId").setParameter("parentId", queryEntitry.getParentId());
+        } else if (null != queryEntitry.getEmptyParent() && queryEntitry.getEmptyParent()) {
             queryHandler.condition("bean.parentId is null");
         }
-        if (null != onlyUrl) {
-            queryHandler.condition("bean.onlyUrl = :onlyUrl").setParameter("onlyUrl", onlyUrl);
+        if (null != queryEntitry.getOnlyUrl()) {
+            queryHandler.condition("bean.onlyUrl = :onlyUrl").setParameter("onlyUrl", queryEntitry.getOnlyUrl());
         }
-        if (null != hasImages) {
-            queryHandler.condition("bean.hasImages = :hasImages").setParameter("hasImages", hasImages);
+        if (null != queryEntitry.getHasImages()) {
+            queryHandler.condition("bean.hasImages = :hasImages").setParameter("hasImages", queryEntitry.getHasImages());
         }
-        if (null != hasFiles) {
-            queryHandler.condition("bean.hasFiles = :hasFiles").setParameter("hasFiles", hasFiles);
+        if (null != queryEntitry.getHasFiles()) {
+            queryHandler.condition("bean.hasFiles = :hasFiles").setParameter("hasFiles", queryEntitry.getHasFiles());
         }
-        if (notEmpty(title)) {
-            queryHandler.condition("(bean.title like :title)").setParameter("title", like(title));
+        if (notEmpty(queryEntitry.getTitle())) {
+            queryHandler.condition("(bean.title like :title)").setParameter("title", like(queryEntitry.getTitle()));
         }
-        if (notEmpty(userId)) {
-            queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
+        if (notEmpty(queryEntitry.getUserId())) {
+            queryHandler.condition("bean.userId = :userId").setParameter("userId", queryEntitry.getUserId());
         }
-        if (null != startPublishDate) {
-            queryHandler.condition("bean.publishDate > :startPublishDate").setParameter("startPublishDate", startPublishDate);
+        if (null != queryEntitry.getStartPublishDate()) {
+            queryHandler.condition("bean.publishDate > :startPublishDate").setParameter("startPublishDate", queryEntitry.getStartPublishDate());
         }
-        if (null != endPublishDate) {
-            queryHandler.condition("bean.publishDate <= :endPublishDate").setParameter("endPublishDate", endPublishDate);
+        if (null != queryEntitry.getEndPublishDate()) {
+            queryHandler.condition("bean.publishDate <= :endPublishDate").setParameter("endPublishDate", queryEntitry.getEndPublishDate());
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;

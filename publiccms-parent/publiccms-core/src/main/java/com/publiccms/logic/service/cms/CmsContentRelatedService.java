@@ -10,7 +10,8 @@ import java.util.Set;
 
 import com.publiccms.entities.cms.CmsContentRelated;
 import com.publiccms.logic.dao.cms.CmsContentRelatedDao;
-import com.publiccms.views.pojo.CmsContentRelatedStatistics;
+import com.publiccms.views.pojo.entities.CmsContentRelatedStatistics;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

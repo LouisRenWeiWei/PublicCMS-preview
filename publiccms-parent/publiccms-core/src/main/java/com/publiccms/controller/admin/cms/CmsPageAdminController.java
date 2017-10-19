@@ -13,8 +13,9 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
 import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.views.pojo.CmsPageMetadata;
-import com.publiccms.views.pojo.CmsPlaceParamters;
+import com.publiccms.views.pojo.entities.CmsPageMetadata;
+import com.publiccms.views.pojo.model.CmsPlaceParamters;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

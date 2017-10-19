@@ -1,29 +1,29 @@
-package com.publiccms.views.pojo;
+package com.publiccms.views.pojo.entities;
 
-import com.publiccms.entities.cms.CmsTag;
+import com.publiccms.entities.cms.CmsContentRelated;
 
 /**
  *
- * CmsTagStatistics
+ * CmsContentRelatedStatistics
  * 
  */
-public class CmsTagStatistics implements java.io.Serializable {
+public class CmsContentRelatedStatistics implements java.io.Serializable {
 
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
     private long id;
-    private int searchCounts;
-    private CmsTag entity;
+    private int clicks;
+    private CmsContentRelated entity;
 
     /**
      * @param id
-     * @param searchCounts
+     * @param clicks
      * @param entity
      */
-    public CmsTagStatistics(long id, int searchCounts, CmsTag entity) {
-        this.searchCounts = searchCounts;
+    public CmsContentRelatedStatistics(long id, int clicks, CmsContentRelated entity) {
+        this.clicks = clicks;
         this.id = id;
         this.entity = entity;
     }
@@ -45,28 +45,28 @@ public class CmsTagStatistics implements java.io.Serializable {
     /**
      * @return
      */
-    public int getSearchCounts() {
-        return searchCounts;
+    public int getClicks() {
+        return clicks;
     }
 
     /**
-     * @param searchCounts
+     * @param clicks
      */
-    public void setSearchCounts(int searchCounts) {
-        this.searchCounts = searchCounts;
+    public void setClicks(int clicks) {
+        this.clicks = clicks;
     }
 
     /**
      * @return
      */
-    public CmsTag getEntity() {
+    public CmsContentRelated getEntity() {
         return entity;
     }
 
     /**
      * @param entity
      */
-    public void setEntity(CmsTag entity) {
+    public void setEntity(CmsContentRelated entity) {
         this.entity = entity;
     }
 }

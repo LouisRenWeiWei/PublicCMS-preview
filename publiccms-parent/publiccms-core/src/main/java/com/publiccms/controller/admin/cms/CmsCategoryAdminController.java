@@ -37,8 +37,9 @@ import com.publiccms.logic.service.cms.CmsTagTypeService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
-import com.publiccms.views.pojo.CmsCategoryModelParamters;
-import com.publiccms.views.pojo.CmsCategoryParamters;
+import com.publiccms.views.pojo.model.CmsCategoryModelParamters;
+import com.publiccms.views.pojo.model.CmsCategoryParamters;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

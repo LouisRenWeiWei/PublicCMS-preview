@@ -1,7 +1,7 @@
 package com.publiccms.controller.api;
 
 import static com.publiccms.common.base.AbstractFreemarkerView.CONTEXT_SITE;
-import static com.publiccms.controller.api.ApiController.EXCEPTION_MAP;
+import static com.publiccms.controller.api.ApiController.EXCEPTION;
 import static com.publiccms.controller.api.ApiController.INTERFACE_NOT_FOUND;
 
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ public class DirectiveController extends AbstractController {
             HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter, jsonMediaType, request,
                     callback, response);
             try {
-                handler.put(ERROR, EXCEPTION_MAP).render();
+                handler.put(ERROR, EXCEPTION).render();
             } catch (Exception renderException) {
                 log.error(renderException.getMessage());
             }

@@ -8,9 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.publiccms.entities.sys.SysExtendField;
-import com.publiccms.views.pojo.ExtendData;
-import com.publiccms.views.pojo.ExtendField;
-
+import com.publiccms.views.pojo.entities.ExtendData;
+import com.publiccms.views.pojo.entities.ExtendField;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.publiccms.common.base.Base;
 

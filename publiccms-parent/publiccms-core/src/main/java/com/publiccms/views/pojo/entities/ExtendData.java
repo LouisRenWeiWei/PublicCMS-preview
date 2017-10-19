@@ -1,4 +1,4 @@
-package com.publiccms.views.pojo;
+package com.publiccms.views.pojo.entities;
 
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 

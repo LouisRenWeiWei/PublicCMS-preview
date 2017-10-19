@@ -9,8 +9,13 @@ function refreshCmsTemplate(){
 <form method="post" action="cmsTemplate/save.do" class="pageForm required-validate" onsubmit="refreshCmsTemplate();return validateCallback(this, navTabAjaxDone);">
 	<div class="formBar">
 		<ul>
-			<li><a class="button" href="cmsTemplate/delete.do?path=${(path?url)!}&navTabId=cmsTemplate/list" title="确定要删除该模板吗?" target="ajaxTodo">删除</a></li>
-			<li><a class="button" href="cmsTemplate/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox">元数据管理</a></li>
+            <li><a class="button" href="cmsTemplate/delete.do?path=${(path?url)!}&navTabId=cmsTemplate/list" title="确定要删除该模板吗?" target="ajaxTodo">删除</a></li>
+    <@_sysAuthorized roleIds=admin.roles url='cmsPage/metadata'>
+        <@_sysDeptPage deptId=admin.deptId!'' pages='cmsPage/metadata'>
+            <li><a class="button" href="cmsPage/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox">页面管理</a></li>
+        </@_sysDeptPage>
+    </@_sysAuthorized>
+            <li><a class="button" href="cmsTemplate/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox">元数据管理</a></li>
 			<li><button type="submit" class="buttonActive">保存</button></li>
 		</ul>
 	</div>

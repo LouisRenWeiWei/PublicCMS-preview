@@ -53,7 +53,8 @@ public class CmsCopyright implements Copyright, Base {
     }
 
     private boolean verifyDomain(String domain, String licenseDomain) {
-        if ("*".equals(licenseDomain) || isIp(domain) || domain.toLowerCase().startsWith("dev.") || "localhost".equals(domain)) {
+        if ("*".equals(licenseDomain) || isIp(domain) || domain.toLowerCase().startsWith("dev.")
+                || -1 < domain.toLowerCase().indexOf(".dev.") || "localhost".equals(domain)) {
             return true;
         } else {
             String[] licenseDomains = split(licenseDomain, ",");

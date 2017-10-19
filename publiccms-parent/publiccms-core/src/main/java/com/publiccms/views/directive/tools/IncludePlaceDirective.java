@@ -15,7 +15,8 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.views.pojo.CmsPlaceMetadata;
+import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

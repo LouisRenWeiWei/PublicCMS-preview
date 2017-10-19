@@ -12,7 +12,8 @@ import java.util.Map;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.views.pojo.ExtendField;
+import com.publiccms.views.pojo.entities.ExtendField;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

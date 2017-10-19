@@ -28,9 +28,10 @@ import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.views.pojo.CmsPlaceMetadata;
-import com.publiccms.views.pojo.CmsPlaceParamters;
-import com.publiccms.views.pojo.CmsPlaceStatistics;
+import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
+import com.publiccms.views.pojo.entities.CmsPlaceStatistics;
+import com.publiccms.views.pojo.model.CmsPlaceParamters;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

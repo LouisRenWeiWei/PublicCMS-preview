@@ -43,8 +43,9 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
-import com.publiccms.views.pojo.CmsPageMetadata;
-import com.publiccms.views.pojo.CmsPlaceMetadata;
+import com.publiccms.views.pojo.entities.CmsPageMetadata;
+import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 

@@ -15,7 +15,7 @@
 配置idea工程 ：idea:idea
 运行工程：jetty:run
 
-gradle(使用以下文件：gradle,build.gradle,settings.gradle,gradlew,gradle.bat)
+gradle(使用以下文件：gradle,build.gradle,settings.gradle,gradlew,gradlew.bat)
 
 已安装gradlew完整命令行为  gradle clean
 未安装gradlew完整命令行为 gradlew clean

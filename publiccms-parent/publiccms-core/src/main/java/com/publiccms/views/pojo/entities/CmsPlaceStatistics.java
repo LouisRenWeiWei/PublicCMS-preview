@@ -1,13 +1,13 @@
-package com.publiccms.views.pojo;
+package com.publiccms.views.pojo.entities;
 
-import com.publiccms.entities.cms.CmsContentRelated;
+import com.publiccms.entities.cms.CmsPlace;
 
 /**
  *
- * CmsContentRelatedStatistics
+ * CmsPlaceStatistics
  * 
  */
-public class CmsContentRelatedStatistics implements java.io.Serializable {
+public class CmsPlaceStatistics implements java.io.Serializable {
 
     /**
      * 
@@ -15,14 +15,14 @@ public class CmsContentRelatedStatistics implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     private long id;
     private int clicks;
-    private CmsContentRelated entity;
+    private CmsPlace entity;
 
     /**
      * @param id
      * @param clicks
      * @param entity
      */
-    public CmsContentRelatedStatistics(long id, int clicks, CmsContentRelated entity) {
+    public CmsPlaceStatistics(long id, int clicks, CmsPlace entity) {
         this.clicks = clicks;
         this.id = id;
         this.entity = entity;
@@ -59,14 +59,14 @@ public class CmsContentRelatedStatistics implements java.io.Serializable {
     /**
      * @return
      */
-    public CmsContentRelated getEntity() {
+    public CmsPlace getEntity() {
         return entity;
     }
 
     /**
      * @param entity
      */
-    public void setEntity(CmsContentRelated entity) {
+    public void setEntity(CmsPlace entity) {
         this.entity = entity;
     }
 }

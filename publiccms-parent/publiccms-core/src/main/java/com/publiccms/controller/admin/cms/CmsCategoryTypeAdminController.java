@@ -19,7 +19,9 @@ import com.publiccms.logic.service.cms.CmsCategoryTypeService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
-import com.publiccms.views.pojo.CmsCategoryTypeParamters;
+import com.publiccms.views.pojo.model.CmsCategoryTypeParamters;
+import com.publiccms.views.pojo.query.CmsCategoryQuery;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -96,8 +98,9 @@ public class CmsCategoryTypeAdminController extends AbstractController {
         CmsCategoryType entity = service.getEntity(id);
         if (null != entity) {
             if (verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model) || verifyNotGreaterThen("category",
-                    categoryService.getPage(site.getId(), null, true, id, null, null, false, null, 1).getTotalCount(), 1,
-                    model)) {
+                    categoryService.getPage(new CmsCategoryQuery(site.getId(), null, true, id, null, null, false), null, null)
+                            .getTotalCount(),
+                    1, model)) {
                 return TEMPLATE_ERROR;
             }
             service.delete(id);

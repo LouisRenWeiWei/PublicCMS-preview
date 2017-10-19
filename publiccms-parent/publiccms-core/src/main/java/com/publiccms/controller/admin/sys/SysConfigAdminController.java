@@ -15,7 +15,8 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.views.pojo.SysConfig;
+import com.publiccms.views.pojo.entities.SysConfig;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

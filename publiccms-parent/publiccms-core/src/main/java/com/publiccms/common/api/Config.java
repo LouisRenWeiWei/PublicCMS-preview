@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.views.pojo.ExtendField;
+import com.publiccms.views.pojo.entities.ExtendField;
 
 /**
  *

@@ -11,8 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.publiccms.common.api.Cache;
-import com.publiccms.views.pojo.CmsPageMetadata;
-import com.publiccms.views.pojo.CmsPlaceMetadata;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +21,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.publiccms.common.base.Base;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
+import com.publiccms.views.pojo.entities.CmsPageMetadata;
+import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 
 /**
  * 元数据组件

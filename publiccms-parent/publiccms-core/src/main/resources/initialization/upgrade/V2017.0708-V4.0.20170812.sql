@@ -43,3 +43,4 @@ INSERT INTO `sys_moudle` VALUES ('127', '推荐位数据', 'cmsPlace/dataList', 
 INSERT INTO `sys_moudle` VALUES ('128', '用户数据监控', 'report/user', NULL, '<i class=\"icon-male icon-large\"></i>', '46', '1', '0');
 ALTER TABLE `sys_moudle` ORDER BY  `id`;
 DELETE FROM `sys_moudle` WHERE id = 130;
+UPDATE `sys_user` SET roles = '2';

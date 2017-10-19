@@ -8,7 +8,8 @@ import com.publiccms.common.base.AbstractAppDirective;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.StatisticsComponent;
-import com.publiccms.views.pojo.CmsContentStatistics;
+import com.publiccms.views.pojo.entities.CmsContentStatistics;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

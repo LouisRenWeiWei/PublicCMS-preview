@@ -2,7 +2,8 @@ package com.publiccms.controller.api;
 
 import static com.publiccms.common.tools.CommonUtils.empty;
 import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.controller.api.ApiController.NEED_APP_TOKEN_MAP;
+import static com.publiccms.controller.api.ApiController.EXCEPTION;
+import static com.publiccms.controller.api.ApiController.NEED_APP_TOKEN;
 import static com.publiccms.controller.api.ApiController.NOT_FOUND_MAP;
 
 import java.util.ArrayList;
@@ -14,19 +15,19 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.base.BaseMethod;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysAppToken;
 import com.publiccms.logic.component.site.DirectiveComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.sys.SysAppService;
 import com.publiccms.logic.service.sys.SysAppTokenService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.publiccms.common.base.BaseMethod;
 
 import freemarker.template.ObjectWrapper;
 import freemarker.template.TemplateModel;
@@ -42,6 +43,15 @@ public class MethodController extends AbstractController {
     private Map<String, BaseMethod> methodMap;
     private List<Map<String, String>> methodList = new ArrayList<>();
     private ObjectWrapper objectWrapper;
+    /**
+     * 
+     */
+    public static final Map<String, String> NEED_APP_TOKEN_MAP = new HashMap<String, String>() {
+        private static final long serialVersionUID = 1L;
+        {
+            put(ERROR, NEED_APP_TOKEN);
+        }
+    };
 
     /**
      * 接口指令统一分发
@@ -82,8 +92,9 @@ public class MethodController extends AbstractController {
                     return map;
                 }
             } catch (TemplateModelException e) {
+                log.error(e.getMessage(), e);
                 Map<String, String> map = new HashMap<>();
-                map.put(ERROR, e.getMessage());
+                map.put(ERROR, EXCEPTION);
                 return map;
             }
         } else {

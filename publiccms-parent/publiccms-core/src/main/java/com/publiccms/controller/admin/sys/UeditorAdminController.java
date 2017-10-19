@@ -31,7 +31,8 @@ import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.FileComponent;
 import com.publiccms.logic.service.log.LogUploadService;
-import com.publiccms.views.pojo.UeditorConfig;
+import com.publiccms.views.pojo.entities.UeditorConfig;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

@@ -51,28 +51,10 @@ public class ApiController extends AbstractController {
     /**
      * 
      */
-    public static final Map<String, String> NEED_APP_TOKEN_MAP = new HashMap<String, String>() {
-        private static final long serialVersionUID = 1L;
-        {
-            put(ERROR, NEED_APP_TOKEN);
-        }
-    };
-    /**
-     * 
-     */
     public static final Map<String, String> NOT_FOUND_MAP = new HashMap<String, String>() {
         private static final long serialVersionUID = 1L;
         {
             put(ERROR, INTERFACE_NOT_FOUND);
-        }
-    };
-    /**
-     * 
-     */
-    public static final Map<String, String> EXCEPTION_MAP = new HashMap<String, String>() {
-        private static final long serialVersionUID = 1L;
-        {
-            put(ERROR, EXCEPTION);
         }
     };
 
@@ -110,7 +92,7 @@ public class ApiController extends AbstractController {
             HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter, jsonMediaType, request,
                     callback, response);
             try {
-                handler.put(ERROR, EXCEPTION_MAP).render();
+                handler.put(ERROR, EXCEPTION).render();
             } catch (Exception renderException) {
                 log.error(renderException.getMessage());
             }

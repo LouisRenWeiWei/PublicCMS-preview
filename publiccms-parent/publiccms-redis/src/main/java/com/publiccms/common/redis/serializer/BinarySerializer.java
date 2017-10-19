@@ -21,14 +21,6 @@ import com.publiccms.common.base.Base;
 public class BinarySerializer<T> implements Serializer<T>, Base {
     protected final Log log = getLog(getClass());
 
-    /**
-     * @param str
-     * @return
-     */
-    public byte[] serialize(String str) {
-        return null == str ? EMPTY_BYTES : str.getBytes(DEFAULT_CHARSET);
-    }
-
     @Override
     public byte[] serialize(final T graph) {
         if (null == graph) {

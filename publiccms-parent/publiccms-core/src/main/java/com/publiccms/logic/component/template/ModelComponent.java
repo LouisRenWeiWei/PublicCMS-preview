@@ -15,7 +15,8 @@ import java.util.Map;
 import com.publiccms.common.api.SiteCache;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
-import com.publiccms.views.pojo.CmsModel;
+import com.publiccms.views.pojo.entities.CmsModel;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -53,12 +53,6 @@ public interface Base {
      */
     public static final String DOT = ".";
     /**
-     * 点
-     * 
-     * dot
-     */
-    public static final String ASTERISK = "*";
-    /**
      * 空格
      * 
      * blank space

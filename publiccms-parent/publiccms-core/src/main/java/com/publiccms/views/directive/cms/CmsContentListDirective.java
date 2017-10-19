@@ -7,13 +7,14 @@ import static com.publiccms.common.tools.CommonUtils.getMinuteDate;
 import java.io.IOException;
 import java.util.Date;
 
-import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.logic.service.cms.CmsContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.views.pojo.query.CmsContentQuery;
 
 /**
  *
@@ -25,27 +26,34 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Date endPublishDate = handler.getDate("endPublishDate");
-        Integer[] status = new Integer[] { CmsContentService.STATUS_NORMAL };
-        Boolean disabled = false;
-        Boolean emptyParent = true;
+        CmsContentQuery queryEntity = new CmsContentQuery();
+        queryEntity.setSiteId(getSite(handler).getId());
+        queryEntity.setEndPublishDate(handler.getDate("endPublishDate"));
         if (handler.getBoolean("advanced", false)) {
-            status = handler.getIntegerArray("status");
-            disabled = handler.getBoolean("disabled", false);
-            emptyParent = handler.getBoolean("emptyParent");
+            queryEntity.setStatus(handler.getIntegerArray("status"));
+            queryEntity.setDisabled(handler.getBoolean("disabled", false));
+            queryEntity.setEmptyParent(handler.getBoolean("emptyParent"));
+            queryEntity.setTitle(handler.getString("title"));
         } else {
+            queryEntity.setStatus(new Integer[] { CmsContentService.STATUS_NORMAL });
+            queryEntity.setDisabled(false);
+            queryEntity.setEmptyParent(true);
             Date now = getMinuteDate();
-            if (null == endPublishDate || endPublishDate.after(now)) {
-                endPublishDate = now;
+            if (null == queryEntity.getEndPublishDate() || queryEntity.getEndPublishDate().after(now)) {
+                queryEntity.setEndPublishDate(now);
             }
         }
-        PageHandler page = service.getPage(getSite(handler).getId(), status, handler.getInteger("categoryId"),
-                handler.getBoolean("containChild"), handler.getIntegerArray("categoryIds"), disabled,
-                handler.getStringArray("modelId"), handler.getLong("parentId"), emptyParent, handler.getBoolean("onlyUrl"),
-                handler.getBoolean("hasImages"), handler.getBoolean("hasFiles"), handler.getString("title"),
-                handler.getLong("userId"), handler.getDate("startPublishDate"), endPublishDate,
-                handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
-                handler.getInteger("count", 30));
+        queryEntity.setCategoryId(handler.getInteger("categoryId"));
+        queryEntity.setCategoryIds(handler.getIntegerArray("categoryIds"));
+        queryEntity.setModelIds(handler.getStringArray("modelId"));
+        queryEntity.setParentId(handler.getLong("parentId"));
+        queryEntity.setOnlyUrl(handler.getBoolean("onlyUrl"));
+        queryEntity.setHasImages(handler.getBoolean("hasImages"));
+        queryEntity.setHasFiles(handler.getBoolean("hasFiles"));
+        queryEntity.setUserId(handler.getLong("userId"));
+        queryEntity.setStartPublishDate(handler.getDate("startPublishDate"));
+        PageHandler page = service.getPage(queryEntity, handler.getBoolean("containChild"), handler.getString("orderField"),
+                handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
         handler.put("page", page).render();
     }
 

@@ -1,9 +1,10 @@
-package com.publiccms.views.pojo;
+package com.publiccms.views.pojo.model;
 
 import java.util.List;
 
 import com.publiccms.entities.cms.CmsTagType;
 import com.publiccms.entities.sys.SysExtendField;
+import com.publiccms.views.pojo.entities.ExtendData;
 
 /**
  *

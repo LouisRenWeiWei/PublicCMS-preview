@@ -56,9 +56,10 @@ import com.publiccms.logic.service.sys.SysDeptCategoryService;
 import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
-import com.publiccms.views.pojo.CmsContentParamters;
-import com.publiccms.views.pojo.CmsModel;
-import com.publiccms.views.pojo.ExtendField;
+import com.publiccms.views.pojo.entities.CmsModel;
+import com.publiccms.views.pojo.entities.ExtendField;
+import com.publiccms.views.pojo.model.CmsContentParamters;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

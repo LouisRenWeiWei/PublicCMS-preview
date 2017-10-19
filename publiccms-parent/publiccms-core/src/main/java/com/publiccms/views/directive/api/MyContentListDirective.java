@@ -8,6 +8,8 @@ import com.publiccms.common.base.AbstractAppDirective;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.views.pojo.query.CmsContentQuery;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,11 +26,12 @@ public class MyContentListDirective extends AbstractAppDirective {
 
     @Override
     public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getIntegerArray("status"),
-                handler.getInteger("categoryId"), handler.getBoolean("containChild"), handler.getIntegerArray("categoryIds"),
-                false, null, handler.getLong("parentId"), handler.getBoolean("emptyParent"), handler.getBoolean("onlyUrl"),
-                handler.getBoolean("hasImages"), handler.getBoolean("hasFiles"), null, user.getId(), null,
-                handler.getDate("endPublishDate"), null, null, handler.getInteger("pageIndex", 1),
+        PageHandler page = service.getPage(
+                new CmsContentQuery(getSite(handler).getId(), handler.getIntegerArray("status"), handler.getInteger("categoryId"),
+                        handler.getIntegerArray("categoryIds"), false, null, handler.getLong("parentId"),
+                        handler.getBoolean("emptyParent"), handler.getBoolean("onlyUrl"), handler.getBoolean("hasImages"),
+                        handler.getBoolean("hasFiles"), null, user.getId(), null, handler.getDate("endPublishDate")),
+                handler.getBoolean("containChild"), null, null, handler.getInteger("pageIndex", 1),
                 handler.getInteger("count", 30));
         handler.put("page", page);
     }

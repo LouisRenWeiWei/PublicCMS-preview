@@ -11,11 +11,12 @@ import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.cms.CmsTagService;
 import com.publiccms.logic.service.cms.CmsWordService;
-import com.publiccms.views.pojo.CmsContentRelatedStatistics;
-import com.publiccms.views.pojo.CmsContentStatistics;
-import com.publiccms.views.pojo.CmsPlaceStatistics;
-import com.publiccms.views.pojo.CmsTagStatistics;
-import com.publiccms.views.pojo.CmsWordStatistics;
+import com.publiccms.views.pojo.entities.CmsContentRelatedStatistics;
+import com.publiccms.views.pojo.entities.CmsContentStatistics;
+import com.publiccms.views.pojo.entities.CmsPlaceStatistics;
+import com.publiccms.views.pojo.entities.CmsTagStatistics;
+import com.publiccms.views.pojo.entities.CmsWordStatistics;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

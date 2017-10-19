@@ -23,11 +23,11 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.ibatis.jdbc.ScriptRunner;
-import com.publiccms.views.pojo.CmsModel;
-import com.publiccms.views.pojo.ExtendField;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.publiccms.common.base.Base;
+import com.publiccms.views.pojo.entities.CmsModel;
+import com.publiccms.views.pojo.entities.ExtendField;
 
 /**
  *

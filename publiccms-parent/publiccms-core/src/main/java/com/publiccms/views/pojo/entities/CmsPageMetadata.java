@@ -1,4 +1,4 @@
-package com.publiccms.views.pojo;
+package com.publiccms.views.pojo.entities;
 
 import static com.publiccms.common.tools.CommonUtils.empty;
 import static com.publiccms.common.tools.CommonUtils.notEmpty;

@@ -8,6 +8,8 @@ import java.util.List;
 
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.logic.dao.cms.CmsCategoryDao;
+import com.publiccms.views.pojo.query.CmsCategoryQuery;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,21 +27,14 @@ import com.publiccms.common.handler.PageHandler;
 public class CmsCategoryService extends BaseService<CmsCategory> {
 
     /**
-     * @param siteId
-     * @param parentId
-     * @param queryAll
-     * @param typeId
-     * @param allowContribute
-     * @param hidden
-     * @param disabled
+     * @param queryEntity
      * @param pageIndex
      * @param pageSize
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Integer parentId, Boolean queryAll, Integer typeId, Boolean allowContribute,
-            Boolean hidden, Boolean disabled, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, parentId, queryAll, typeId, allowContribute, hidden, disabled, pageIndex, pageSize);
+    public PageHandler getPage(CmsCategoryQuery queryEntity, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(queryEntity, pageIndex, pageSize);
     }
 
     /**
@@ -64,7 +59,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
 
     /**
      * @param id
-     * @param typeId 
+     * @param typeId
      */
     public void changeType(Integer id, Integer typeId) {
         CmsCategory entity = getEntity(id);
@@ -76,8 +71,8 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     private String getChildIds(int siteId, Integer parentId) {
         StringBuilder childIds = new StringBuilder();
         @SuppressWarnings("unchecked")
-        List<CmsCategory> list = (List<CmsCategory>) getPage(siteId, parentId, false, null, null, null, false, null, null)
-                .getList();
+        List<CmsCategory> list = (List<CmsCategory>) getPage(
+                new CmsCategoryQuery(siteId, parentId, false, null, null, null, false), null, null).getList();
         if (0 < list.size()) {
             for (CmsCategory category : list) {
                 childIds.append(category.getId());
@@ -121,8 +116,8 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
         for (CmsCategory entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && !entity.isDisabled()) {
                 @SuppressWarnings("unchecked")
-                List<CmsCategory> list = (List<CmsCategory>) getPage(siteId, entity.getId(), false, null, null, null, null, null,
-                        null).getList();
+                List<CmsCategory> list = (List<CmsCategory>) getPage(
+                        new CmsCategoryQuery(siteId, entity.getId(), false, null, null, null, null), null, null).getList();
                 for (CmsCategory child : list) {
                     child.setParentId(entity.getParentId());
                 }

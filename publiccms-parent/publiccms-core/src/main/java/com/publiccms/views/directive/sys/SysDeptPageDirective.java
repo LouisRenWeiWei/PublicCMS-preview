@@ -33,7 +33,9 @@ public class SysDeptPageDirective extends AbstractTemplateDirective {
         if (notEmpty(deptId)) {
             if (notEmpty(page)) {
                 SysDeptPage entity = service.getEntity(deptId, page);
-                handler.put("object", entity).render();
+                if (null != entity) {
+                    handler.put("object", entity).render();
+                }
             } else {
                 String[] pages = handler.getStringArray("pages");
                 if (notEmpty(pages)) {

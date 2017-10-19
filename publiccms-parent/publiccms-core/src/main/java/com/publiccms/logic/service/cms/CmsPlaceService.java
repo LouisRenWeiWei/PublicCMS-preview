@@ -9,7 +9,8 @@ import java.util.Date;
 
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.logic.dao.cms.CmsPlaceDao;
-import com.publiccms.views.pojo.CmsPlaceStatistics;
+import com.publiccms.views.pojo.entities.CmsPlaceStatistics;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

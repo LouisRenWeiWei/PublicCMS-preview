@@ -1,10 +1,11 @@
-package com.publiccms.views.pojo;
+package com.publiccms.views.pojo.model;
 
 import java.util.List;
 
 import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.entities.cms.CmsContentRelated;
 import com.publiccms.entities.cms.CmsTag;
+import com.publiccms.views.pojo.entities.ExtendData;
 
 /**
  *

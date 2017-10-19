@@ -1,6 +1,8 @@
-package com.publiccms.views.pojo;
+package com.publiccms.views.pojo.model;
 
 import java.util.List;
+
+import com.publiccms.views.pojo.entities.ExtendData;
 
 /**
  *
