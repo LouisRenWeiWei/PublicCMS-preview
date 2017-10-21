@@ -55,22 +55,22 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
         if (notEmpty(itemId)) {
             queryHandler.condition("bean.itemId = :itemId").setParameter("itemId", itemId);
         }
-        if (null == startPublishDate) {
+        if (null != startPublishDate) {
             queryHandler.condition("bean.publishDate > :startPublishDate").setParameter("startPublishDate", startPublishDate);
         }
-        if (null == endPublishDate) {
+        if (null != endPublishDate) {
             queryHandler.condition("bean.publishDate <= :endPublishDate").setParameter("endPublishDate", endPublishDate);
         }
-        if (null == status) {
+        if (null != status) {
             queryHandler.condition("bean.status = :status").setParameter("status", status);
         }
-        if (null == disabled) {
+        if (null != disabled) {
             queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", disabled);
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;
         }
-        if (null == orderField) {
+        if (null != orderField) {
             orderField = BLANK;
         }
         switch (orderField) {
