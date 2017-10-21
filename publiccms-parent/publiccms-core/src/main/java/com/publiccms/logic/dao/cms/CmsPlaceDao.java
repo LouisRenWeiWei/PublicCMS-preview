@@ -70,7 +70,7 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;
         }
-        if (null != orderField) {
+        if (null == orderField) {
             orderField = BLANK;
         }
         switch (orderField) {
