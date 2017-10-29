@@ -24,18 +24,38 @@ public class GetPageMethod extends BaseMethod {
         String url = getString(0, arguments);
         Integer pageIndex = getInteger(1, arguments);
         if (notEmpty(url) && notEmpty(pageIndex)) {
-            String prefixFilePath = url.substring(0, url.lastIndexOf('.'));
-            if (prefixFilePath.lastIndexOf("_") == prefixFilePath.length() - 1) {
-                prefixFilePath = prefixFilePath.substring(0, prefixFilePath.length() - 1);
-            }
-            String suffixFilePath = url.substring(url.lastIndexOf('.'), url.length());
-            if (1 < pageIndex) {
-                return prefixFilePath + '_' + pageIndex + suffixFilePath;
-            }
+            return getPageUrl(url, pageIndex);
         }
         return url;
     }
-    
+
+    public String getPageUrl(String url, int pageIndex) {
+        int index = url.lastIndexOf('.');
+        if (-1 < index) {
+            String prefixFilePath = url.substring(0, index);
+            String suffixFilePath = url.substring(index, url.length());
+            if (url.lastIndexOf("/") < url.lastIndexOf("_")) {
+                prefixFilePath = prefixFilePath.substring(0, url.lastIndexOf("_"));
+            }
+            if (1 < pageIndex) {
+                return prefixFilePath + '_' + pageIndex + suffixFilePath;
+            } else {
+                return prefixFilePath + suffixFilePath;
+            }
+
+        } else {
+            String prefixFilePath = url;
+            if (url.lastIndexOf("/") < url.lastIndexOf("_")) {
+                prefixFilePath = prefixFilePath.substring(0, url.lastIndexOf("_"));
+            }
+            if (1 < pageIndex) {
+                return prefixFilePath + '_' + pageIndex;
+            } else {
+                return prefixFilePath;
+            }
+        }
+    }
+
     @Override
     public boolean needAppToken() {
         return false;

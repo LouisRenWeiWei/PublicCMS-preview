@@ -4,15 +4,13 @@ dependencies {
     compile project(':publiccms-common')
     compile (
         "com.mchange:c3p0:${c3p0Version}",
-	    // http://mvnrepository.com/artifact/mysql/mysql-connector-java
-	    "mysql:mysql-connector-java:5.1.40",
-	    // http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils
+        // http://mvnrepository.com/artifact/mysql/mysql-connector-java
+        "mysql:mysql-connector-java:5.1.40",
+        // http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils
         "eu.bitwalker:UserAgentUtils:1.20",
         // http://mvnrepository.com/artifact/net.coobird/thumbnailator
         "net.coobird:thumbnailator:0.4.8",
-    )
-    providedCompile(
-        // http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
+    // http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
         "javax.servlet:javax.servlet-api:3.1.0"
     )
 }

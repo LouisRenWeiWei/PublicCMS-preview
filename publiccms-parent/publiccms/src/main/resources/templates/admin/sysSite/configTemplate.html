@@ -15,7 +15,7 @@
 	<dl class="nowrap">
 		<dt>Nginx配置:</dt>
 		<dd>
-			<textarea id="nginx" name="description" cols="80" rows="20"><@_disk>
+			<textarea name="description" class="code" mode="nginx"><@_disk>
 <#assign rootPath=rootPath?replace('\\','/')/>
 <#assign dynamicPath=a.dynamicPath?keep_after('//')?keep_before('/')?keep_before(':')/>
 <#assign dynamicLocation=a.dynamicPath?keep_after('//')?keep_after('/')/>
@@ -85,16 +85,6 @@ server {
 	}
 }
 </#if></@_disk></textarea>
-<script>
-	CodeMirror.fromTextArea(document.getElementById("nginx"), {
-		mode: "nginx",
-		lineNumbers: true,
-        tabSize        : 4,
-        indentUnit     : 4,
-        lineWrapping   : true,
-        indentWithTabs : true
-	});
-</script>
 			<span class="info">本站点配置应该包含在nginx配置文件 http包中,点击这里查看<a href="sysSite/nginxCommon.html" target="dialog" rel="nginx_common">Nginx通用配置</a></span>
 		</dd>
 	</dl>

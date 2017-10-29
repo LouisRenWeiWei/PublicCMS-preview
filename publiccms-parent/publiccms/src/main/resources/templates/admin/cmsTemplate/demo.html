@@ -9,9 +9,9 @@
 		<textarea name="staticContent"><@html_escape><#include "demo/staticContent.html" parse=false/></@html_escape></textarea>
 		<textarea name="staticCategory"><@html_escape><#include "demo/staticCategory.html" parse=false/></@html_escape></textarea>
 	</#if>
-	<textarea name="contentJson"><@html_escape><#include "demo/content.json" parse=false/></@html_escape></textarea>
-	<textarea name="contentListJson"><@html_escape><#include "demo/contentList.json" parse=false/></@html_escape></textarea>
-	<textarea name="categoryListJson"><@html_escape><#include "demo/categoryList.json" parse=false/></@html_escape></textarea>
+	<textarea name="contentJson"><@html_escape><#include "demo/content.ftl" parse=false/></@html_escape></textarea>
+	<textarea name="contentListJson"><@html_escape><#include "demo/contentList.ftl" parse=false/></@html_escape></textarea>
+	<textarea name="categoryListJson"><@html_escape><#include "demo/categoryList.ftl" parse=false/></@html_escape></textarea>
 </div>
 <script>
 function templateDefaultConfig(type){

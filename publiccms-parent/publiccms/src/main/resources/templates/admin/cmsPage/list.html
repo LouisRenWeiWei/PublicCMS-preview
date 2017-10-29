@@ -7,7 +7,7 @@
 		<@_sysDeptPage deptId=admin.deptId!'' pages=t.pages!><#assign deptPageMap=map!/></@_sysDeptPage>
 		<#list list as a>
 			<#local path=filepath+'/'+a.fileName>
-			<#if 'ftl'!=a.fileName&&(deptPageMap[path])?has_content&&deptPageMap[path]>
+			<#if (deptPageMap[path])?has_content&&deptPageMap[path]>
 				<li>
 				<#if a.directory>
 					<a href="javascript:;" onclick="return false;">${a.fileName}</a>

@@ -21,7 +21,7 @@
 </@_categoryList>
 	</nav>
 	<main>
-<@_search word=word tagId=tagId>
+<@_search word=word tagId=tagId pageIndex=pageIndex count=10>
 	<#if page.totalCount gt 0>
 		<h1>搜索结果</h1>
 	<#list page.list as a>

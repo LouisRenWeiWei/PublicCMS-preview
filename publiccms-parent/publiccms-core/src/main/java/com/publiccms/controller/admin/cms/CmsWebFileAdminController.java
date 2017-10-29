@@ -1,4 +1,5 @@
 package com.publiccms.controller.admin.cms;
+
 import static com.publiccms.common.tools.CommonUtils.getDate;
 import static com.publiccms.common.tools.CommonUtils.notEmpty;
 import static com.publiccms.common.tools.ControllerUtils.verifyCustom;
@@ -6,14 +7,20 @@ import static com.publiccms.common.tools.RequestUtils.getIpAddress;
 import static com.publiccms.common.tools.ZipUtils.unzip;
 import static com.publiccms.common.tools.ZipUtils.unzipHere;
 import static com.publiccms.common.tools.ZipUtils.zip;
-import static org.apache.commons.lang3.StringUtils.join;
 import static com.publiccms.logic.service.log.LogLoginService.CHANNEL_WEB_MANAGER;
+import static org.apache.commons.lang3.StringUtils.join;
 
 import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.entities.log.LogOperate;
@@ -22,11 +29,6 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.FileComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 
@@ -40,6 +42,39 @@ public class CmsWebFileAdminController extends AbstractController {
     private FileComponent fileComponent;
     @Autowired
     protected LogUploadService logUploadService;
+
+    /**
+     * @param path
+     * @param content
+     * @param request
+     * @param session
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("save")
+    public String save(String path, String content, HttpServletRequest request, HttpSession session, ModelMap model) {
+        SysSite site = getSite(request);
+        if (notEmpty(path)) {
+            try {
+                String filePath = siteComponent.getWebFilePath(site, path);
+                File webFile = new File(filePath);
+                if (notEmpty(webFile)) {
+                    fileComponent.updateFile(webFile, content);
+                    logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                            LogLoginService.CHANNEL_WEB_MANAGER, "update.web.webfile", getIpAddress(request), getDate(), path));
+                } else {
+                    fileComponent.createFile(webFile, content);
+                    logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                            LogLoginService.CHANNEL_WEB_MANAGER, "save.web.webfile", getIpAddress(request), getDate(), path));
+                }
+            } catch (IOException e) {
+                model.addAttribute(ERROR, e.getMessage());
+                log.error(e.getMessage(), e);
+                return TEMPLATE_ERROR;
+            }
+        }
+        return TEMPLATE_DONE;
+    }
 
     /**
      * @param file

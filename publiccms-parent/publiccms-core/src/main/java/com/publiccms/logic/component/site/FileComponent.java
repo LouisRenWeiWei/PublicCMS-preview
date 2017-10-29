@@ -117,7 +117,7 @@ public class FileComponent implements Base {
     }
 
     /**
-     * 获取模板文件内容
+     * 获取文件内容
      * 
      * @param filePath
      * @return file content
@@ -125,10 +125,13 @@ public class FileComponent implements Base {
     public String getFileContent(String filePath) {
         File file = new File(filePath);
         try {
-            return readFileToString(file, DEFAULT_CHARSET);
+            if (file.isFile()) {
+                return readFileToString(file, DEFAULT_CHARSET);
+            }
         } catch (IOException e) {
             return null;
         }
+        return null;
     }
 
     /**

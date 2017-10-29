@@ -25,3 +25,11 @@ https://github.com/sanluan/PublicCMS-preview
 ## 授权协议变更
 
 PublicCMS已经修改授权协议为非商用免费，商用付费，您可以在启动程序后看到详细的授权协议
+
+## 更新
+
+1. UI集成codemirror,并增加Ctrl键代码提示功能
+1. 新增CK编辑器
+1. 静态资源新增编辑功能
+1. 新增用户数据监控
+1. 模型可配置内容字段
