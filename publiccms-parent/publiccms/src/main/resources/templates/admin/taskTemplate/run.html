@@ -9,7 +9,8 @@
 		<dl class="nowrap">
 			<dt>模板:</dt>
 			<dd>
-				<textarea class="required" name="template" maxlength="500" cols="80" rows="4"><@_taskTemplateContent path=path>${object!}</@_taskTemplateContent></textarea>
+				<input name="filePath" class="required" type="text" maxlength="255" size="40" value="${path!}"/>
+				<a class="btnLook" href="taskTemplate/lookup.html?field=filePath" lookupGroup="">选择</a>
 			</dd>
 		</dl>
 <@_logOperateList operate='run.task.template' count=10>
@@ -30,10 +31,17 @@
 				${a.createDate!}
 			</dd>
 		</dl>
+		<#assign content=a.content?eval/>
 		<dl class="nowrap">
-			<dt>详情:</dt>
+			<dt>脚本:</dt>
 			<dd>
-				${(a.content)!}
+				${(content.filePath)!}
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>结果:</dt>
+			<dd>
+				${(content.result)!(content.error)!}
 			</dd>
 		</dl>
 		<div class="divider"></div>

@@ -47,8 +47,8 @@ public class ScheduledJob extends QuartzJobBean {
                     map.put("task", task);
                     SysSite site = getSiteService().getEntity(task.getSiteId());
                     exposeSite(map, site);
-                    result = generateStringByFile(getFullFileName(site, task.getFilePath()),
-                            getTemplateComponent().getTaskConfiguration(), map);
+                    String fulllPath = getFullFileName(site, task.getFilePath());
+                    result = generateStringByFile(fulllPath, getTemplateComponent().getTaskConfiguration(), map);
                 } catch (IOException | TemplateException e) {
                     result = e.getMessage();
                 }

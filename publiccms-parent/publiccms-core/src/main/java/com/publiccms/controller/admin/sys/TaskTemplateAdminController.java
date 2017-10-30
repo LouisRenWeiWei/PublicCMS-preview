@@ -3,9 +3,10 @@ package com.publiccms.controller.admin.sys;
 import static com.publiccms.common.tools.CommonUtils.getDate;
 import static com.publiccms.common.tools.CommonUtils.notEmpty;
 import static com.publiccms.common.tools.ControllerUtils.verifyCustom;
-import static com.publiccms.common.tools.FreeMarkerUtils.generateStringByString;
+import static com.publiccms.common.tools.FreeMarkerUtils.generateStringByFile;
 import static com.publiccms.common.tools.JsonUtils.getString;
 import static com.publiccms.common.tools.RequestUtils.getIpAddress;
+import static com.publiccms.logic.component.site.SiteComponent.getFullFileName;
 import static com.publiccms.common.base.AbstractFreemarkerView.exposeAttribute;
 
 import java.io.File;
@@ -77,20 +78,21 @@ public class TaskTemplateAdminController extends AbstractController {
     }
 
     /**
-     * @param template
+     * @param filePath
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("runTask")
-    public String runTask(String template, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String runTask(String filePath, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
-        model.addAttribute("template", template);
+        model.addAttribute("filePath", filePath);
         try {
-            Map<String,Object> map = new HashMap<>();
+            String fulllPath = getFullFileName(site, filePath);
+            Map<String, Object> map = new HashMap<>();
             exposeAttribute(map, request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath());
-            model.addAttribute("result", generateStringByString(template, templateComponent.getTaskConfiguration(), map));
+            model.addAttribute("result", generateStringByFile(fulllPath, templateComponent.getTaskConfiguration(), map));
         } catch (IOException | TemplateException e) {
             model.addAttribute(ERROR, e.getMessage());
             log.error(e.getMessage(), e);
