@@ -3,7 +3,7 @@
 <table class="list nowrap itemDetail" addButton="新增扩展字段" width="100%">
 	<thead>
 		<tr>
-			<th type="text" name="${name}[#index#].id.code" size="10" fieldClass="required alphanumeric">字段名</th>
+			<th type="text" name="${name}[#index#].id.code" size="10" fieldClass="required letterstart">字段名</th>
 			<th type="enum" name="${name}[#index#].inputType" enumUrl="common/extendsFieldType.html" fieldClass="required" size="10" width="100">字段类型</th>
 			<th type="text" name="${name}[#index#].name" size="10" fieldClass="required" fieldAttrs="{maxlength:20}">名称</th>
 			<th type="checkbox" name="${name}[#index#].required" size="10">必填</th>
@@ -18,7 +18,7 @@
 			<tr>
 				<td>
 					<input type="hidden" name="${name}[${extend?index}].id.extendId" value="${(extend.id.extendId)!}"/>
-					<input type="text" name="${name}[${extend?index}].id.code" value="${extend.id.code}" size="10" class="required alphanumeric"/>
+					<input type="text" name="${name}[${extend?index}].id.code" value="${extend.id.code}" size="10" class="required letterstart"/>
 				</td>
 				<td>
 					<@extendsFieldType name+'['+extend?index+'].inputType' extend.inputType/>

@@ -13,14 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.publliccms.common.base.AbstractController;
+import com.publiccms.common.base.AbstractController;
 
 <#include "../include_imports/entity.ftl">
 
 <#include "../include_imports/service.ftl">
-import org.publliccms.entities.sys.SysSite;
-import org.publliccms.entities.log.LogOperate;
-import org.publliccms.logic.service.log.LogLoginService;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.log.LogOperate;
+import com.publiccms.logic.service.log.LogLoginService;
 
 /**
  *

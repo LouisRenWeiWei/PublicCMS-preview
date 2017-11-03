@@ -218,7 +218,10 @@ $('input[name=onlyUrl]',navTab.getCurrentPanel()).click();
 	</@_sysExtendFieldList>
 </#if>
 <#include "../include_page/extends.html"/>
-			<@extends 'contentExtends' contentExtendList![]/>
+				<fieldset>
+	                <legend>内容扩展字段(以下字段名无效:source,sourceUrl,text)</legend>
+	                <@extends 'contentExtends' contentExtendList![]/>
+	            </fieldset>
 			</div>
 		</div>
 	</div>

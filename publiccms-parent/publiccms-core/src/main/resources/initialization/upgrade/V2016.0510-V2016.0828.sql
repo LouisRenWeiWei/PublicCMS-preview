@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS `log_upload` (
   `id` bigint(20) NOT NULL auto_increment,
   `site_id` int(11) NOT NULL COMMENT '站点ID',
   `user_id` int(11) NOT NULL COMMENT '用户ID',
-  `channel` varchar(50) NOT NULL COMMENT '操作取到',
+  `channel` varchar(50) NOT NULL COMMENT '操作渠道',
   `image` tinyint(1) NOT NULL COMMENT '图片',
   `ip` varchar(64) default NULL COMMENT 'IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',

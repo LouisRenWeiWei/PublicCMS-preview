@@ -22,8 +22,9 @@
 		max: $.validator.format("请输入一个最大为 {0} 的值"),
 		min: $.validator.format("请输入一个最小为 {0} 的值"),
 
-		alphanumeric: "字母、数字、下划线",
+		alphanumeric: "必须是字母、数字、下划线",
 		lettersonly: "必须是字母",
+		letterstart: "必须是字母、数字、下划线,首字符必须是字母",
 		phone: "请输入合法的电话号码",
 		domain: "请输入合法的域名"
 	});

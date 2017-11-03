@@ -176,7 +176,7 @@
 					<dd>
 				<@_contentFileList contentId=a.id image=false>
 					<#list page.list as file>
-						<a href="${site.sitePath+(file.url)!}" target="_blank">${(file.url)!}</a>
+						<a href="${site.sitePath+(file.filePath)!}" target="_blank">${(file.filePath)!}</a>
 					</#list>
 				</@_contentFileList>
 					</dd>
