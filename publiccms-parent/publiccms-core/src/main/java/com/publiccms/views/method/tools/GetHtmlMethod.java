@@ -1,9 +1,5 @@
 package com.publiccms.views.method.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.TemplateModelUtils.converString;
-import static org.apache.http.util.EntityUtils.consume;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +18,8 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.TemplateModelUtils;
 
 import freemarker.template.TemplateHashModelEx;
 import freemarker.template.TemplateModelException;
@@ -42,17 +40,17 @@ public class GetHtmlMethod extends BaseMethod {
         TemplateHashModelEx paramters = getMap(1, arguments);
         String body = getString(1, arguments);
         String html = null;
-        if (notEmpty(url)) {
+        if (CommonUtils.notEmpty(url)) {
             try (CloseableHttpClient httpclient = HttpClients.createDefault();) {
                 HttpUriRequest request;
-                if (null != paramters || notEmpty(body)) {
+                if (null != paramters || CommonUtils.notEmpty(body)) {
                     HttpPost httppost = new HttpPost(url);
                     if (null != paramters) {
                         List<NameValuePair> nvps = new ArrayList<>();
                         TemplateModelIterator it = paramters.keys().iterator();
                         while (it.hasNext()) {
-                            String key = converString(it.next());
-                            nvps.add(new BasicNameValuePair(key, converString(paramters.get(key))));
+                            String key = TemplateModelUtils.converString(it.next());
+                            nvps.add(new BasicNameValuePair(key, TemplateModelUtils.converString(paramters.get(key))));
                         }
                         httppost.setEntity(new UrlEncodedFormEntity(nvps, DEFAULT_CHARSET));
                     } else {
@@ -66,7 +64,7 @@ public class GetHtmlMethod extends BaseMethod {
                     HttpEntity entity = response.getEntity();
                     if (null != entity) {
                         html = EntityUtils.toString(entity, DEFAULT_CHARSET);
-                        consume(entity);
+                        EntityUtils.consume(entity);
                     }
                 }
             } catch (Exception e) {

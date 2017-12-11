@@ -1,9 +1,5 @@
 package com.publiccms.common.tools;
 
-import static com.publiccms.common.tools.VerificationUtils.base64Decode;
-import static com.publiccms.common.tools.VerificationUtils.decrypt;
-import static com.publiccms.common.constants.CommonConstants.ENCRYPT_KEY;
-
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.sql.Connection;
@@ -11,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.database.CmsDataSource;
 
 /**
@@ -37,7 +34,7 @@ public class DatabaseUtils {
         String password = dbconfigProperties.getProperty("jdbc.password");
         String encryptPassword = dbconfigProperties.getProperty("jdbc.encryptPassword");
         if (null != encryptPassword) {
-            password = decrypt(base64Decode(encryptPassword), ENCRYPT_KEY);
+            password = VerificationUtils.decrypt(VerificationUtils.base64Decode(encryptPassword), CommonConstants.ENCRYPT_KEY);
         }
         return getConnection(driverClassName, url, userName, password);
     }

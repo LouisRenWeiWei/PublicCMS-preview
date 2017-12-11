@@ -1,14 +1,12 @@
 package com.publiccms.logic.dao.cms;
 
-//Generated 2016-3-3 17:43:34 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
-import com.publiccms.entities.cms.CmsVoteItem;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsVoteItem;
 
 /**
  *
@@ -29,7 +27,7 @@ public class CmsVoteItemDao extends BaseDao<CmsVoteItem> {
     public PageHandler getPage(Integer voteId, 
                 String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsVoteItem bean");
-        if (notEmpty(voteId)) {
+        if (CommonUtils.notEmpty(voteId)) {
             queryHandler.condition("bean.voteId = :voteId").setParameter("voteId", voteId);
         }
         if(!ORDERTYPE_ASC.equalsIgnoreCase(orderType)){

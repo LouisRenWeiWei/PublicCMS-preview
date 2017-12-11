@@ -1,19 +1,18 @@
 package com.publiccms.common.base;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.api.Config.CONFIG_CODE_SITEA_TTRIBUTE;
-import static com.publiccms.logic.component.BeanComponent.getConfigComponent;
-import static com.publiccms.logic.component.BeanComponent.getSiteComponent;
-
 import java.util.Enumeration;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
+
+import com.publiccms.common.api.Config;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.view.MultiSiteImportDirective;
 import com.publiccms.common.view.MultiSiteIncludeDirective;
 import com.publiccms.entities.sys.SysSite;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
+import com.publiccms.logic.component.BeanComponent;
 
 /**
  * 
@@ -70,8 +69,8 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
                     .append(contextPath).toString());
         }
 
-        model.put(CONTEXT_DOMAIN, getSiteComponent().getDomain(serverName));
-        exposeSite(model, getSiteComponent().getSite(serverName));
+        model.put(CONTEXT_DOMAIN, BeanComponent.getSiteComponent().getDomain(serverName));
+        exposeSite(model, BeanComponent.getSiteComponent().getSite(serverName));
     }
 
     /**
@@ -80,7 +79,8 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
      */
     public static void exposeSite(Map<String, Object> model, SysSite site) {
         model.put(CONTEXT_SITE, site);
-        model.put(CONTEXT_SITE_ATTRIBUTE, getConfigComponent().getConfigData(site.getId(), CONFIG_CODE_SITEA_TTRIBUTE));
+        model.put(CONTEXT_SITE_ATTRIBUTE,
+                BeanComponent.getConfigComponent().getConfigData(site.getId(), Config.CONFIG_CODE_SITEA_TTRIBUTE));
         model.put(CONTEXT_INCLUDE, new MultiSiteIncludeDirective(site));
         model.put(CONTEXT_IMPORT, new MultiSiteImportDirective(site));
     }
@@ -90,7 +90,7 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
         while (parameters.hasMoreElements()) {
             String paramterName = parameters.nextElement();
             String[] values = request.getParameterValues(paramterName);
-            if (notEmpty(values)) {
+            if (CommonUtils.notEmpty(values)) {
                 if (1 < values.length) {
                     model.put(paramterName, values);
                 } else {

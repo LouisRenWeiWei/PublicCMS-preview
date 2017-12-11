@@ -1,12 +1,12 @@
 package com.publiccms.common.view;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.TemplateModelUtils.converString;
-import static com.publiccms.logic.component.site.SiteComponent.getFullFileName;
 
 import java.io.IOException;
 import java.util.Map;
 
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.TemplateModelUtils;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.SiteComponent;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
@@ -34,11 +34,11 @@ public class MultiSiteImportDirective implements TemplateDirectiveModel {
     public void execute(Environment environment, @SuppressWarnings("rawtypes") Map parameters, TemplateModel[] loopVars,
             TemplateDirectiveBody templateDirectiveBody) throws TemplateException, IOException {
         @SuppressWarnings("unchecked")
-        String path = converString(((Map<String, TemplateModel>) parameters).get("path"));
+        String path = TemplateModelUtils.converString(((Map<String, TemplateModel>) parameters).get("path"));
         @SuppressWarnings("unchecked")
-        String namespace = converString(((Map<String, TemplateModel>) parameters).get("namespace"));
-        if (notEmpty(path) && notEmpty(namespace) && null != environment) {
-            environment.importLib(getFullFileName(site, path), namespace);
+        String namespace = TemplateModelUtils.converString(((Map<String, TemplateModel>) parameters).get("namespace"));
+        if (CommonUtils.notEmpty(path) && CommonUtils.notEmpty(namespace) && null != environment) {
+            environment.importLib(SiteComponent.getFullFileName(site, path), namespace);
         }
     }
 }

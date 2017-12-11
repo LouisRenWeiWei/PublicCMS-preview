@@ -1,14 +1,7 @@
 package com.publiccms.logic.service.cms;
 
-// Generated 2015-5-8 16:50:23 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.Serializable;
 import java.util.List;
-
-import com.publiccms.entities.cms.CmsCategory;
-import com.publiccms.logic.dao.cms.CmsCategoryDao;
-import com.publiccms.views.pojo.query.CmsCategoryQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsCategory;
+import com.publiccms.logic.dao.cms.CmsCategoryDao;
+import com.publiccms.views.pojo.query.CmsCategoryQuery;
 
 /**
  *
@@ -47,7 +44,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
             if (null != parent) {
                 addChildIds(parent.getParentId(), id);
                 String childIds;
-                if (notEmpty(parent.getChildIds())) {
+                if (CommonUtils.notEmpty(parent.getChildIds())) {
                     childIds = parent.getChildIds() + COMMA_DELIMITED + String.valueOf(id);
                 } else {
                     childIds = String.valueOf(id);
@@ -78,7 +75,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                 childIds.append(category.getId());
                 childIds.append(COMMA_DELIMITED);
                 String childChildIds = getChildIds(siteId, category.getId());
-                if (notEmpty(childChildIds)) {
+                if (CommonUtils.notEmpty(childChildIds)) {
                     childIds.append(childChildIds);
                     childIds.append(COMMA_DELIMITED);
                 }

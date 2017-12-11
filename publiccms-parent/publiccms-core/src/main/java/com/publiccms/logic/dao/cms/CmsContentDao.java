@@ -1,9 +1,5 @@
 package com.publiccms.logic.dao.cms;
 
-import static com.publiccms.common.tools.CommonUtils.empty;
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -15,15 +11,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.search.FullTextQuery;
-import com.publiccms.entities.cms.CmsContent;
-import com.publiccms.views.pojo.query.CmsContentQuery;
-
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.views.pojo.query.CmsContentQuery;
 
 /**
  *
@@ -49,7 +45,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     public PageHandler query(Integer siteId, String text, String tagId, Date startPublishDate, Date endPublishDate,
             Integer pageIndex, Integer pageSize) {
         FullTextQuery query;
-        if (notEmpty(tagId)) {
+        if (CommonUtils.notEmpty(tagId)) {
             query = getQuery(tagFields, tagId);
         } else {
             query = getQuery(textFields, text);
@@ -76,7 +72,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     public FacetPageHandler facetQuery(Integer siteId, String[] categoryIds, String[] modelIds, String[] userIds, String text,
             String tagId, Date startPublishDate, Date endPublishDate, Integer pageIndex, Integer pageSize) {
         FullTextQuery query;
-        if (notEmpty(tagId)) {
+        if (CommonUtils.notEmpty(tagId)) {
             query = getFacetQuery(tagFields, facetFields, tagId, 10);
         } else {
             query = getFacetQuery(textFields, facetFields, text, 10);
@@ -85,13 +81,13 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                 .setParameter("endPublishDate", endPublishDate);
         query.enableFullTextFilter("siteId").setParameter("siteId", siteId);
         Map<String, List<String>> valueMap = new HashMap<>();
-        if (notEmpty(categoryIds)) {
+        if (CommonUtils.notEmpty(categoryIds)) {
             valueMap.put("categoryId", Arrays.asList(categoryIds));
         }
-        if (notEmpty(modelIds)) {
+        if (CommonUtils.notEmpty(modelIds)) {
             valueMap.put("modelId", Arrays.asList(modelIds));
         }
-        if (notEmpty(userIds)) {
+        if (CommonUtils.notEmpty(userIds)) {
             valueMap.put("userId", Arrays.asList(userIds));
         }
         return getFacetPage(query, facetFields, valueMap, pageIndex, pageSize);
@@ -103,7 +99,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @return number of data deleted
      */
     public int deleteByCategoryIds(int siteId, Integer[] categoryIds) {
-        if (notEmpty(categoryIds)) {
+        if (CommonUtils.notEmpty(categoryIds)) {
             QueryHandler queryHandler = getQueryHandler("update CmsContent bean set bean.disabled = :disabled");
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
             queryHandler.condition("bean.categoryId in (:categoryIds)").setParameter("categoryIds", categoryIds)
@@ -136,25 +132,25 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     public PageHandler getPage(CmsContentQuery queryEntitry, String orderField, String orderType, Integer pageIndex,
             Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
-        if (notEmpty(queryEntitry.getSiteId())) {
+        if (CommonUtils.notEmpty(queryEntitry.getSiteId())) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", queryEntitry.getSiteId());
         }
-        if (notEmpty(queryEntitry.getStatus())) {
+        if (CommonUtils.notEmpty(queryEntitry.getStatus())) {
             queryHandler.condition("bean.status in (:status)").setParameter("status", queryEntitry.getStatus());
         }
-        if (notEmpty(queryEntitry.getCategoryIds())) {
+        if (CommonUtils.notEmpty(queryEntitry.getCategoryIds())) {
             queryHandler.condition("bean.categoryId in (:categoryIds)").setParameter("categoryIds",
                     queryEntitry.getCategoryIds());
-        } else if (notEmpty(queryEntitry.getCategoryId())) {
+        } else if (CommonUtils.notEmpty(queryEntitry.getCategoryId())) {
             queryHandler.condition("bean.categoryId = :categoryId").setParameter("categoryId", queryEntitry.getCategoryId());
         }
         if (null != queryEntitry.getDisabled()) {
             queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", queryEntitry.getDisabled());
         }
-        if (notEmpty(queryEntitry.getModelIds())) {
+        if (CommonUtils.notEmpty(queryEntitry.getModelIds())) {
             queryHandler.condition("bean.modelId in (:modelIds)").setParameter("modelIds", queryEntitry.getModelIds());
         }
-        if (notEmpty(queryEntitry.getParentId())) {
+        if (CommonUtils.notEmpty(queryEntitry.getParentId())) {
             queryHandler.condition("bean.parentId = :parentId").setParameter("parentId", queryEntitry.getParentId());
         } else if (null != queryEntitry.getEmptyParent() && queryEntitry.getEmptyParent()) {
             queryHandler.condition("bean.parentId is null");
@@ -168,10 +164,10 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (null != queryEntitry.getHasFiles()) {
             queryHandler.condition("bean.hasFiles = :hasFiles").setParameter("hasFiles", queryEntitry.getHasFiles());
         }
-        if (notEmpty(queryEntitry.getTitle())) {
+        if (CommonUtils.notEmpty(queryEntitry.getTitle())) {
             queryHandler.condition("(bean.title like :title)").setParameter("title", like(queryEntitry.getTitle()));
         }
-        if (notEmpty(queryEntitry.getUserId())) {
+        if (CommonUtils.notEmpty(queryEntitry.getUserId())) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", queryEntitry.getUserId());
         }
         if (null != queryEntitry.getStartPublishDate()) {
@@ -220,18 +216,18 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     @Override
     protected CmsContent init(CmsContent entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(getDate());
+            entity.setCreateDate(CommonUtils.getDate());
         }
         if (null == entity.getPublishDate()) {
-            entity.setPublishDate(getDate());
+            entity.setPublishDate(CommonUtils.getDate());
         }
-        if (empty(entity.getTagIds())) {
+        if (CommonUtils.empty(entity.getTagIds())) {
             entity.setTagIds(null);
         }
-        if (empty(entity.getAuthor())) {
+        if (CommonUtils.empty(entity.getAuthor())) {
             entity.setAuthor(null);
         }
-        if (empty(entity.getCover())) {
+        if (CommonUtils.empty(entity.getCover())) {
             entity.setCover(null);
         }
         return entity;

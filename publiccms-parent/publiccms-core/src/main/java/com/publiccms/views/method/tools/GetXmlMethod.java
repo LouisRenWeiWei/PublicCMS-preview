@@ -1,7 +1,5 @@
 package com.publiccms.views.method.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
@@ -13,6 +11,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.publiccms.common.base.BaseMethod;
+import com.publiccms.common.tools.CommonUtils;
 
 import freemarker.ext.dom.NodeModel;
 import freemarker.template.TemplateModelException;
@@ -29,7 +28,7 @@ public class GetXmlMethod extends BaseMethod {
     @Override
     public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
         String str = getString(0, arguments);
-        if (notEmpty(str)) {
+        if (CommonUtils.notEmpty(str)) {
             InputSource is = new InputSource(new StringReader(str));
             try {
                 return NodeModel.parse(is);

@@ -1,21 +1,20 @@
 package com.publiccms.logic.component.site;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PreDestroy;
 
-import com.publiccms.common.constants.CmsVersion;
-import com.publiccms.entities.sys.SysCluster;
-import com.publiccms.logic.component.task.ScheduledTask;
-import com.publiccms.logic.service.sys.SysClusterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysCluster;
+import com.publiccms.logic.component.task.ScheduledTask;
+import com.publiccms.logic.service.sys.SysClusterService;
 
 /**
  *
@@ -47,7 +46,7 @@ public class ClusterComponent {
     public void heartbeat() {
         if (CmsVersion.isInitialized()) {
             SysCluster entity = service.getEntity(CmsVersion.getClusterId());
-            Date now = getDate();
+            Date now = CommonUtils.getDate();
             Date lastHeartbeatDate = null;
             if (null == entity) {
                 entity = new SysCluster(CmsVersion.getClusterId(), now, now, false, CmsVersion.getVersion());

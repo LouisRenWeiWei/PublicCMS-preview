@@ -1,8 +1,5 @@
 package com.publiccms.common.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.VerificationUtils.base64Encode;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -35,7 +32,7 @@ public class ImageUtils implements Base {
         byteArrayOutputStream.close();
         StringBuilder sb = new StringBuilder();
         sb.append("data:image/png;base64,");
-        sb.append(base64Encode(byteArrayOutputStream.toByteArray()));
+        sb.append(VerificationUtils.base64Encode(byteArrayOutputStream.toByteArray()));
         return sb.toString();
     }
 
@@ -51,7 +48,7 @@ public class ImageUtils implements Base {
         Graphics g = bufferedImage.getGraphics();
         g.setColor(getRandColor(210, 255));
         g.fillRect(0, 0, width, height);
-        if (notEmpty(text)) {
+        if (CommonUtils.notEmpty(text)) {
             int fontWidth = width / text.length();
             int fontSize = fontWidth >= height ? height - 1 : fontWidth;
             Font font1 = getFont(fontSize);

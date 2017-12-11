@@ -1,17 +1,16 @@
 package com.publiccms.views.method.cms;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.ExtendUtils.getExtendMap;
-
 import java.util.List;
 import java.util.Map;
 
-import com.publiccms.entities.cms.CmsCategoryAttribute;
-import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ExtendUtils;
+import com.publiccms.entities.cms.CmsCategoryAttribute;
+import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
 
 import freemarker.template.TemplateModelException;
 
@@ -27,10 +26,10 @@ public class GetCategoryAttributeMethod extends BaseMethod {
     @Override
     public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
         Integer id = getInteger(0, arguments);
-        if (notEmpty(id)) {
+        if (CommonUtils.notEmpty(id)) {
             CmsCategoryAttribute entity = service.getEntity(id);
             if (null != entity) {
-                Map<String, String> map = getExtendMap(entity.getData());
+                Map<String, String> map = ExtendUtils.getExtendMap(entity.getData());
                 map.put("title", entity.getTitle());
                 map.put("keywords", entity.getKeywords());
                 map.put("description", entity.getDescription());
@@ -39,12 +38,12 @@ public class GetCategoryAttributeMethod extends BaseMethod {
         }
         return null;
     }
-    
+
     @Override
     public boolean needAppToken() {
         return false;
     }
-    
+
     @Override
     public int minParamtersNumber() {
         return 1;

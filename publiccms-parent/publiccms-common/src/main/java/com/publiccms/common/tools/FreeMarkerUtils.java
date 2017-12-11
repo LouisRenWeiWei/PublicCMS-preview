@@ -1,7 +1,5 @@
 package com.publiccms.common.tools;
 
-import static org.apache.commons.logging.LogFactory.getLog;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.publiccms.common.base.Base;
 
@@ -30,7 +29,7 @@ import freemarker.template.TemplateNotFoundException;
  * 
  */
 public class FreeMarkerUtils implements Base {
-    private final static Log log = getLog(FreeMarkerUtils.class);
+    private final static Log log = LogFactory.getLog(FreeMarkerUtils.class);
 
     /**
      * @param templateFilePath

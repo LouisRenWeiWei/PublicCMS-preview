@@ -1,23 +1,5 @@
 package com.publiccms.controller.web;
 
-import static com.publiccms.common.tools.CommonUtils.empty;
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.ControllerUtils.verifyHasExist;
-import static com.publiccms.common.tools.ControllerUtils.verifyNotEmpty;
-import static com.publiccms.common.tools.ControllerUtils.verifyNotEquals;
-import static com.publiccms.common.tools.ControllerUtils.verifyNotExist;
-import static com.publiccms.common.tools.RequestUtils.addCookie;
-import static com.publiccms.common.tools.RequestUtils.getCookie;
-import static com.publiccms.common.tools.RequestUtils.getIpAddress;
-import static com.publiccms.common.tools.VerificationUtils.md5Encode;
-import static org.apache.commons.lang3.StringUtils.trim;
-import static com.publiccms.common.api.Config.CONFIG_CODE_SITE;
-import static com.publiccms.common.constants.CommonConstants.getCookiesUser;
-import static com.publiccms.common.constants.CommonConstants.getCookiesUserSplit;
-import static com.publiccms.logic.component.config.LoginConfigComponent.CONFIG_LOGIN_PATH;
-import static com.publiccms.logic.service.log.LogLoginService.CHANNEL_WEB;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
@@ -28,21 +10,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.publiccms.common.base.AbstractController;
-import com.publiccms.entities.log.LogLogin;
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.entities.sys.SysUser;
-import com.publiccms.entities.sys.SysUserToken;
-import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.logic.service.sys.SysUserService;
-import com.publiccms.logic.service.sys.SysUserTokenService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.publiccms.common.api.Config;
+import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.common.tools.VerificationUtils;
+import com.publiccms.entities.log.LogLogin;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.sys.SysUser;
+import com.publiccms.entities.sys.SysUserToken;
+import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.sys.SysUserService;
+import com.publiccms.logic.service.sys.SysUserTokenService;
 
 /**
  *
@@ -73,17 +64,18 @@ public class LoginController extends AbstractController {
     public String login(String username, String password, String returnUrl, HttpServletRequest request,
             HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
-        if (empty(returnUrl)) {
+        if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
         }
-        Map<String, String> config = configComponent.getConfigData(site.getId(), CONFIG_CODE_SITE);
-        String loginPath = config.get(CONFIG_LOGIN_PATH);
-        if (empty(loginPath)) {
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String loginPath = config.get(LoginConfigComponent.CONFIG_LOGIN_PATH);
+        if (CommonUtils.empty(loginPath)) {
             loginPath = site.getDynamicPath();
         }
-        username = trim(username);
-        password = trim(password);
-        if (verifyNotEmpty("username", username, model) || verifyNotEmpty("password", password, model)) {
+        username = StringUtils.trim(username);
+        password = StringUtils.trim(password);
+        if (ControllerUtils.verifyNotEmpty("username", username, model)
+                || ControllerUtils.verifyNotEmpty("password", password, model)) {
             return REDIRECT + loginPath;
         } else {
             SysUser user;
@@ -92,24 +84,26 @@ public class LoginController extends AbstractController {
             } else {
                 user = service.findByEmail(site.getId(), username);
             }
-            String ip = getIpAddress(request);
-            if (verifyNotExist("username", user, model)
-                    || verifyNotEquals("password", md5Encode(password), user.getPassword(), model)
-                    || verifyNotEnablie(user, model)) {
+            String ip = RequestUtils.getIpAddress(request);
+            if (ControllerUtils.verifyNotExist("username", user, model) || ControllerUtils.verifyNotEquals("password",
+                    VerificationUtils.md5Encode(password), user.getPassword(), model) || verifyNotEnablie(user, model)) {
                 Long userId = null;
                 if (null != user) {
                     userId = user.getId();
                 }
-                logLoginService.save(new LogLogin(site.getId(), username, userId, ip, CHANNEL_WEB, false, getDate(), password));
+                logLoginService.save(new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB, false,
+                        CommonUtils.getDate(), password));
                 return REDIRECT + loginPath;
             } else {
                 user.setPassword(null);
                 setUserToSession(request.getSession(), user);
                 String authToken = UUID.randomUUID().toString();
                 addLoginStatus(user, authToken, request, response);
-                sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), CHANNEL_WEB, getDate(), ip));
+                sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB,
+                        CommonUtils.getDate(), ip));
                 service.updateLoginStatus(user.getId(), ip);
-                logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, CHANNEL_WEB, true, getDate(), null));
+                logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB, true,
+                        CommonUtils.getDate(), null));
                 return REDIRECT + returnUrl;
             }
         }
@@ -141,8 +135,8 @@ public class LoginController extends AbstractController {
      * @param entity
      * @param repassword
      * @param returnUrl
-     * @param channel 
-     * @param openId 
+     * @param channel
+     * @param openId
      * @param request
      * @param response
      * @param model
@@ -152,27 +146,29 @@ public class LoginController extends AbstractController {
     public String register(SysUser entity, String repassword, String returnUrl, String channel, String openId,
             HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
-        if (empty(returnUrl)) {
+        if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
         }
-        entity.setName(trim(entity.getName()));
-        entity.setNickName(trim(entity.getNickName()));
-        entity.setPassword(trim(entity.getPassword()));
-        repassword = trim(repassword);
+        entity.setName(StringUtils.trim(entity.getName()));
+        entity.setNickName(StringUtils.trim(entity.getNickName()));
+        entity.setPassword(StringUtils.trim(entity.getPassword()));
+        repassword = StringUtils.trim(repassword);
 
-        if (verifyNotEmpty("username", entity.getName(), model) || verifyNotEmpty("nickname", entity.getNickName(), model)
-                || verifyNotEmpty("password", entity.getPassword(), model)
+        if (ControllerUtils.verifyNotEmpty("username", entity.getName(), model)
+                || ControllerUtils.verifyNotEmpty("nickname", entity.getNickName(), model)
+                || ControllerUtils.verifyNotEmpty("password", entity.getPassword(), model)
                 || verifyNotUserName("username", entity.getName(), model)
                 || verifyNotNickName("nickname", entity.getNickName(), model)
-                || verifyNotEquals("repassword", entity.getPassword(), repassword, model)
-                || verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model)
-                || verifyHasExist("nickname", service.findByNickName(site.getId(), entity.getNickName()), model)) {
+                || ControllerUtils.verifyNotEquals("repassword", entity.getPassword(), repassword, model)
+                || ControllerUtils.verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model)
+                || ControllerUtils.verifyHasExist("nickname", service.findByNickName(site.getId(), entity.getNickName()),
+                        model)) {
             model.addAttribute("name", entity.getName());
             model.addAttribute("nickname", entity.getNickName());
             return REDIRECT + returnUrl;
         } else {
-            String ip = getIpAddress(request);
-            entity.setPassword(md5Encode(entity.getPassword()));
+            String ip = RequestUtils.getIpAddress(request);
+            entity.setPassword(VerificationUtils.md5Encode(entity.getPassword()));
             entity.setLastLoginIp(ip);
             entity.setSiteId(site.getId());
             service.save(entity);
@@ -180,11 +176,13 @@ public class LoginController extends AbstractController {
             setUserToSession(request.getSession(), entity);
             String authToken = UUID.randomUUID().toString();
             addLoginStatus(entity, authToken, request, response);
-            sysUserTokenService.save(new SysUserToken(authToken, site.getId(), entity.getId(), CHANNEL_WEB, getDate(), ip));
+            sysUserTokenService.save(new SysUserToken(authToken, site.getId(), entity.getId(), LogLoginService.CHANNEL_WEB,
+                    CommonUtils.getDate(), ip));
             if (null != channel && null != openId) {
                 String oauthToken = new StringBuilder(channel).append(DOT).append(site.getId()).append(DOT).append(openId)
                         .toString();
-                sysUserTokenService.save(new SysUserToken(oauthToken, site.getId(), entity.getId(), channel, getDate(), ip));
+                sysUserTokenService
+                        .save(new SysUserToken(oauthToken, site.getId(), entity.getId(), channel, CommonUtils.getDate(), ip));
             }
             return REDIRECT + returnUrl;
         }
@@ -197,11 +195,11 @@ public class LoginController extends AbstractController {
      */
     @RequestMapping(value = "doLogout", method = RequestMethod.POST)
     public void logout(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
-        Cookie userCookie = getCookie(request.getCookies(), getCookiesUser());
-        if (null != userCookie && notEmpty(userCookie.getValue())) {
+        Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
+        if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
             String value = userCookie.getValue();
             if (null != value) {
-                String[] userData = value.split(getCookiesUserSplit());
+                String[] userData = value.split(CommonConstants.getCookiesUserSplit());
                 if (userData.length > 1) {
                     sysUserTokenService.delete(userData[1]);
                 }
@@ -213,10 +211,12 @@ public class LoginController extends AbstractController {
     private void addLoginStatus(SysUser user, String authToken, HttpServletRequest request, HttpServletResponse response) {
         try {
             StringBuilder sb = new StringBuilder();
-            sb.append(user.getId()).append(getCookiesUserSplit()).append(authToken).append(getCookiesUserSplit())
-                    .append(user.isSuperuserAccess()).append(getCookiesUserSplit())
+            sb.append(user.getId()).append(CommonConstants.getCookiesUserSplit()).append(authToken)
+                    .append(CommonConstants.getCookiesUserSplit()).append(user.isSuperuserAccess())
+                    .append(CommonConstants.getCookiesUserSplit())
                     .append(URLEncoder.encode(user.getNickName(), DEFAULT_CHARSET_NAME));
-            addCookie(request.getContextPath(), response, getCookiesUser(), sb.toString(), Integer.MAX_VALUE, null);
+            RequestUtils.addCookie(request.getContextPath(), response, CommonConstants.getCookiesUser(), sb.toString(),
+                    Integer.MAX_VALUE, null);
         } catch (UnsupportedEncodingException e) {
             log.error(e.getMessage(), e);
         }

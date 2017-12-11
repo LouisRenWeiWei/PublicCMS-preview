@@ -1,14 +1,12 @@
 package com.publiccms.logic.dao.home;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
-import com.publiccms.entities.home.HomeFile;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.home.HomeFile;
 
 /**
  *
@@ -35,19 +33,19 @@ public class HomeFileDao extends BaseDao<HomeFile> {
     public PageHandler getPage(Integer siteId, Long userId, Long directoryId, String title, String filePath, Boolean image,
             Boolean disabled, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from HomeFile bean");
-        if (notEmpty(siteId)) {
+        if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
-        if (notEmpty(userId)) {
+        if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
-        if (notEmpty(directoryId)) {
+        if (CommonUtils.notEmpty(directoryId)) {
             queryHandler.condition("bean.directoryId = :directoryId").setParameter("directoryId", directoryId);
         }
-        if (notEmpty(title)) {
+        if (CommonUtils.notEmpty(title)) {
             queryHandler.condition("bean.title like :title").setParameter("title", like(title));
         }
-        if (notEmpty(filePath)) {
+        if (CommonUtils.notEmpty(filePath)) {
             queryHandler.condition("bean.filePath = :filePath").setParameter("filePath", filePath);
         }
         if (null != image) {
@@ -84,7 +82,7 @@ public class HomeFileDao extends BaseDao<HomeFile> {
     @Override
     protected HomeFile init(HomeFile entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(getDate());
+            entity.setCreateDate(CommonUtils.getDate());
         }
         return entity;
     }

@@ -9,6 +9,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
@@ -17,6 +19,7 @@ import com.publiccms.common.generator.annotation.GeneratorColumn;
  */
 @Entity
 @Table(name = "home_user")
+@DynamicUpdate
 public class HomeUser implements java.io.Serializable {
 
     /**

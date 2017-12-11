@@ -1,29 +1,13 @@
 package com.publiccms.controller.web;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.RequestUtils.getEncodePath;
-import static org.apache.commons.lang3.ArrayUtils.contains;
-import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
-import static org.apache.commons.lang3.StringUtils.split;
-import static com.publiccms.common.api.Config.CONFIG_CODE_SITE;
-import static com.publiccms.common.constants.CommonConstants.getDefaultPage;
-import static com.publiccms.common.constants.CommonConstants.getDefaultSubfix;
-import static com.publiccms.logic.component.config.LoginConfigComponent.CONFIG_LOGIN_PATH;
-
 import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.publiccms.common.base.AbstractController;
-import com.publiccms.entities.sys.SysDomain;
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.template.MetadataComponent;
-import com.publiccms.logic.component.template.TemplateCacheComponent;
-import com.publiccms.views.pojo.entities.CmsPageMetadata;
-
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -31,6 +15,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.UrlPathHelper;
+
+import com.publiccms.common.api.Config;
+import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.entities.sys.SysDomain;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.template.MetadataComponent;
+import com.publiccms.logic.component.template.TemplateCacheComponent;
+import com.publiccms.views.pojo.entities.CmsPageMetadata;
 
 /**
  * 
@@ -62,7 +59,7 @@ public class IndexController extends AbstractController {
             HttpServletResponse response, ModelMap model) {
         return restPage(id, null, body, request, response, model);
     }
-    
+
     /**
      * REST页面请求统一分发
      * 
@@ -81,9 +78,9 @@ public class IndexController extends AbstractController {
         String requestPath = urlPathHelper.getLookupPathForRequest(request);
         if (requestPath.endsWith(SEPARATOR)) {
             requestPath = requestPath.substring(0, requestPath.lastIndexOf(SEPARATOR, requestPath.length() - 2))
-                    + getDefaultSubfix();
+                    + CommonConstants.getDefaultSubfix();
         } else {
-            requestPath = requestPath.substring(0, requestPath.lastIndexOf(SEPARATOR)) + getDefaultSubfix();
+            requestPath = requestPath.substring(0, requestPath.lastIndexOf(SEPARATOR)) + CommonConstants.getDefaultSubfix();
         }
         return getViewName(id, pageIndex, requestPath, body, request, response, model);
     }
@@ -102,7 +99,7 @@ public class IndexController extends AbstractController {
             ModelMap model) {
         String requestPath = urlPathHelper.getLookupPathForRequest(request);
         if (requestPath.endsWith(SEPARATOR)) {
-            requestPath += getDefaultPage();
+            requestPath += CommonConstants.getDefaultPage();
         }
         return getViewName(null, null, requestPath, body, request, response, model);
     }
@@ -117,21 +114,21 @@ public class IndexController extends AbstractController {
         if (null != metadata) {
             if (metadata.isUseDynamic()) {
                 if (metadata.isNeedLogin() && null == getUserFromSession(request.getSession())) {
-                    Map<String, String> config = configComponent.getConfigData(site.getId(), CONFIG_CODE_SITE);
-                    String loginPath = config.get(CONFIG_LOGIN_PATH);
+                    Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+                    String loginPath = config.get(LoginConfigComponent.CONFIG_LOGIN_PATH);
                     StringBuilder sb = new StringBuilder(REDIRECT);
-                    if (notEmpty(loginPath)) {
+                    if (CommonUtils.notEmpty(loginPath)) {
                         return sb.append(loginPath).append("?returnUrl=")
-                                .append(getEncodePath(requestPath, request.getQueryString())).toString();
+                                .append(RequestUtils.getEncodePath(requestPath, request.getQueryString())).toString();
                     } else {
                         return sb.append(site.getDynamicPath()).toString();
                     }
                 }
-                String[] acceptParamters = split(metadata.getAcceptParamters(), COMMA_DELIMITED);
+                String[] acceptParamters = StringUtils.split(metadata.getAcceptParamters(), COMMA_DELIMITED);
                 billingRequestParamtersToModel(request, acceptParamters, model);
-                if (null != id && contains(acceptParamters, "id")) {
+                if (null != id && ArrayUtils.contains(acceptParamters, "id")) {
                     model.addAttribute("id", id.toString());
-                    if (null != pageIndex && contains(acceptParamters, "pageIndex")) {
+                    if (null != pageIndex && ArrayUtils.contains(acceptParamters, "pageIndex")) {
                         model.addAttribute("pageIndex", pageIndex.toString());
                     }
                 }
@@ -139,19 +136,19 @@ public class IndexController extends AbstractController {
                 if (metadata.isNeedBody()) {
                     model.addAttribute("body", body);
                 }
-                if (notEmpty(metadata.getContentType())) {
+                if (CommonUtils.notEmpty(metadata.getContentType())) {
                     response.setContentType(metadata.getContentType());
                 }
-                if (notEmpty(metadata.getCacheTime()) && 0 < metadata.getCacheTime()) {
+                if (CommonUtils.notEmpty(metadata.getCacheTime()) && 0 < metadata.getCacheTime()) {
                     int cacheMillisTime = metadata.getCacheTime() * 1000;
                     String cacheControl = request.getHeader("Cache-Control");
                     String pragma = request.getHeader("Pragma");
-                    if (notEmpty(cacheControl) && "no-cache".equalsIgnoreCase(cacheControl)
-                            || notEmpty(pragma) && "no-cache".equalsIgnoreCase(pragma)) {
+                    if (CommonUtils.notEmpty(cacheControl) && "no-cache".equalsIgnoreCase(cacheControl)
+                            || CommonUtils.notEmpty(pragma) && "no-cache".equalsIgnoreCase(pragma)) {
                         cacheMillisTime = 0;
                     }
-                    return templateCacheComponent.getCachedPath(requestPath, fullRequestPath, cacheMillisTime,
-                            acceptParamters, request, model);
+                    return templateCacheComponent.getCachedPath(requestPath, fullRequestPath, cacheMillisTime, acceptParamters,
+                            request, model);
                 }
             } else {
                 try {
@@ -166,7 +163,7 @@ public class IndexController extends AbstractController {
     private void billingRequestParamtersToModel(HttpServletRequest request, String[] acceptParamters, ModelMap model) {
         for (String paramterName : acceptParamters) {
             String[] values = request.getParameterValues(paramterName);
-            if (isNotEmpty(values)) {
+            if (CommonUtils.notEmpty(values)) {
                 if (1 < values.length) {
                     model.addAttribute(paramterName, values);
                 } else {

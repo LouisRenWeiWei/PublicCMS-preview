@@ -1,22 +1,23 @@
 package com.publiccms.controller.admin.cms;
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.ControllerUtils.verifyNotEquals;
-import static com.publiccms.common.tools.JsonUtils.getString;
-import static com.publiccms.common.tools.RequestUtils.getIpAddress;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.JsonUtils;
+import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsWord;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsWordService;
 import com.publiccms.logic.service.log.LogLoginService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  *
@@ -41,19 +42,19 @@ public class CmsWordAdminController extends AbstractController {
         SysSite site = getSite(request);
         if (null != entity.getId()) {
             CmsWord oldEntity = service.getEntity(entity.getId());
-            if (null == oldEntity || verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+            if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {
                 logOperateService.save(new LogOperate(entity.getSiteId(), getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "update.word", getIpAddress(request), getDate(), getString(entity)));
+                        LogLoginService.CHANNEL_WEB_MANAGER, "update.word", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
             entity.setSiteId(site.getId());
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.word", getIpAddress(request), getDate(), getString(entity)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.word", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -70,12 +71,12 @@ public class CmsWordAdminController extends AbstractController {
         SysSite site = getSite(request);
         CmsWord entity = service.getEntity(id);
         if (null != entity) {
-            if (verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
             service.delete(id);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.word", getIpAddress(request), getDate(), getString(entity)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.word", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -92,12 +93,12 @@ public class CmsWordAdminController extends AbstractController {
         SysSite site = getSite(request);
         CmsWord entity = service.getEntity(id);
         if (null != entity) {
-            if (verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
             service.updateStatus(id, true);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "hidden.word", getIpAddress(request), getDate(), getString(entity)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "hidden.word", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -114,12 +115,12 @@ public class CmsWordAdminController extends AbstractController {
         SysSite site = getSite(request);
         CmsWord entity = service.getEntity(id);
         if (null != entity) {
-            if (verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
             service.updateStatus(id, false);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "show.word", getIpAddress(request), getDate(), getString(entity)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "show.word", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return TEMPLATE_DONE;
     }

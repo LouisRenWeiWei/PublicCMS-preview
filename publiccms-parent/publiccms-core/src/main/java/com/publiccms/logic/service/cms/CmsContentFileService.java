@@ -1,20 +1,18 @@
 package com.publiccms.logic.service.cms;
 
-// Generated 2016-1-25 10:53:21 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.publiccms.entities.cms.CmsContentFile;
-import com.publiccms.logic.dao.cms.CmsContentFileDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsContentFile;
+import com.publiccms.logic.dao.cms.CmsContentFileDao;
 
 /**
  *
@@ -52,7 +50,7 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
     @SuppressWarnings("unchecked")
     public void update(long contentId, Long userId, List<CmsContentFile> files, List<CmsContentFile> images) {
         Set<Long> idList = new HashSet<>();
-        if (notEmpty(images)) {
+        if (CommonUtils.notEmpty(images)) {
             for (CmsContentFile entity : images) {
                 if (null != entity.getId()) {
                     update(entity.getId(), entity, ignoreProperties);
@@ -65,7 +63,7 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
                 idList.add(entity.getId());
             }
         }
-        if (notEmpty(files)) {
+        if (CommonUtils.notEmpty(files)) {
             for (CmsContentFile entity : files) {
                 if (null != entity.getId()) {
                     update(entity.getId(), entity, ignoreProperties);

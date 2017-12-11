@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -13,6 +15,7 @@ import com.publiccms.common.generator.annotation.GeneratorColumn;
  */
 @Entity
 @Table(name = "home_article_content")
+@DynamicUpdate
 public class HomeArticleContent implements java.io.Serializable {
 
     /**

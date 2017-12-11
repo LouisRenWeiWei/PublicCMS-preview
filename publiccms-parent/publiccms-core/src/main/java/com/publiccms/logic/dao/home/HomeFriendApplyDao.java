@@ -1,15 +1,12 @@
 package com.publiccms.logic.dao.home;
 
-// Generated 2016-11-19 9:58:46 by com.publiccms.common.source.SourceGenerator
-
-import static com.publiccms.common.tools.CommonUtils.getDate;
-
-import com.publiccms.entities.home.HomeFriendApply;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.home.HomeFriendApply;
 
 /**
  *
@@ -33,7 +30,7 @@ public class HomeFriendApplyDao extends BaseDao<HomeFriendApply> {
     @Override
     protected HomeFriendApply init(HomeFriendApply entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(getDate());
+            entity.setCreateDate(CommonUtils.getDate());
         }
         return entity;
     }

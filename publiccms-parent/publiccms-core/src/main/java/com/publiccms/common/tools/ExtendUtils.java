@@ -1,17 +1,15 @@
 package com.publiccms.common.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.publiccms.common.base.Base;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.views.pojo.entities.ExtendData;
 import com.publiccms.views.pojo.entities.ExtendField;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.publiccms.common.base.Base;
 
 /**
  *
@@ -28,7 +26,7 @@ public class ExtendUtils implements Base {
     public static Map<String, String> getSysExtentDataMap(List<ExtendData> extendDataList,
             List<SysExtendField> sysExtendFieldList) {
         Map<String, String> map = new LinkedHashMap<>();
-        if (notEmpty(extendDataList)) {
+        if (CommonUtils.notEmpty(extendDataList)) {
             Map<String, String> extendFieldMap = new LinkedHashMap<>();
             for (ExtendData extend : extendDataList) {
                 extendFieldMap.put(extend.getName(), extend.getValue());
@@ -52,7 +50,7 @@ public class ExtendUtils implements Base {
      */
     public static Map<String, String> getExtentDataMap(List<ExtendData> extendDataList, List<ExtendField> extendFieldList) {
         Map<String, String> map = new LinkedHashMap<>();
-        if (notEmpty(extendDataList)) {
+        if (CommonUtils.notEmpty(extendDataList)) {
             Map<String, String> extendFieldMap = new LinkedHashMap<>();
             for (ExtendData extend : extendDataList) {
                 extendFieldMap.put(extend.getName(), extend.getValue());
@@ -74,7 +72,7 @@ public class ExtendUtils implements Base {
      * @return extent map
      */
     public static Map<String, String> getExtendMap(String data) {
-        if (notEmpty(data)) {
+        if (CommonUtils.notEmpty(data)) {
             try {
                 return objectMapper.readValue(data, new TypeReference<Map<String, String>>() {
 

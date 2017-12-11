@@ -1,10 +1,5 @@
 package com.publiccms.common.generator;
 
-import static com.publiccms.common.tools.FreeMarkerUtils.generateFileByFile;
-import static com.publiccms.common.tools.ScanClassUtils.getClasses;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.uncapitalize;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -17,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.publiccms.common.base.Base;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 import com.publiccms.common.generator.entity.EntityColumn;
 import com.publiccms.common.generator.entity.EntityCondition;
+import com.publiccms.common.tools.FreeMarkerUtils;
+import com.publiccms.common.tools.ScanClassUtils;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
@@ -48,7 +47,7 @@ public class SourceGenerator implements Base {
         // 生成某个实体类的代码
         sourceGenerator.generate(Class.forName("com.publiccms.entities.cms.CmsDictionary"), basePackage, overwrite);
     }
-    
+
     /**
      * 
      */
@@ -108,7 +107,7 @@ public class SourceGenerator implements Base {
      */
     public void generate(String basePackage, boolean overwrite) throws ClassNotFoundException, IOException {
         String entitiesFullPackage = basePackage + DOT + ENTITY_BASE_PACKAGE;
-        for (Class<?> c : getClasses(new String[] { entitiesFullPackage })) {
+        for (Class<?> c : ScanClassUtils.getClasses(new String[] { entitiesFullPackage })) {
             generate(c, basePackage, overwrite);
         }
     }
@@ -124,7 +123,7 @@ public class SourceGenerator implements Base {
      */
     public void generate(String basePackage, String entityPackage, boolean overwrite) throws ClassNotFoundException, IOException {
         String entitiesFullPackage = basePackage + DOT + ENTITY_BASE_PACKAGE + DOT + entityPackage;
-        for (Class<?> c : getClasses(new String[] { entitiesFullPackage })) {
+        for (Class<?> c : ScanClassUtils.getClasses(new String[] { entitiesFullPackage })) {
             generate(c, basePackage, overwrite);
         }
     }
@@ -204,7 +203,7 @@ public class SourceGenerator implements Base {
                         if (!typeName.startsWith("java.lang")) {
                             imports.add(typeName);
                         }
-                        String key = isNotBlank(column.name()) ? column.name() : field.getName();
+                        String key = StringUtils.isNotBlank(column.name()) ? column.name() : field.getName();
                         EntityCondition condition = conditionMap.get(key);
                         if (null == condition) {
                             condition = new EntityCondition(key, shortTypeName, column.title(), column.or(), column.like());
@@ -227,17 +226,22 @@ public class SourceGenerator implements Base {
         String controllerPath = JAVA_BASE_PATH + basePackage.replace('.', '/') + "/" + controllerPack.replace('.', '/') + "/";
 
         try {
-            generateFileByFile("java/dao.ftl", daoPath + name + DAO_SUFFIX + ".java", config, model, overwrite);
-            generateFileByFile("java/service.ftl", servicePath + name + SERVICE_SUFFIX + ".java", config, model, overwrite);
-            generateFileByFile("java/directive.ftl", directivePath + name + DIRECTIVE_SUFFIX + ".java", config, model, overwrite);
-            generateFileByFile("java/directiveList.ftl", directivePath + name + "List" + DIRECTIVE_SUFFIX + ".java", config,
-                    model, overwrite);
-            generateFileByFile("java/controller.ftl", controllerPath + name + CONTROLLER_SUFFIX + ".java", config, model,
+            FreeMarkerUtils.generateFileByFile("java/dao.ftl", daoPath + name + DAO_SUFFIX + ".java", config, model, overwrite);
+            FreeMarkerUtils.generateFileByFile("java/service.ftl", servicePath + name + SERVICE_SUFFIX + ".java", config, model,
                     overwrite);
-            generateFileByFile("html/list.ftl", TEMPLATE_BASE_PATH + uncapitalize(name) + "/list.html", config, model, overwrite);
-            generateFileByFile("html/add.ftl", TEMPLATE_BASE_PATH + uncapitalize(name) + "/add.html", config, model, overwrite);
-            generateFileByFile("html/doc.ftl", WEB_BASE_PATH + "doc.txt", config, model, overwrite, true);
-            generateFileByFile("html/language.ftl", WEB_BASE_PATH + "language/operate.txt", config, model, overwrite, true);
+            FreeMarkerUtils.generateFileByFile("java/directive.ftl", directivePath + name + DIRECTIVE_SUFFIX + ".java", config,
+                    model, overwrite);
+            FreeMarkerUtils.generateFileByFile("java/directiveList.ftl",
+                    directivePath + name + "List" + DIRECTIVE_SUFFIX + ".java", config, model, overwrite);
+            FreeMarkerUtils.generateFileByFile("java/controller.ftl", controllerPath + name + CONTROLLER_SUFFIX + ".java", config,
+                    model, overwrite);
+            FreeMarkerUtils.generateFileByFile("html/list.ftl",
+                    TEMPLATE_BASE_PATH + StringUtils.uncapitalize(name) + "/list.html", config, model, overwrite);
+            FreeMarkerUtils.generateFileByFile("html/add.ftl", TEMPLATE_BASE_PATH + StringUtils.uncapitalize(name) + "/add.html",
+                    config, model, overwrite);
+            FreeMarkerUtils.generateFileByFile("html/doc.ftl", WEB_BASE_PATH + "doc.txt", config, model, overwrite, true);
+            FreeMarkerUtils.generateFileByFile("html/language.ftl", WEB_BASE_PATH + "language/operate.txt", config, model,
+                    overwrite, true);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } catch (TemplateException e) {

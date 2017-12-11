@@ -1,15 +1,8 @@
 package com.publiccms.logic.service.cms;
 
-// Generated 2015-12-24 10:49:03 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.getDate;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-
-import com.publiccms.entities.cms.CmsPlace;
-import com.publiccms.logic.dao.cms.CmsPlaceDao;
-import com.publiccms.views.pojo.entities.CmsPlaceStatistics;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsPlace;
+import com.publiccms.logic.dao.cms.CmsPlaceDao;
+import com.publiccms.views.pojo.entities.CmsPlaceStatistics;
 
 /**
  *
@@ -91,7 +88,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
         CmsPlace entity = getEntity(id);
         if (null != entity) {
             entity.setStatus(STATUS_NORMAL);
-            Date now = getDate();
+            Date now = CommonUtils.getDate();
             if (now.after(entity.getPublishDate())) {
                 entity.setPublishDate(now);
             }
@@ -103,7 +100,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param ids
      */
     public void check(int siteId, Serializable[] ids) {
-        Date now = getDate();
+        Date now = CommonUtils.getDate();
         for (CmsPlace entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && STATUS_CONTRIBUTE == entity.getStatus()) {
                 entity.setStatus(STATUS_NORMAL);
@@ -119,7 +116,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param ids
      */
     public void refresh(int siteId, Serializable[] ids) {
-        Date now = getDate();
+        Date now = CommonUtils.getDate();
         for (CmsPlace entity : getEntitys(ids)) {
             if (null != entity && STATUS_NORMAL == entity.getStatus() && siteId == entity.getSiteId()) {
                 if (now.after(entity.getPublishDate())) {

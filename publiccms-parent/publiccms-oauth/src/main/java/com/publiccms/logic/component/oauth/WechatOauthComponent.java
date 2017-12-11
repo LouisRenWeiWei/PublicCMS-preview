@@ -1,18 +1,17 @@
 package com.publiccms.logic.component.oauth;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.IOException;
 import java.util.Map;
 
 import org.apache.http.client.ClientProtocolException;
-import com.publiccms.common.base.oauth.AbstractOauth;
-import com.publiccms.view.pojo.oauth.OauthAccess;
-import com.publiccms.view.pojo.oauth.OauthConfig;
-import com.publiccms.view.pojo.oauth.OauthUser;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.publiccms.common.base.oauth.AbstractOauth;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.view.pojo.oauth.OauthAccess;
+import com.publiccms.view.pojo.oauth.OauthConfig;
+import com.publiccms.view.pojo.oauth.OauthUser;
 
 /**
  *
@@ -74,7 +73,7 @@ public class WechatOauthComponent extends AbstractOauth {
             StringBuilder sb = new StringBuilder("https://api.weixin.qq.com/sns/userinfo?access_token=");
             sb.append(oauthInfo.getAccessToken()).append("&openid=").append(oauthInfo.getOpenId());
             String html = get(sb.toString());
-            if (notEmpty(html)) {
+            if (CommonUtils.notEmpty(html)) {
                 Map<String, Object> map = objectMapper.readValue(html, new TypeReference<Map<String, Object>>() {
                 });
                 return new OauthUser(oauthInfo.getOpenId(), (String) map.get("nickname"), (String) map.get("headimgurl"),

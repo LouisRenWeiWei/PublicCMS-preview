@@ -1,13 +1,12 @@
 package com.publiccms.views.method.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.FreeMarkerUtils.generateStringByString;
-
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.FreeMarkerUtils;
 
 import freemarker.core.TemplateClassResolver;
 import freemarker.template.Configuration;
@@ -37,10 +36,10 @@ public class GetTemplateResultMethod extends BaseMethod {
     @Override
     public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
         String template = getString(0, arguments);
-        if (notEmpty(template)) {
+        if (CommonUtils.notEmpty(template)) {
             template = "<#attempt>" + template + "<#recover><pre>${.error!}</pre></#attempt>";
             try {
-                return generateStringByString(template, configuration, null);
+                return FreeMarkerUtils.generateStringByString(template, configuration, null);
             } catch (Exception e) {
                 return e.getMessage();
             }

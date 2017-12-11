@@ -1,7 +1,5 @@
 package config.boot;
 
-import static com.publiccms.common.constants.CommonConstants.applicationContext;
-
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletContext;
@@ -17,6 +15,8 @@ import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+
+import com.publiccms.common.constants.CommonConstants;
 
 import config.initializer.AdminInitializer;
 import config.initializer.ApiInitializer;
@@ -38,7 +38,7 @@ public class SprintBootApplication {
      * @param args
      */
     public static void main(String[] args) {
-        applicationContext = SpringApplication.run(SprintBootApplication.class, args);
+        CommonConstants.applicationContext = SpringApplication.run(SprintBootApplication.class, args);
     }
 
     /**

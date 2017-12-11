@@ -1,22 +1,20 @@
 package com.publiccms.views.directive.sys;
 
-// Generated 2016-1-19 11:41:45 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptPage;
 import com.publiccms.entities.sys.SysDeptPageId;
 import com.publiccms.logic.service.sys.SysDeptPageService;
 import com.publiccms.logic.service.sys.SysDeptService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.publiccms.common.handler.RenderHandler;
 
 /**
  *
@@ -30,15 +28,15 @@ public class SysDeptPageDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         Integer deptId = handler.getInteger("deptId");
         String page = handler.getString("page");
-        if (notEmpty(deptId)) {
-            if (notEmpty(page)) {
+        if (CommonUtils.notEmpty(deptId)) {
+            if (CommonUtils.notEmpty(page)) {
                 SysDeptPage entity = service.getEntity(deptId, page);
                 if (null != entity) {
                     handler.put("object", entity).render();
                 }
             } else {
                 String[] pages = handler.getStringArray("pages");
-                if (notEmpty(pages)) {
+                if (CommonUtils.notEmpty(pages)) {
                     Map<String, Boolean> map = new LinkedHashMap<>();
                     SysDept entity = sysDeptService.getEntity(deptId);
                     if (null != entity && entity.isOwnsAllCategory()) {

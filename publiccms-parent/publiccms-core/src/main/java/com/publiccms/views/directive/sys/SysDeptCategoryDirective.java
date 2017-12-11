@@ -1,22 +1,20 @@
 package com.publiccms.views.directive.sys;
 
-// Generated 2016-1-19 11:41:45 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptCategory;
 import com.publiccms.entities.sys.SysDeptCategoryId;
 import com.publiccms.logic.service.sys.SysDeptCategoryService;
 import com.publiccms.logic.service.sys.SysDeptService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.publiccms.common.handler.RenderHandler;
 
 /**
  *
@@ -30,8 +28,8 @@ public class SysDeptCategoryDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         Integer deptId = handler.getInteger("deptId");
         Integer categoryId = handler.getInteger("categoryId");
-        if (notEmpty(deptId)) {
-            if (notEmpty(categoryId)) {
+        if (CommonUtils.notEmpty(deptId)) {
+            if (CommonUtils.notEmpty(categoryId)) {
                 SysDept entity = sysDeptService.getEntity(deptId);
                 if (null != entity) {
                     if (entity.isOwnsAllCategory()) {
@@ -42,7 +40,7 @@ public class SysDeptCategoryDirective extends AbstractTemplateDirective {
                 }
             } else {
                 Integer[] categoryIds = handler.getIntegerArray("categoryIds");
-                if (notEmpty(categoryIds)) {
+                if (CommonUtils.notEmpty(categoryIds)) {
                     Map<String, Boolean> map = new LinkedHashMap<>();
                     SysDept entity = sysDeptService.getEntity(deptId);
                     if (null != entity) {

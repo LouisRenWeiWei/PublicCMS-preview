@@ -1,7 +1,5 @@
 package com.publiccms.entities.sys;
 
-import static com.publiccms.common.database.CmsUpgrader.IDENTIFIER_GENERATOR;
-
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -13,9 +11,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -24,6 +24,7 @@ import com.publiccms.common.generator.annotation.GeneratorColumn;
 @Entity
 @Table(name = "sys_user", uniqueConstraints = { @UniqueConstraint(columnNames = { "name", "site_id" }),
         @UniqueConstraint(columnNames = { "nick_name", "site_id" }) })
+@DynamicUpdate
 public class SysUser implements java.io.Serializable {
     /**
      * 
@@ -98,7 +99,7 @@ public class SysUser implements java.io.Serializable {
 
     @Id
     @GeneratedValue(generator = "cmsGenerator")
-    @GenericGenerator(name = "cmsGenerator", strategy = IDENTIFIER_GENERATOR)
+    @GenericGenerator(name = "cmsGenerator", strategy = CmsUpgrader.IDENTIFIER_GENERATOR)
     @Column(name = "id", unique = true, nullable = false)
     public Long getId() {
         return this.id;

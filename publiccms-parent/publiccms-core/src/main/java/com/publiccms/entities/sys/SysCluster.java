@@ -10,6 +10,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -17,6 +19,7 @@ import com.publiccms.common.generator.annotation.GeneratorColumn;
  */
 @Entity
 @Table(name = "sys_cluster")
+@DynamicUpdate
 public class SysCluster implements java.io.Serializable {
 
     /**

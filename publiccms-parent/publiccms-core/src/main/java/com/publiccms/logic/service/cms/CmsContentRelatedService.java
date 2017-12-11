@@ -1,16 +1,9 @@
 package com.publiccms.logic.service.cms;
 
-// Generated 2016-1-25 10:53:21 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.publiccms.entities.cms.CmsContentRelated;
-import com.publiccms.logic.dao.cms.CmsContentRelatedDao;
-import com.publiccms.views.pojo.entities.CmsContentRelatedStatistics;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsContentRelated;
+import com.publiccms.logic.dao.cms.CmsContentRelatedDao;
+import com.publiccms.views.pojo.entities.CmsContentRelatedStatistics;
 
 /**
  *
@@ -66,7 +63,7 @@ public class CmsContentRelatedService extends BaseService<CmsContentRelated> {
     @SuppressWarnings("unchecked")
     public void update(long contentId, long userId, List<CmsContentRelated> entitys) {
         Set<Long> idList = new HashSet<>();
-        if (notEmpty(entitys)) {
+        if (CommonUtils.notEmpty(entitys)) {
             for (CmsContentRelated entity : entitys) {
                 if (null != entity.getId()) {
                     update(entity.getId(), entity, ignoreProperties);

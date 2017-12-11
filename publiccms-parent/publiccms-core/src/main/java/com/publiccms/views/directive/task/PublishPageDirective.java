@@ -1,26 +1,24 @@
 package com.publiccms.views.directive.task;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.logic.component.site.SiteComponent.getFullFileName;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.publiccms.common.base.AbstractTaskDirective;
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.site.FileComponent;
-import com.publiccms.logic.component.site.FileComponent.FileInfo;
-import com.publiccms.logic.component.template.MetadataComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.views.pojo.entities.CmsPageMetadata;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileComponent;
+import com.publiccms.logic.component.site.FileComponent.FileInfo;
+import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.component.template.MetadataComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.views.pojo.entities.CmsPageMetadata;
 
 import freemarker.template.TemplateException;
 
@@ -36,15 +34,15 @@ public class PublishPageDirective extends AbstractTaskDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path", SEPARATOR);
         SysSite site = getSite(handler);
-        String fullPath =  siteComponent.getWebTemplateFilePath(site, path);
+        String fullPath = siteComponent.getWebTemplateFilePath(site, path);
         File file = new File(fullPath);
         if (file.isFile()) {
             Map<String, Boolean> map = new LinkedHashMap<>();
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(fullPath);
-            if (null != metadata && notEmpty(metadata.getPublishPath())) {
+            if (null != metadata && CommonUtils.notEmpty(metadata.getPublishPath())) {
                 try {
-                    templateComponent.createStaticFile(site, getFullFileName(site, path), metadata.getPublishPath(), null,
-                            metadata, null);
+                    templateComponent.createStaticFile(site, SiteComponent.getFullFileName(site, path), metadata.getPublishPath(),
+                            null, metadata, null);
                     map.put(path, true);
                 } catch (IOException | TemplateException e) {
                     map.put(path, false);
@@ -68,9 +66,9 @@ public class PublishPageDirective extends AbstractTaskDirective {
                 map.putAll(deal(site, filePath + SEPARATOR));
             } else {
                 CmsPageMetadata metadata = metadataMap.get(fileInfo.getFileName());
-                if (null != metadata && notEmpty(metadata.getPublishPath())) {
+                if (null != metadata && CommonUtils.notEmpty(metadata.getPublishPath())) {
                     try {
-                        templateComponent.createStaticFile(site, getFullFileName(site, filePath), metadata.getPublishPath(), null,
+                        templateComponent.createStaticFile(site, SiteComponent.getFullFileName(site, filePath), metadata.getPublishPath(), null,
                                 metadata, null);
                         map.put(filePath, true);
                     } catch (IOException | TemplateException e) {

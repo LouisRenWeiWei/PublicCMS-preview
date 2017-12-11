@@ -1,22 +1,23 @@
 package com.publiccms.controller.admin.sys;
 
-import static com.publiccms.common.tools.CommonUtils.empty;
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.ControllerUtils.verifyEquals;
-import static com.publiccms.common.tools.ControllerUtils.verifyHasExist;
-import static com.publiccms.common.tools.ControllerUtils.verifyNotEmpty;
-import static com.publiccms.common.tools.ControllerUtils.verifyNotEquals;
-import static com.publiccms.common.tools.JsonUtils.getString;
-import static com.publiccms.common.tools.RequestUtils.getIpAddress;
-import static com.publiccms.common.tools.VerificationUtils.md5Encode;
-import static org.apache.commons.lang3.StringUtils.trim;
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.JsonUtils;
+import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysRoleUser;
 import com.publiccms.entities.sys.SysRoleUserId;
@@ -25,11 +26,6 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysRoleUserService;
 import com.publiccms.logic.service.sys.SysUserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  *
@@ -60,11 +56,12 @@ public class SysUserAdminController extends AbstractController {
     public String save(SysUser entity, String repassword, Integer[] roleIds, HttpServletRequest request, HttpSession session,
             ModelMap model) {
         SysSite site = getSite(request);
-        entity.setName(trim(entity.getName()));
-        entity.setNickName(trim(entity.getNickName()));
-        entity.setPassword(trim(entity.getPassword()));
-        repassword = trim(repassword);
-        if (verifyNotEmpty("username", entity.getName(), model) || verifyNotEmpty("nickname", entity.getNickName(), model)
+        entity.setName(StringUtils.trim(entity.getName()));
+        entity.setNickName(StringUtils.trim(entity.getNickName()));
+        entity.setPassword(StringUtils.trim(entity.getPassword()));
+        repassword = StringUtils.trim(repassword);
+        if (ControllerUtils.verifyNotEmpty("username", entity.getName(), model)
+                || ControllerUtils.verifyNotEmpty("nickname", entity.getNickName(), model)
                 || verifyNotUserName("username", entity.getName(), model)
                 || verifyNotNickName("nickname", entity.getNickName(), model)) {
             return TEMPLATE_ERROR;
@@ -78,24 +75,24 @@ public class SysUserAdminController extends AbstractController {
         }
         if (null != entity.getId()) {
             SysUser oldEntity = service.getEntity(entity.getId());
-            if (null == oldEntity || verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+            if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
             SysUser user = service.getEntity(entity.getId());
             if ((!user.getName().equals(entity.getName())
-                    && verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model))
-                    || (!user.getNickName().equals(entity.getNickName())
-                            && verifyHasExist("nickname", service.findByNickName(site.getId(), entity.getNickName()), model))) {
+                    && ControllerUtils.verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model))
+                    || (!user.getNickName().equals(entity.getNickName()) && ControllerUtils.verifyHasExist("nickname",
+                            service.findByNickName(site.getId(), entity.getNickName()), model))) {
                 return TEMPLATE_ERROR;
             }
-            if (notEmpty(entity.getPassword())) {
-                if (verifyNotEquals("repassword", entity.getPassword(), repassword, model)) {
+            if (CommonUtils.notEmpty(entity.getPassword())) {
+                if (ControllerUtils.verifyNotEquals("repassword", entity.getPassword(), repassword, model)) {
                     return TEMPLATE_ERROR;
                 }
-                entity.setPassword(md5Encode(entity.getPassword()));
+                entity.setPassword(VerificationUtils.md5Encode(entity.getPassword()));
             } else {
                 entity.setPassword(user.getPassword());
-                if (empty(entity.getEmail()) || !entity.getEmail().equals(user.getEmail())) {
+                if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(user.getEmail())) {
                     entity.setEmailChecked(false);
                 }
             }
@@ -103,24 +100,26 @@ public class SysUserAdminController extends AbstractController {
             if (null != entity) {
                 roleUserService.dealRoleUsers(entity.getId(), roleIds);
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "update.user", getIpAddress(request), getDate(), getString(entity)));
+                        LogLoginService.CHANNEL_WEB_MANAGER, "update.user", RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
-            if (verifyNotEmpty("password", entity.getPassword(), model)
-                    || verifyNotEquals("repassword", entity.getPassword(), repassword, model)
-                    || verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model)) {
+            if (ControllerUtils.verifyNotEmpty("password", entity.getPassword(), model)
+                    || ControllerUtils.verifyNotEquals("repassword", entity.getPassword(), repassword, model)
+                    || ControllerUtils.verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model)) {
                 return TEMPLATE_ERROR;
             }
             entity.setSiteId(site.getId());
-            entity.setPassword(md5Encode(entity.getPassword()));
+            entity.setPassword(VerificationUtils.md5Encode(entity.getPassword()));
             service.save(entity);
-            if (notEmpty(roleIds)) {
+            if (CommonUtils.notEmpty(roleIds)) {
                 for (Integer roleId : roleIds) {
                     roleUserService.save(new SysRoleUser(new SysRoleUserId(roleId, entity.getId())));
                 }
             }
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.user", getIpAddress(request), getDate(), getString(entity)));
+            logOperateService
+                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "save.user", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -134,18 +133,19 @@ public class SysUserAdminController extends AbstractController {
      */
     @RequestMapping(value = "enable", method = RequestMethod.POST)
     public String enable(Long id, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (verifyEquals("admin.operate", getAdminFromSession(session).getId(), id, model)) {
+        if (ControllerUtils.verifyEquals("admin.operate", getAdminFromSession(session).getId(), id, model)) {
             return TEMPLATE_ERROR;
         }
         SysUser entity = service.getEntity(id);
         if (null != entity) {
             SysSite site = getSite(request);
-            if (verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
             service.updateStatus(id, false);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "enable.user", getIpAddress(request), getDate(), getString(entity)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "enable.user", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    JsonUtils.getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -159,18 +159,19 @@ public class SysUserAdminController extends AbstractController {
      */
     @RequestMapping(value = "disable", method = RequestMethod.POST)
     public String disable(Long id, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (verifyEquals("admin.operate", getAdminFromSession(session).getId(), id, model)) {
+        if (ControllerUtils.verifyEquals("admin.operate", getAdminFromSession(session).getId(), id, model)) {
             return TEMPLATE_ERROR;
         }
         SysUser entity = service.getEntity(id);
         if (null != entity) {
             SysSite site = getSite(request);
-            if (verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
             service.updateStatus(id, true);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "disable.user", getIpAddress(request), getDate(), getString(entity)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "disable.user", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return TEMPLATE_DONE;
     }

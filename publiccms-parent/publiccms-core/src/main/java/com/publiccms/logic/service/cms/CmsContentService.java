@@ -1,12 +1,5 @@
 package com.publiccms.logic.service.cms;
 
-// Generated 2015-5-8 16:50:23 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.empty;
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static org.apache.commons.lang3.ArrayUtils.add;
-import static org.apache.commons.lang3.StringUtils.splitByWholeSeparator;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.logic.dao.cms.CmsCategoryDao;
@@ -127,7 +123,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         Collections.reverse(list);
         for (CmsContent entity : list) {
             if (null != entity && STATUS_NORMAL == entity.getStatus() && siteId == entity.getSiteId()) {
-                Date now = getDate();
+                Date now = CommonUtils.getDate();
                 if (now.after(entity.getPublishDate())) {
                     entity.setPublishDate(now);
                 }
@@ -148,10 +144,10 @@ public class CmsContentService extends BaseService<CmsContent> {
             if (null != entity && siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus()) {
                 entity.setStatus(STATUS_NORMAL);
                 entity.setCheckUserId(userId);
-                entity.setCheckDate(getDate());
+                entity.setCheckDate(CommonUtils.getDate());
                 entityList.add(entity);
                 if (null != refresh && refresh) {
-                    Date now = getDate();
+                    Date now = CommonUtils.getDate();
                     if (now.after(entity.getPublishDate())) {
                         entity.setPublishDate(now);
                     }
@@ -296,13 +292,13 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     private Integer[] getCategoryIds(Boolean containChild, Integer categoryId, Integer[] categoryIds) {
-        if (empty(categoryId)) {
+        if (CommonUtils.empty(categoryId)) {
             return categoryIds;
         } else if (null != containChild && containChild) {
             CmsCategory category = categoryDao.getEntity(categoryId);
-            if (null != category && notEmpty(category.getChildIds())) {
-                String[] categoryStringIds = add(splitByWholeSeparator(category.getChildIds(), COMMA_DELIMITED),
-                        String.valueOf(categoryId));
+            if (null != category && CommonUtils.notEmpty(category.getChildIds())) {
+                String[] categoryStringIds = ArrayUtils.add(
+                        StringUtils.splitByWholeSeparator(category.getChildIds(), COMMA_DELIMITED), String.valueOf(categoryId));
                 categoryIds = new Integer[categoryStringIds.length + 1];
                 for (int i = 0; i < categoryStringIds.length; i++) {
                     categoryIds[i] = Integer.parseInt(categoryStringIds[i]);

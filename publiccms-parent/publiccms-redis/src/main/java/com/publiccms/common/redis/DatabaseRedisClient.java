@@ -1,12 +1,12 @@
 package com.publiccms.common.redis;
 
-import static com.publiccms.common.tools.CommonUtils.empty;
-import static org.apache.commons.logging.LogFactory.getLog;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.publiccms.common.tools.CommonUtils;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -20,7 +20,7 @@ public class DatabaseRedisClient {
      */
     public static final int DEFAULT_EXPIRY_IN_SECONDS = 120;
 
-    protected final Log log = getLog(getClass());
+    protected final Log log = LogFactory.getLog(getClass());
     private static JedisPool jedisPool;
     private Map<String, RedisCacheEntity<Object, Object>> regionMap = new HashMap<>();
 
@@ -86,7 +86,7 @@ public class DatabaseRedisClient {
      * @param expiry
      */
     public void set(String region, Object key, Object value, Integer expiry) {
-        log.trace("set cache item. region=" + region + ", key=" + key + ", timeout=" + (empty(expiry) ? 0 : expiry));
+        log.trace("set cache item. region=" + region + ", key=" + key + ", timeout=" + (CommonUtils.empty(expiry) ? 0 : expiry));
         getCache(region).put(key.toString(), value, expiry);
     }
 

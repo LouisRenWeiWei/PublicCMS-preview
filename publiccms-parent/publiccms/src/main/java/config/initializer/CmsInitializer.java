@@ -1,11 +1,11 @@
 package config.initializer;
 
-import static com.publiccms.common.constants.CommonConstants.applicationContext;
-
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.AbstractContextLoaderInitializer;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+
+import com.publiccms.common.constants.CommonConstants;
 
 import config.spring.CmsConfig;
 
@@ -20,7 +20,7 @@ public class CmsInitializer extends AbstractContextLoaderInitializer implements 
     @Override
     protected WebApplicationContext createRootApplicationContext() {
         AnnotationConfigWebApplicationContext rootAppContext = new AnnotationConfigWebApplicationContext();
-        applicationContext = rootAppContext;
+        CommonConstants.applicationContext = rootAppContext;
         rootAppContext.register(CmsConfig.class);
         return rootAppContext;
     }

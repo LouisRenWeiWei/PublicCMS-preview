@@ -1,7 +1,5 @@
 package com.publiccms.logic.service.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.LinkedHashSet;
@@ -10,13 +8,14 @@ import java.util.Set;
 
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import com.publiccms.logic.dao.tools.HqlDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.logic.dao.tools.HqlDao;
 
 /**
  *
@@ -61,7 +60,7 @@ public class HqlService extends BaseService<Object> {
      */
     public Set<String> getToken(String text) {
         Set<String> list = new LinkedHashSet<>();
-        if (notEmpty(text)) {
+        if (CommonUtils.notEmpty(text)) {
             try (StringReader stringReader = new StringReader(text);
                     TokenStream tokenStream = dao.getAnalyzer().tokenStream(BLANK, stringReader)) {
                 CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);

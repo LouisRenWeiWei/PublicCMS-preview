@@ -1,8 +1,4 @@
 package com.publiccms.controller.admin.cms;
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.JsonUtils.getString;
-import static com.publiccms.common.tools.RequestUtils.getIpAddress;
 
 import java.util.List;
 import java.util.Map;
@@ -10,18 +6,21 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.publiccms.common.base.AbstractController;
-import com.publiccms.entities.log.LogOperate;
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.template.ModelComponent;
-import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.views.pojo.entities.CmsModel;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.JsonUtils;
+import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.entities.log.LogOperate;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.template.ModelComponent;
+import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.views.pojo.entities.CmsModel;
 
 /**
  * 
@@ -45,19 +44,21 @@ public class CmsModelAdminController extends AbstractController {
     public String save(@ModelAttribute CmsModel entity, String modelId, HttpServletRequest request, HttpSession session) {
         SysSite site = getSite(request);
         modelComponent.clear(site.getId());
-        if (notEmpty(modelId)) {
+        if (CommonUtils.notEmpty(modelId)) {
             Map<String, CmsModel> modelMap = modelComponent.getMap(site);
             modelMap.remove(modelId);
             modelMap.put(entity.getId(), entity);
             modelComponent.save(site, modelMap);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "update.model", getIpAddress(request), getDate(), getString(entity)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "update.model", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
         } else {
             Map<String, CmsModel> modelMap = modelComponent.getMap(site);
             modelMap.put(entity.getId(), entity);
             modelComponent.save(site, modelMap);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.model", getIpAddress(request), getDate(), getString(entity)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.model", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    JsonUtils.getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -82,7 +83,8 @@ public class CmsModelAdminController extends AbstractController {
             }
             modelComponent.save(site, modelMap);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.model", getIpAddress(request), getDate(), getString(entity)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.model", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return TEMPLATE_DONE;
     }

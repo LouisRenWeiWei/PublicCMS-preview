@@ -1,12 +1,8 @@
 package com.publiccms.common.constants;
 
-import static com.publiccms.common.constants.CommonConstants.CMS_FILEPATH;
-import static com.publiccms.common.constants.CommonConstants.LICENSE_FILENAME;
-
 import java.util.UUID;
 
 import com.publiccms.common.copyright.CmsCopyright;
-
 import com.publiccms.common.copyright.Copyright;
 import com.publiccms.common.copyright.License;
 
@@ -32,7 +28,7 @@ public class CmsVersion {
      * @return whether the authorization edition
      */
     public static boolean isAuthorizationEdition() {
-        return copyright.verify(CMS_FILEPATH + LICENSE_FILENAME);
+        return copyright.verify(CommonConstants.CMS_FILEPATH + CommonConstants.LICENSE_FILENAME);
     }
 
     /**
@@ -40,14 +36,14 @@ public class CmsVersion {
      * @return whether the domain authorized
      */
     public static boolean verifyDomain(String domain) {
-        return copyright.verify(CMS_FILEPATH + LICENSE_FILENAME);
+        return copyright.verify(CommonConstants.CMS_FILEPATH + CommonConstants.LICENSE_FILENAME);
     }
 
     /**
      * @return license
      */
     public static License getLicense() {
-        return copyright.getLicense(CMS_FILEPATH + LICENSE_FILENAME);
+        return copyright.getLicense(CommonConstants.CMS_FILEPATH + CommonConstants.LICENSE_FILENAME);
     }
 
     /**

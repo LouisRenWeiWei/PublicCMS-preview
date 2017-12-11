@@ -1,16 +1,5 @@
 package com.publiccms.controller.admin.sys;
 
-import static com.publiccms.common.tools.CommonUtils.empty;
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.RequestUtils.getIpAddress;
-import static org.apache.commons.codec.binary.Base64.decodeBase64;
-import static org.apache.commons.io.FileUtils.copyInputStreamToFile;
-import static org.apache.commons.io.FileUtils.writeByteArrayToFile;
-import static org.apache.commons.lang3.ArrayUtils.addAll;
-import static org.apache.http.util.EntityUtils.consume;
-import static com.publiccms.logic.service.log.LogLoginService.CHANNEL_WEB_MANAGER;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,18 +10,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import com.publiccms.common.base.AbstractController;
-import com.publiccms.entities.log.LogUpload;
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.site.FileComponent;
-import com.publiccms.logic.service.log.LogUploadService;
-import com.publiccms.views.pojo.entities.UeditorConfig;
-
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -40,7 +25,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.common.tools.VerificationUtils;
+import com.publiccms.entities.log.LogUpload;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileComponent;
+import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogUploadService;
+import com.publiccms.views.pojo.entities.UeditorConfig;
 
 /**
  *
@@ -68,7 +63,7 @@ public class UeditorAdminController extends AbstractController {
 
     private static final String[] VIDEO_ALLOW_FILES = new String[] { ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg",
             ".mpg", ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid" };
-    private static final String[] ALLOW_FILES = addAll(addAll(VIDEO_ALLOW_FILES, IMAGE_ALLOW_FILES),
+    private static final String[] ALLOW_FILES = ArrayUtils.addAll(ArrayUtils.addAll(VIDEO_ALLOW_FILES, IMAGE_ALLOW_FILES),
             new String[] { ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso", ".doc", ".docx", ".xls", ".xlsx", ".ppt",
                     ".pptx", ".pdf", ".txt", ".md", ".xml" });
     private static final Map<String, String> CONTENT_TYPE_MAP = new HashMap<String, String>() {
@@ -137,8 +132,9 @@ public class UeditorAdminController extends AbstractController {
             String fileName = fileComponent.getUploadFileName(suffix);
             try {
                 fileComponent.upload(file, siteComponent.getWebFilePath(site, fileName));
-                logUploadService.save(new LogUpload(site.getId(), getAdminFromSession(session).getId(), CHANNEL_WEB_MANAGER,
-                        false, file.getSize(), getIpAddress(request), getDate(), fileName));
+                logUploadService.save(
+                        new LogUpload(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                false, file.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
                 map.put("size", file.getSize());
                 map.put("title", originalName);
@@ -165,14 +161,15 @@ public class UeditorAdminController extends AbstractController {
     @ResponseBody
     public Map<String, Object> uploadScraw(String file, HttpServletRequest request, HttpSession session) {
         SysSite site = getSite(request);
-        if (notEmpty(file)) {
-            byte[] data = decodeBase64(file);
+        if (CommonUtils.notEmpty(file)) {
+            byte[] data = VerificationUtils.base64Decode(file);
             String fileName = fileComponent.getUploadFileName(SCRAW_TYPE);
             File dest = new File(siteComponent.getWebFilePath(site, fileName));
             try {
-                writeByteArrayToFile(dest, data);
-                logUploadService.save(new LogUpload(site.getId(), getAdminFromSession(session).getId(), CHANNEL_WEB_MANAGER, true,
-                        dest.length(), getIpAddress(request), getDate(), fileName));
+                FileUtils.writeByteArrayToFile(dest, data);
+                logUploadService.save(
+                        new LogUpload(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                true, dest.length(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
                 map.put("size", data.length);
                 map.put("title", dest.getName());
@@ -199,7 +196,7 @@ public class UeditorAdminController extends AbstractController {
         SysSite site = getSite(request);
         try (CloseableHttpClient httpclient = HttpClients.createDefault();) {
             String[] files = request.getParameterValues(FIELD_NAME + "[]");
-            if (notEmpty(files)) {
+            if (CommonUtils.notEmpty(files)) {
                 List<Map<String, Object>> list = new ArrayList<>();
                 for (String image : files) {
                     HttpGet httpget = new HttpGet(image);
@@ -207,17 +204,18 @@ public class UeditorAdminController extends AbstractController {
                     HttpEntity entity = response.getEntity();
                     if (null != entity) {
                         String suffix = null;
-                        if (notEmpty(entity.getContentType().getElements())) {
+                        if (CommonUtils.notEmpty(entity.getContentType().getElements())) {
                             suffix = CONTENT_TYPE_MAP.get(entity.getContentType().getElements()[0].getName());
                         }
-                        if (empty(suffix)) {
+                        if (CommonUtils.empty(suffix)) {
                             suffix = ".jpg";
                         }
                         String fileName = fileComponent.getUploadFileName(suffix);
                         File dest = new File(siteComponent.getWebFilePath(site, fileName));
-                        copyInputStreamToFile(entity.getContent(), dest);
+                        FileUtils.copyInputStreamToFile(entity.getContent(), dest);
                         logUploadService.save(new LogUpload(site.getId(), getAdminFromSession(session).getId(),
-                                CHANNEL_WEB_MANAGER, true, dest.length(), getIpAddress(request), getDate(), fileName));
+                                LogLoginService.CHANNEL_WEB_MANAGER, true, dest.length(), RequestUtils.getIpAddress(request),
+                                CommonUtils.getDate(), fileName));
                         Map<String, Object> map = getResultMap(true);
                         map.put("size", entity.getContentLength());
                         map.put("title", dest.getName());
@@ -225,7 +223,7 @@ public class UeditorAdminController extends AbstractController {
                         map.put("source", image);
                         list.add(map);
                     }
-                    consume(entity);
+                    EntityUtils.consume(entity);
                 }
                 Map<String, Object> map = getResultMap(true);
                 map.put("list", list);
@@ -248,7 +246,7 @@ public class UeditorAdminController extends AbstractController {
     @RequestMapping(params = "action=" + ACTION_LISTFILE)
     @ResponseBody
     public Map<String, Object> listfile(Integer start, HttpServletRequest request, HttpSession session) {
-        if (empty(start)) {
+        if (CommonUtils.empty(start)) {
             start = 0;
         }
         PageHandler page = logUploadService.getPage(getSite(request).getId(), getAdminFromSession(session).getId(), null, null,

@@ -1,8 +1,5 @@
 package com.publiccms.common.tools;
 
-import static com.publiccms.common.tools.CommonUtils.empty;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
@@ -16,7 +13,7 @@ import com.publiccms.common.base.Base;
 /**
  * Request工具类
  * 
- * RequestUtils 
+ * RequestUtils
  * 
  */
 public class RequestUtils implements Base {
@@ -27,7 +24,7 @@ public class RequestUtils implements Base {
      */
     public static String getValue(Map<String, String[]> parameterMap, String key) {
         String[] values = parameterMap.get(key);
-        if (notEmpty(values)) {
+        if (CommonUtils.notEmpty(values)) {
             return values[0];
         }
         return null;
@@ -43,7 +40,7 @@ public class RequestUtils implements Base {
     public static String getEncodePath(String path, String queryString) {
         String url = path;
         try {
-            if (notEmpty(queryString)) {
+            if (CommonUtils.notEmpty(queryString)) {
                 url += "?" + queryString;
             }
             url = URLEncoder.encode(url, DEFAULT_CHARSET_NAME);
@@ -77,7 +74,7 @@ public class RequestUtils implements Base {
      * @return cookie
      */
     public static Cookie getCookie(Cookie[] cookies, String name) {
-        if (notEmpty(cookies)) {
+        if (CommonUtils.notEmpty(cookies)) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equalsIgnoreCase(name)) {
                     return cookie;
@@ -99,13 +96,13 @@ public class RequestUtils implements Base {
     public static Cookie addCookie(String contextPath, HttpServletResponse response, String name, String value, Integer expiry,
             String domain) {
         Cookie cookie = new Cookie(name, value);
-        if (notEmpty(expiry)) {
+        if (CommonUtils.notEmpty(expiry)) {
             cookie.setMaxAge(expiry);
         }
-        if (notEmpty(domain)) {
+        if (CommonUtils.notEmpty(domain)) {
             cookie.setDomain(domain);
         }
-        cookie.setPath(empty(contextPath) ? SEPARATOR : contextPath);
+        cookie.setPath(CommonUtils.empty(contextPath) ? SEPARATOR : contextPath);
         response.addCookie(cookie);
         return cookie;
     }
@@ -119,8 +116,8 @@ public class RequestUtils implements Base {
     public static void cancleCookie(String contextPath, HttpServletResponse response, String name, String domain) {
         Cookie cookie = new Cookie(name, null);
         cookie.setMaxAge(0);
-        cookie.setPath(empty(contextPath) ? SEPARATOR : contextPath);
-        if (notEmpty(domain)) {
+        cookie.setPath(CommonUtils.empty(contextPath) ? SEPARATOR : contextPath);
+        if (CommonUtils.notEmpty(domain)) {
             cookie.setDomain(domain);
         }
         response.addCookie(cookie);
@@ -133,11 +130,11 @@ public class RequestUtils implements Base {
     public static String getIpAddress(HttpServletRequest request) {
         if (null != request) {
             String ip = request.getHeader("X-Real-IP");
-            if (notEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
+            if (CommonUtils.notEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
                 return ip;
             }
             ip = request.getHeader("X-Forwarded-For");
-            if (notEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
+            if (CommonUtils.notEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
                 int index = ip.indexOf(',');
                 if (index != -1) {
                     return ip.substring(0, index);

@@ -1,13 +1,12 @@
 package com.publiccms.logic.dao.home;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-
-import com.publiccms.entities.home.HomeDialog;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.home.HomeDialog;
 
 /**
  *
@@ -39,7 +38,7 @@ public class HomeDialogDao extends BaseDao<HomeDialog> {
     @Override
     protected HomeDialog init(HomeDialog entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(getDate());
+            entity.setCreateDate(CommonUtils.getDate());
         }
         return entity;
     }

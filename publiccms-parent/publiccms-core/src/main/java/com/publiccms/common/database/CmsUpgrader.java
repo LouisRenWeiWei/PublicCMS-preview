@@ -1,7 +1,5 @@
 package com.publiccms.common.database;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.Connection;
@@ -12,6 +10,7 @@ import java.util.Properties;
 
 import com.publiccms.common.base.AbstractCmsUpgrader;
 import com.publiccms.common.constants.CmsVersion;
+import com.publiccms.common.tools.CommonUtils;
 
 /**
  *
@@ -70,7 +69,7 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
         StringBuilder sb = new StringBuilder();
         sb.append("jdbc:mysql://");
         sb.append(host);
-        if (notEmpty(port) && !"3306".equals(port)) {
+        if (CommonUtils.notEmpty(port) && !"3306".equals(port)) {
             sb.append(":");
             sb.append(port);
         }

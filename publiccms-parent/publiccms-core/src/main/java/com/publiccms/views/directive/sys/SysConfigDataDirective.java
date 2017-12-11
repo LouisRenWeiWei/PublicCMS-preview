@@ -1,22 +1,20 @@
 package com.publiccms.views.directive.sys;
 
-// Generated 2016-7-16 11:54:15 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.ExtendUtils.getExtendMap;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.sys.SysConfigData;
 import com.publiccms.entities.sys.SysConfigDataId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.sys.SysConfigDataService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.publiccms.common.handler.RenderHandler;
 
 /**
  *
@@ -31,22 +29,22 @@ public class SysConfigDataDirective extends AbstractTemplateDirective {
         String code = handler.getString("code");
         String[] codes = handler.getStringArray("codes");
         SysSite site = getSite(handler);
-        if (notEmpty(code)) {
+        if (CommonUtils.notEmpty(code)) {
             SysConfigData entity = service.getEntity(new SysConfigDataId(site.getId(), code));
             if (null != entity) {
-                handler.put("object", getExtendMap(entity.getData())).render();
+                handler.put("object", ExtendUtils.getExtendMap(entity.getData())).render();
             }
-        } else if (notEmpty(codes)) {
+        } else if (CommonUtils.notEmpty(codes)) {
             SysConfigDataId[] ids = new SysConfigDataId[codes.length];
             int i = 0;
             for (String s : codes) {
-                if (notEmpty(s)) {
+                if (CommonUtils.notEmpty(s)) {
                     ids[i++] = new SysConfigDataId(site.getId(), s);
                 }
             }
             Map<String, Map<String, String>> map = new HashMap<>();
             for (SysConfigData entity : service.getEntitys(ids)) {
-                map.put(entity.getId().getCode(), getExtendMap(entity.getData()));
+                map.put(entity.getId().getCode(), ExtendUtils.getExtendMap(entity.getData()));
             }
             handler.put("map", map).render();
         }

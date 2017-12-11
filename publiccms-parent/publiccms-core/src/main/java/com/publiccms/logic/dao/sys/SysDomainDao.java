@@ -1,14 +1,12 @@
 package com.publiccms.logic.dao.sys;
 
-// Generated 2016-1-20 11:19:18 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
-import com.publiccms.entities.sys.SysDomain;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysDomain;
 
 /**
  *
@@ -27,7 +25,7 @@ public class SysDomainDao extends BaseDao<SysDomain> {
      */
     public PageHandler getPage(Integer siteId, Boolean wild, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysDomain bean");
-        if (notEmpty(siteId)) {
+        if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
         if (null != wild) {

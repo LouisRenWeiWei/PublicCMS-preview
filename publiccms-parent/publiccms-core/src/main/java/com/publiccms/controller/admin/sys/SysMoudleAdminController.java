@@ -1,10 +1,5 @@
 package com.publiccms.controller.admin.sys;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.ControllerUtils.verifyCustom;
-import static com.publiccms.common.tools.JsonUtils.getString;
-import static com.publiccms.common.tools.RequestUtils.getIpAddress;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,7 +7,16 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.JsonUtils;
+import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysMoudle;
 import com.publiccms.entities.sys.SysRole;
@@ -23,10 +27,6 @@ import com.publiccms.logic.service.sys.SysMoudleService;
 import com.publiccms.logic.service.sys.SysRoleAuthorizedService;
 import com.publiccms.logic.service.sys.SysRoleMoudleService;
 import com.publiccms.logic.service.sys.SysRoleService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  *
@@ -59,7 +59,7 @@ public class SysMoudleAdminController extends AbstractController {
     @RequestMapping("save")
     public String save(SysMoudle entity, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
-        if (verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
+        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return TEMPLATE_ERROR;
         }
         if (null != entity.getId()) {
@@ -69,14 +69,15 @@ public class SysMoudleAdminController extends AbstractController {
                 List<SysRoleMoudle> roleMoudleList = (List<SysRoleMoudle>) roleMoudleService
                         .getPage(null, entity.getId(), null, null).getList();
                 dealRoleAuthorized(roleMoudleList);
-                logOperateService.save(
-                        new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                "update.moudle", getIpAddress(request), getDate(), getString(entity)));
+                logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "update.moudle", RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.moudle", getIpAddress(request), getDate(), getString(entity)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.moudle", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    JsonUtils.getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -92,7 +93,7 @@ public class SysMoudleAdminController extends AbstractController {
     @RequestMapping("delete")
     public String delete(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
-        if (verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
+        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return TEMPLATE_ERROR;
         }
         SysMoudle entity = service.getEntity(id);
@@ -102,7 +103,8 @@ public class SysMoudleAdminController extends AbstractController {
             roleMoudleService.deleteByMoudleId(id);
             dealRoleAuthorized(roleMoudleList);
             logOperateService.save(new LogOperate(getSite(request).getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.moudle", getIpAddress(request), getDate(), getString(entity)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.moudle", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return TEMPLATE_DONE;
     }

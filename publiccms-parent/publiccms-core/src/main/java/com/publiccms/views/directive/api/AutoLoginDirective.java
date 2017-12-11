@@ -1,13 +1,15 @@
 package com.publiccms.views.directive.api;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.RequestUtils.getIpAddress;
-
 import java.io.IOException;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.publiccms.common.base.AbstractAppDirective;
+import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogLogin;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysAppClient;
@@ -19,10 +21,6 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysAppClientService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.publiccms.common.handler.RenderHandler;
 
 /**
  *
@@ -36,20 +34,20 @@ public class AutoLoginDirective extends AbstractAppDirective {
     public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
         String uuid = handler.getString("uuid");
         boolean result = false;
-        if (notEmpty(uuid)) {
+        if (CommonUtils.notEmpty(uuid)) {
             SysSite site = getSite(handler);
             SysAppClientId sysAppClientId = new SysAppClientId(site.getId(), app.getChannel(), uuid);
             SysAppClient appClient = appClientService.getEntity(sysAppClientId);
-            if (null != appClient && notEmpty(appClient.getUserId())) {
+            if (null != appClient && CommonUtils.notEmpty(appClient.getUserId())) {
                 user = service.getEntity(appClient.getUserId());
                 if (null != user && !user.isDisabled()) {
                     String authToken = UUID.randomUUID().toString();
-                    String ip = getIpAddress(handler.getRequest());
+                    String ip = RequestUtils.getIpAddress(handler.getRequest());
                     sysUserTokenService
-                            .save(new SysUserToken(authToken, site.getId(), user.getId(), app.getChannel(), getDate(), ip));
+                            .save(new SysUserToken(authToken, site.getId(), user.getId(), app.getChannel(), CommonUtils.getDate(), ip));
                     service.updateLoginStatus(user.getId(), ip);
                     logLoginService
-                            .save(new LogLogin(site.getId(), uuid, user.getId(), ip, app.getChannel(), true, getDate(), null));
+                            .save(new LogLogin(site.getId(), uuid, user.getId(), ip, app.getChannel(), true, CommonUtils.getDate(), null));
                     user.setPassword(null);
                     result = true;
                     handler.put("authToken", authToken).put("user", user);

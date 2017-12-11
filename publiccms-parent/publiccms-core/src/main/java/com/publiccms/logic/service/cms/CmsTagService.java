@@ -1,17 +1,10 @@
 package com.publiccms.logic.service.cms;
 
-// Generated 2015-7-10 16:36:23 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.publiccms.entities.cms.CmsTag;
-import com.publiccms.logic.dao.cms.CmsTagDao;
-import com.publiccms.views.pojo.entities.CmsTagStatistics;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsTag;
+import com.publiccms.logic.dao.cms.CmsTagDao;
+import com.publiccms.views.pojo.entities.CmsTagStatistics;
 
 /**
  *
@@ -76,7 +73,7 @@ public class CmsTagService extends BaseService<CmsTag> {
      */
     public Long[] update(int siteId, List<CmsTag> entitys) {
         Set<Long> idList = new HashSet<>();
-        if (notEmpty(entitys)) {
+        if (CommonUtils.notEmpty(entitys)) {
             for (CmsTag entity : entitys) {
                 if (null != entity.getId()) {
                     entity = getEntity(entity.getId());

@@ -1,17 +1,16 @@
 package com.publiccms.logic.component.site;
 
-import static org.apache.commons.lang3.StringUtils.uncapitalize;
-import static org.apache.commons.logging.LogFactory.getLog;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
-import com.publiccms.common.base.AbstractTaskDirective;
-import com.publiccms.common.base.AbstractTemplateDirective;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.publiccms.common.base.AbstractTaskDirective;
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.base.Base;
 import com.publiccms.common.base.BaseMethod;
 
@@ -23,14 +22,14 @@ import com.publiccms.common.base.BaseMethod;
 public class DirectiveComponent implements Base {
     private String directiveRemoveRegex;
     private String methodRemoveRegex;
-    protected final Log log = getLog(getClass());
+    protected final Log log = LogFactory.getLog(getClass());
 
     private Map<String, AbstractTemplateDirective> templateDirectiveMap = new HashMap<>();
     private Map<String, AbstractTaskDirective> taskDirectiveMap = new HashMap<>();
     private Map<String, BaseMethod> methodMap = new HashMap<>();
 
     public String getDirectiveName(String className) {
-        return uncapitalize(className.replaceAll(directiveRemoveRegex, BLANK));
+        return StringUtils.uncapitalize(className.replaceAll(directiveRemoveRegex, BLANK));
     }
 
     @Autowired
@@ -54,7 +53,7 @@ public class DirectiveComponent implements Base {
                 .append(taskDirectiveMap.keySet()).toString());
         for (BaseMethod method : methodList) {
             if (null == method.getName()) {
-                method.setName(uncapitalize(method.getClass().getSimpleName().replaceAll(methodRemoveRegex, BLANK)));
+                method.setName(StringUtils.uncapitalize(method.getClass().getSimpleName().replaceAll(methodRemoveRegex, BLANK)));
             }
             methodMap.put(method.getName(), method);
         }

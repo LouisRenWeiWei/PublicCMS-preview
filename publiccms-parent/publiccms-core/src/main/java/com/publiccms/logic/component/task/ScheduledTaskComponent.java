@@ -1,15 +1,16 @@
 package com.publiccms.logic.component.task;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static org.apache.commons.lang3.time.DateUtils.addMinutes;
-import static org.apache.commons.lang3.time.DateUtils.addMonths;
-import static org.apache.commons.lang3.time.DateUtils.addYears;
-import static org.apache.commons.logging.LogFactory.getLog;
-
 import java.util.Date;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
 import com.publiccms.common.constants.CmsVersion;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.cache.CacheComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.log.LogLoginService;
@@ -18,9 +19,6 @@ import com.publiccms.logic.service.log.LogTaskService;
 import com.publiccms.logic.service.sys.SysAppTokenService;
 import com.publiccms.logic.service.sys.SysEmailTokenService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 /**
  *
@@ -29,7 +27,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ScheduledTaskComponent {
-    protected final Log log = getLog(getClass());
+    protected final Log log = LogFactory.getLog(getClass());
 
     @Autowired
     private SysAppTokenService appTokenService;
@@ -54,7 +52,7 @@ public class ScheduledTaskComponent {
     @Scheduled(fixedDelay = 60 * 1000L)
     public void clearAppToken() {
         if (CmsVersion.isInitialized() && CmsVersion.isMaster()) {
-            Date date = addMinutes(getDate(), -30);
+            Date date = DateUtils.addMinutes(CommonUtils.getDate(), -30);
             appTokenService.delete(date);
             emailTokenService.delete(date);
         }
@@ -83,7 +81,7 @@ public class ScheduledTaskComponent {
             }
             if (CmsVersion.isMaster()) {
                 // 清理3个月前的Token
-                userTokenService.delete(addMonths(getDate(), -3));
+                userTokenService.delete(DateUtils.addMonths(CommonUtils.getDate(), -3));
             }
         }
     }
@@ -94,7 +92,7 @@ public class ScheduledTaskComponent {
     @Scheduled(cron = "0 0 0 1 * ?")
     public void clearLog() {
         if (CmsVersion.isInitialized() && CmsVersion.isMaster()) {
-            Date date = addYears(getDate(), -2);
+            Date date = DateUtils.addYears(CommonUtils.getDate(), -2);
             logLoginService.delete(null, date);
             logOperateService.delete(null, date);
             logTaskService.delete(null, date);

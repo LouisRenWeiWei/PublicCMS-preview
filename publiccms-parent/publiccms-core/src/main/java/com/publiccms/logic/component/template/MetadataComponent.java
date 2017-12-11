@@ -1,16 +1,10 @@
 package com.publiccms.logic.component.template;
 
-import static com.publiccms.common.tools.CommonUtils.empty;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileLock;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.publiccms.common.api.Cache;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,22 +12,24 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.publiccms.common.api.Cache;
 import com.publiccms.common.base.Base;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 
 /**
  * 元数据组件
- * 
+ *
  * MetaData Component
- * 
+ *
  */
 @Component
 public class MetadataComponent implements Cache, Base {
     /**
-     * 
+     *
      */
     public static final String METADATA_FILE = "metadata.data";
 
@@ -42,7 +38,7 @@ public class MetadataComponent implements Cache, Base {
 
     /**
      * 获取推荐位元数据
-     * 
+     *
      * @param filePath
      * @return place metadata
      */
@@ -57,7 +53,7 @@ public class MetadataComponent implements Cache, Base {
 
     /***
      * 获取模板元数据**
-     * 
+     *
      * @param filePath
      * @return template metadata
      */
@@ -67,7 +63,7 @@ public class MetadataComponent implements Cache, Base {
 
     /**
      * 获取模板元数据
-     * 
+     *
      * @param filePath
      * @param allowNullValue
      * @return template metadata
@@ -87,7 +83,7 @@ public class MetadataComponent implements Cache, Base {
 
     /**
      * 更新模板元数据
-     * 
+     *
      * @param filePath
      * @param metadata
      * @return whether the update is successful
@@ -107,7 +103,7 @@ public class MetadataComponent implements Cache, Base {
 
     /**
      * 更新推荐位元数据
-     * 
+     *
      * @param filePath
      * @param metadata
      * @return whether the update is successful
@@ -127,7 +123,7 @@ public class MetadataComponent implements Cache, Base {
 
     /**
      * 删除模板元数据
-     * 
+     *
      * @param filePath
      * @return whether the delete is successful
      */
@@ -146,7 +142,7 @@ public class MetadataComponent implements Cache, Base {
 
     /**
      * 删除推荐位元数据
-     * 
+     *
      * @param filePath
      * @return whether the delete is successful
      */
@@ -165,7 +161,7 @@ public class MetadataComponent implements Cache, Base {
 
     /**
      * 获取目录元数据
-     * 
+     *
      * @param dirPath
      * @return place metadata map
      */
@@ -173,7 +169,7 @@ public class MetadataComponent implements Cache, Base {
         Map<String, CmsPlaceMetadata> metadataMap = placeCache.get(dirPath);
         if (null == metadataMap) {
             File file = new File(dirPath + SEPARATOR + METADATA_FILE);
-            if (notEmpty(file)) {
+            if (CommonUtils.notEmpty(file)) {
                 try {
                     metadataMap = objectMapper.readValue(file, new TypeReference<Map<String, CmsPlaceMetadata>>() {
                     });
@@ -190,7 +186,7 @@ public class MetadataComponent implements Cache, Base {
 
     /**
      * 获取目录元数据
-     * 
+     *
      * @param dirPath
      * @return template metadata map
      */
@@ -198,7 +194,7 @@ public class MetadataComponent implements Cache, Base {
         Map<String, CmsPageMetadata> metadataMap = pageCache.get(dirPath);
         if (null == metadataMap) {
             File file = new File(dirPath + SEPARATOR + METADATA_FILE);
-            if (notEmpty(file)) {
+            if (CommonUtils.notEmpty(file)) {
                 try {
                     metadataMap = objectMapper.readValue(file, new TypeReference<Map<String, CmsPageMetadata>>() {
                     });
@@ -215,7 +211,7 @@ public class MetadataComponent implements Cache, Base {
 
     /**
      * 保存模板元数据
-     * 
+     *
      * @param dirPath
      * @param metadataMap
      * @throws JsonGenerationException
@@ -225,11 +221,10 @@ public class MetadataComponent implements Cache, Base {
     private void saveTemplateMetadata(String dirPath, Map<String, CmsPageMetadata> metadataMap)
             throws JsonGenerationException, JsonMappingException, IOException {
         File file = new File(dirPath + SEPARATOR + METADATA_FILE);
-        if (empty(file)) {
+        if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
-        try (FileOutputStream outputStream = new FileOutputStream(file);
-                FileLock fileLock = outputStream.getChannel().tryLock();) {
+        try (FileOutputStream outputStream = new FileOutputStream(file);) {
             objectMapper.writeValue(file, metadataMap);
         }
         pageCache.clear();
@@ -237,7 +232,7 @@ public class MetadataComponent implements Cache, Base {
 
     /**
      * 保存推荐位元数据
-     * 
+     *
      * @param dirPath
      * @param metadataMap
      * @throws JsonGenerationException
@@ -247,7 +242,7 @@ public class MetadataComponent implements Cache, Base {
     private void savePlaceMetadata(String dirPath, Map<String, CmsPlaceMetadata> metadataMap)
             throws JsonGenerationException, JsonMappingException, IOException {
         File file = new File(dirPath + SEPARATOR + METADATA_FILE);
-        if (empty(file)) {
+        if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
         objectMapper.writeValue(file, metadataMap);

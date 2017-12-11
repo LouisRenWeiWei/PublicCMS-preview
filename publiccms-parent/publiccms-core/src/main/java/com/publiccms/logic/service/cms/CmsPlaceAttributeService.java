@@ -1,13 +1,11 @@
 package com.publiccms.logic.service.cms;
 
-// Generated 2015-5-8 16:50:23 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
-import com.publiccms.entities.cms.CmsPlaceAttribute;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsPlaceAttribute;
 
 /**
  *
@@ -27,7 +25,7 @@ public class CmsPlaceAttributeService extends BaseService<CmsPlaceAttribute> {
         if (null != attribute) {
             attribute.setData(data);
         } else {
-            if (notEmpty(placeId)) {
+            if (CommonUtils.notEmpty(placeId)) {
                 save(new CmsPlaceAttribute(placeId, data));
             }
         }

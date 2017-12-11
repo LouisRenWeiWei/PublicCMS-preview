@@ -1,14 +1,12 @@
 package com.publiccms.logic.dao.home;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
-import com.publiccms.entities.home.HomeBroadcast;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.home.HomeBroadcast;
 
 /**
  *
@@ -33,16 +31,16 @@ public class HomeBroadcastDao extends BaseDao<HomeBroadcast> {
     public PageHandler getPage(Integer siteId, Long userId, Boolean reposted, Long repostId, Boolean disabled, String orderField,
             String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from HomeBroadcast bean");
-        if (notEmpty(siteId)) {
+        if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
-        if (notEmpty(userId)) {
+        if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
         if (null != reposted) {
             queryHandler.condition("bean.reposted = :reposted").setParameter("reposted", reposted);
         }
-        if (notEmpty(repostId)) {
+        if (CommonUtils.notEmpty(repostId)) {
             queryHandler.condition("bean.repostId = :repostId").setParameter("repostId", repostId);
         }
         if (null != disabled) {
@@ -79,7 +77,7 @@ public class HomeBroadcastDao extends BaseDao<HomeBroadcast> {
     @Override
     protected HomeBroadcast init(HomeBroadcast entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(getDate());
+            entity.setCreateDate(CommonUtils.getDate());
         }
         return entity;
     }

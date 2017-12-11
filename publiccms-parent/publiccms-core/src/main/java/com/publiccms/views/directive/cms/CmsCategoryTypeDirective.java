@@ -1,21 +1,19 @@
 package com.publiccms.views.directive.cms;
 
-// Generated 2016-2-26 15:57:04 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.entities.cms.CmsCategoryType;
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.service.cms.CmsCategoryTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsCategoryType;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.service.cms.CmsCategoryTypeService;
 
 /**
  *
@@ -29,14 +27,14 @@ public class CmsCategoryTypeDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         Integer id = handler.getInteger("id");
         SysSite site = getSite(handler);
-        if (notEmpty(id)) {
+        if (CommonUtils.notEmpty(id)) {
             CmsCategoryType entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {
                 handler.put("object", entity).render();
             }
         } else {
             Integer[] ids = handler.getIntegerArray("ids");
-            if (notEmpty(ids)) {
+            if (CommonUtils.notEmpty(ids)) {
                 List<CmsCategoryType> entityList = service.getEntitys(ids);
                 Map<String, CmsCategoryType> map = new LinkedHashMap<>();
                 for (CmsCategoryType entity : entityList) {

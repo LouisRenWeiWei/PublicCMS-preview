@@ -1,22 +1,21 @@
 package com.publiccms.views.directive.task;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static org.apache.commons.lang3.time.DateUtils.addMonths;
-
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.publiccms.common.base.AbstractTaskDirective;
+import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogTaskService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.publiccms.common.handler.RenderHandler;
 
 /**
  *
@@ -29,7 +28,7 @@ public class ClearLogDirective extends AbstractTaskDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         Date date = handler.getDate("clearDate");
         if (null == date) {
-            date = addMonths(getDate(), -3);
+            date = DateUtils.addMonths(CommonUtils.getDate(), -3);
         }
         SysSite site = getSite(handler);
         Map<String, Integer> map = new HashMap<>();

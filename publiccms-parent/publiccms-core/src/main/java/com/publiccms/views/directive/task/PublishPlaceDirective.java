@@ -1,25 +1,22 @@
 package com.publiccms.views.directive.task;
 
-import static com.publiccms.logic.component.template.TemplateComponent.INCLUDE_DIRECTORY;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.publiccms.common.base.AbstractTaskDirective;
+import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.FileComponent;
 import com.publiccms.logic.component.site.FileComponent.FileInfo;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.publiccms.common.handler.RenderHandler;
 
 import freemarker.template.TemplateException;
 
@@ -36,7 +33,7 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
         String path = handler.getString("path", SEPARATOR);
         SysSite site = getSite(handler);
         if (site.isUseSsi()) {
-            String fullPath = siteComponent.getWebTemplateFilePath(site, INCLUDE_DIRECTORY + SEPARATOR + path);
+            String fullPath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + SEPARATOR + path);
             File file = new File(fullPath);
             if (file.isFile()) {
                 Map<String, Boolean> map = new LinkedHashMap<>();
@@ -62,7 +59,7 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
         path = path.replace("\\", SEPARATOR).replace("//", SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
         List<FileInfo> list = fileComponent
-                .getFileList(siteComponent.getWebTemplateFilePath(site, INCLUDE_DIRECTORY + SEPARATOR + path));
+                .getFileList(siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + SEPARATOR + path));
         Map<String, CmsPlaceMetadata> metadataMap = metadataComponent
                 .getPlaceMetadataMap(siteComponent.getWebTemplateFilePath(site, path));
         for (FileInfo fileInfo : list) {

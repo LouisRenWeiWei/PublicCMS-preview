@@ -1,21 +1,20 @@
 package com.publiccms.views.directive.task;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.publiccms.common.base.AbstractTaskDirective;
+import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.publiccms.common.handler.RenderHandler;
 
 /**
  *
@@ -32,12 +31,12 @@ public class PublishCategoryDirective extends AbstractTaskDirective {
         Integer totalPage = handler.getInteger("totalPage");
         SysSite site = getSite(handler);
         Map<String, Boolean> map = new LinkedHashMap<>();
-        if (notEmpty(id)) {
+        if (CommonUtils.notEmpty(id)) {
             CmsCategory entity = service.getEntity(id);
             map.put(entity.getId().toString(), deal(site, entity, pageIndex, totalPage));
         } else {
             Integer[] ids = handler.getIntegerArray("ids");
-            if (notEmpty(ids)) {
+            if (CommonUtils.notEmpty(ids)) {
                 List<CmsCategory> entityList = service.getEntitys(ids);
                 for (CmsCategory entity : entityList) {
                     map.put(entity.getId().toString(), deal(site, entity, pageIndex, totalPage));

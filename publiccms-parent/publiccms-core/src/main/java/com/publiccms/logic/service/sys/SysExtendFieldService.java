@@ -1,19 +1,17 @@
 package com.publiccms.logic.service.sys;
 
-// Generated 2016-3-2 13:39:54 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.publiccms.entities.sys.SysExtendField;
-import com.publiccms.logic.dao.sys.SysExtendFieldDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysExtendField;
+import com.publiccms.logic.dao.sys.SysExtendFieldDao;
 
 /**
  *
@@ -40,11 +38,11 @@ public class SysExtendFieldService extends BaseService<SysExtendField> {
      * @param entitys
      */
     public void update(Integer extendId, List<SysExtendField> entitys) {
-        if (notEmpty(extendId)) {
+        if (CommonUtils.notEmpty(extendId)) {
             Set<String> codeList = new HashSet<>();
-            if (notEmpty(entitys)) {
+            if (CommonUtils.notEmpty(entitys)) {
                 for (SysExtendField entity : entitys) {
-                    if (notEmpty(entity.getId().getExtendId())) {
+                    if (CommonUtils.notEmpty(entity.getId().getExtendId())) {
                         update(entity.getId(), entity, ignoreProperties);
                     } else {
                         entity.getId().setExtendId(extendId);

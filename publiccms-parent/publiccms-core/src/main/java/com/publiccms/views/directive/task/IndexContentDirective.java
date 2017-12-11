@@ -1,15 +1,14 @@
 package com.publiccms.views.directive.task;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.IOException;
 
-import com.publiccms.common.base.AbstractTaskDirective;
-import com.publiccms.logic.service.cms.CmsContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.logic.service.cms.CmsContentService;
 
 /**
  *
@@ -23,9 +22,9 @@ public class IndexContentDirective extends AbstractTaskDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         Long id = handler.getLong("id");
         Long[] ids = handler.getLongArray("ids");
-        if (notEmpty(ids)) {
+        if (CommonUtils.notEmpty(ids)) {
             service.index(getSite(handler).getId(), ids);
-        } else if (notEmpty(id)) {
+        } else if (CommonUtils.notEmpty(id)) {
             service.index(getSite(handler).getId(), new Long[] { id });
         }
     }

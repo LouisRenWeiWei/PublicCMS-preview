@@ -1,20 +1,18 @@
 package com.publiccms.views.directive.sys;
 
-// Generated 2015-7-22 13:48:39 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.entities.sys.SysRoleMoudle;
-import com.publiccms.logic.service.sys.SysRoleMoudleService;
-import com.publiccms.logic.service.sys.SysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysRoleMoudle;
+import com.publiccms.logic.service.sys.SysRoleMoudleService;
+import com.publiccms.logic.service.sys.SysRoleService;
 
 /**
  *
@@ -28,13 +26,13 @@ public class SysRoleMoudleDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         Integer[] roleIds = handler.getIntegerArray("roleIds");
         Integer moudleId = handler.getInteger("moudleId");
-        if (notEmpty(roleIds)) {
-            if (notEmpty(moudleId)) {
+        if (CommonUtils.notEmpty(roleIds)) {
+            if (CommonUtils.notEmpty(moudleId)) {
                 SysRoleMoudle entity = service.getEntity(roleIds, moudleId);
                 handler.put("object", entity).render();
             } else {
                 Integer[] moudleIds = handler.getIntegerArray("moudleIds");
-                if (notEmpty(moudleIds)) {
+                if (CommonUtils.notEmpty(moudleIds)) {
                     Map<String, Boolean> map = new LinkedHashMap<>();
                     if (sysRoleService.showAllMoudle(roleIds)) {
                         for (Integer id : moudleIds) {

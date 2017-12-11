@@ -1,16 +1,12 @@
 package com.publiccms.logic.dao.home;
 
-// Generated 2016-11-19 9:58:46 by com.publiccms.common.source.SourceGenerator
-
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
-import com.publiccms.entities.home.HomeScore;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.home.HomeScore;
 
 /**
  *
@@ -31,16 +27,16 @@ public class HomeScoreDao extends BaseDao<HomeScore> {
      */
     public PageHandler getPage(Integer siteId, Long userId, String itemType, Long itemId, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from HomeScore bean");
-        if (notEmpty(siteId)) {
+        if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
-        if (notEmpty(userId)) {
+        if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
-        if (notEmpty(itemType)) {
+        if (CommonUtils.notEmpty(itemType)) {
             queryHandler.condition("bean.itemType = :itemType").setParameter("itemType", itemType);
         }
-        if (notEmpty(itemId)) {
+        if (CommonUtils.notEmpty(itemId)) {
             queryHandler.condition("bean.itemId = :itemId").setParameter("itemId", itemId);
         }
         queryHandler.order("bean.id desc");
@@ -50,7 +46,7 @@ public class HomeScoreDao extends BaseDao<HomeScore> {
     @Override
     protected HomeScore init(HomeScore entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(getDate());
+            entity.setCreateDate(CommonUtils.getDate());
         }
         return entity;
     }

@@ -1,12 +1,10 @@
 package com.publiccms.common.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
-
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.ui.ModelMap;
 
 /**
@@ -37,7 +35,7 @@ public abstract class ControllerUtils {
      * @return value是否为空
      */
     public static boolean verifyNotEmpty(String field, String value, Map<String, Object> model) {
-        if (isEmpty(value)) {
+        if (StringUtils.isEmpty(value)) {
             model.put(ERROR, "verify.notEmpty." + field);
             return true;
         }
@@ -180,7 +178,7 @@ public abstract class ControllerUtils {
      * @return value1是否不为空并等于value2
      */
     public static boolean verifyEquals(String field, Long value, Long value2, ModelMap model) {
-        if (notEmpty(value) && value.equals(value2)) {
+        if (CommonUtils.notEmpty(value) && value.equals(value2)) {
             model.addAttribute(ERROR, "verify.equals." + field);
             return true;
         }
@@ -195,7 +193,7 @@ public abstract class ControllerUtils {
      * @return value1是否不为空并不等于value2
      */
     public static boolean verifyNotEquals(String field, String value1, String value2, Map<String, Object> model) {
-        if (notEmpty(value1) && !value1.equals(value2)) {
+        if (CommonUtils.notEmpty(value1) && !value1.equals(value2)) {
             model.put(ERROR, "verify.notEquals." + field);
             return true;
         }
@@ -210,7 +208,7 @@ public abstract class ControllerUtils {
      * @return value1是否不为空并不等于value2
      */
     public static boolean verifyNotEquals(String field, Integer value1, Integer value2, Map<String, Object> model) {
-        if (notEmpty(value1) && !value1.equals(value2)) {
+        if (CommonUtils.notEmpty(value1) && !value1.equals(value2)) {
             model.put(ERROR, "verify.notEquals." + field);
             return true;
         }
@@ -225,7 +223,7 @@ public abstract class ControllerUtils {
      * @return value1是否不为空并不等于value2
      */
     public static boolean verifyNotEquals(String field, Long value1, Long value2, Map<String, Object> model) {
-        if (notEmpty(value1) && !value1.equals(value2)) {
+        if (CommonUtils.notEmpty(value1) && !value1.equals(value2)) {
             model.put(ERROR, "verify.notEquals." + field);
             return true;
         }

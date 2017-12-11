@@ -1,21 +1,12 @@
 package com.publiccms.controller.admin.cms;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.ControllerUtils.verifyCustom;
-import static com.publiccms.common.tools.RequestUtils.getIpAddress;
-import static com.publiccms.common.tools.ZipUtils.unzip;
-import static com.publiccms.common.tools.ZipUtils.unzipHere;
-import static com.publiccms.common.tools.ZipUtils.zip;
-import static com.publiccms.logic.service.log.LogLoginService.CHANNEL_WEB_MANAGER;
-import static org.apache.commons.lang3.StringUtils.join;
-
 import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
@@ -54,18 +49,20 @@ public class CmsWebFileAdminController extends AbstractController {
     @RequestMapping("save")
     public String save(String path, String content, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
-        if (notEmpty(path)) {
+        if (CommonUtils.notEmpty(path)) {
             try {
                 String filePath = siteComponent.getWebFilePath(site, path);
                 File webFile = new File(filePath);
-                if (notEmpty(webFile)) {
+                if (CommonUtils.notEmpty(webFile)) {
                     fileComponent.updateFile(webFile, content);
                     logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                            LogLoginService.CHANNEL_WEB_MANAGER, "update.web.webfile", getIpAddress(request), getDate(), path));
+                            LogLoginService.CHANNEL_WEB_MANAGER, "update.web.webfile", RequestUtils.getIpAddress(request),
+                            CommonUtils.getDate(), path));
                 } else {
                     fileComponent.createFile(webFile, content);
                     logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                            LogLoginService.CHANNEL_WEB_MANAGER, "save.web.webfile", getIpAddress(request), getDate(), path));
+                            LogLoginService.CHANNEL_WEB_MANAGER, "save.web.webfile", RequestUtils.getIpAddress(request),
+                            CommonUtils.getDate(), path));
                 }
             } catch (IOException e) {
                 model.addAttribute(ERROR, e.getMessage());
@@ -91,8 +88,9 @@ public class CmsWebFileAdminController extends AbstractController {
                 SysSite site = getSite(request);
                 path = path + SEPARATOR + file.getOriginalFilename();
                 fileComponent.upload(file, siteComponent.getWebFilePath(site, path));
-                logUploadService.save(new LogUpload(site.getId(), getAdminFromSession(session).getId(), CHANNEL_WEB_MANAGER,
-                        false, file.getSize(), getIpAddress(request), getDate(), path));
+                logUploadService.save(
+                        new LogUpload(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                false, file.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
             } catch (IOException e) {
                 model.addAttribute(ERROR, e.getMessage());
                 log.error(e.getMessage(), e);
@@ -111,17 +109,17 @@ public class CmsWebFileAdminController extends AbstractController {
      */
     @RequestMapping("delete")
     public String delete(String[] paths, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (notEmpty(paths)) {
+        if (CommonUtils.notEmpty(paths)) {
             SysSite site = getSite(request);
             for (String path : paths) {
                 String filePath = siteComponent.getWebFilePath(site, path);
-                if (verifyCustom("notExist.webfile", !fileComponent.deleteFile(filePath), model)) {
+                if (ControllerUtils.verifyCustom("notExist.webfile", !fileComponent.deleteFile(filePath), model)) {
                     return TEMPLATE_ERROR;
                 }
             }
-            logOperateService
-                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "delete.web.webfile", getIpAddress(request), getDate(), join(paths, ',')));
+            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.web.webfile", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), StringUtils.join(paths, ',')));
         }
         return TEMPLATE_DONE;
     }
@@ -135,20 +133,21 @@ public class CmsWebFileAdminController extends AbstractController {
      */
     @RequestMapping("zip")
     public String doZip(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (notEmpty(path)) {
+        if (CommonUtils.notEmpty(path)) {
             SysSite site = getSite(request);
             String filePath = siteComponent.getWebFilePath(site, path);
             File file = new File(filePath);
-            if (notEmpty(file) && file.isDirectory()) {
+            if (CommonUtils.notEmpty(file) && file.isDirectory()) {
                 try {
-                    zip(filePath, filePath + ".zip");
+                    ZipUtils.zip(filePath, filePath + ".zip");
                 } catch (IOException e) {
                     model.addAttribute(ERROR, e.getMessage());
                     log.error(e.getMessage(), e);
                 }
             }
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "zip.web.webfile", getIpAddress(request), getDate(), path));
+            logOperateService
+                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "zip.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
         return TEMPLATE_DONE;
     }
@@ -187,24 +186,25 @@ public class CmsWebFileAdminController extends AbstractController {
      * @param model
      */
     private void doUnzip(String path, boolean here, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (notEmpty(path) && path.toLowerCase().endsWith(".zip")) {
+        if (CommonUtils.notEmpty(path) && path.toLowerCase().endsWith(".zip")) {
             SysSite site = getSite(request);
             String filePath = siteComponent.getWebFilePath(site, path);
             File file = new File(filePath);
-            if (notEmpty(file) && file.isFile()) {
+            if (CommonUtils.notEmpty(file) && file.isFile()) {
                 try {
                     if (here) {
-                        unzipHere(filePath);
+                        ZipUtils.unzipHere(filePath);
                     } else {
-                        unzip(filePath, filePath.substring(0, filePath.length() - 4), true);
+                        ZipUtils.unzip(filePath, filePath.substring(0, filePath.length() - 4), true);
                     }
                 } catch (IOException e) {
                     model.addAttribute(ERROR, e.getMessage());
                     log.error(e.getMessage(), e);
                 }
             }
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "unzip.web.webfile", getIpAddress(request), getDate(), path));
+            logOperateService
+                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "unzip.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
     }
 
@@ -218,14 +218,15 @@ public class CmsWebFileAdminController extends AbstractController {
      */
     @RequestMapping("createDirectory")
     public String createDirectory(String path, String fileName, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (null != path && notEmpty(fileName)) {
+        if (null != path && CommonUtils.notEmpty(fileName)) {
             SysSite site = getSite(request);
             path = path + SEPARATOR + fileName;
             String filePath = siteComponent.getWebFilePath(site, path);
             File file = new File(filePath);
             file.mkdirs();
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "createDirectory.web.webfile", getIpAddress(request), getDate(), path));
+            logOperateService
+                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "createDirectory.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
         return TEMPLATE_DONE;
     }

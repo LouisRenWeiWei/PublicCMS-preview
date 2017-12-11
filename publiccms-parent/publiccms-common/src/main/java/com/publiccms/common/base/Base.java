@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * 
  */
 public interface Base {
-
     /**
      * Json Mapper
      */

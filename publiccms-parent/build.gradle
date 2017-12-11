@@ -25,7 +25,10 @@ subprojects{
     ext {
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // http://projects.spring.io/spring-framework/
-        springVersion = "4.3.9.RELEASE"
+        springVersion = "4.3.12.RELEASE"
+        // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+        // https://projects.spring.io/spring-boot/
+        springBootVersion = "1.5.8.RELEASE"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.3"
@@ -33,16 +36,16 @@ subprojects{
         jacksonVersion = "2.8.9"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
-        hibernateVersion = "5.1.8.Final"
+        hibernateVersion = "5.1.10.Final"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-search
         // http://hibernate.org/search/downloads/
-        hibernateSearchVersion = "5.6.2.Final"
+        hibernateSearchVersion = "5.6.4.Final"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.26-incubating"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
-        mybatisVersion = "3.4.4"
+        mybatisVersion = "3.4.5"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
-        luceneVersion = "5.5.4"
+        luceneVersion = "5.5.5"
         // http://mvnrepository.com/artifact/redis.clients/jedis
         jedisVersion = "2.9.0"
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz

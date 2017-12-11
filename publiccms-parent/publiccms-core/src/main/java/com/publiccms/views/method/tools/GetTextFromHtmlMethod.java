@@ -1,13 +1,12 @@
 package com.publiccms.views.method.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.HtmlUtils.removeHtmlTag;
-
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.HtmlUtils;
 
 import freemarker.template.TemplateModelException;
 
@@ -23,8 +22,8 @@ public class GetTextFromHtmlMethod extends BaseMethod {
     @Override
     public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
         String html = getString(0, arguments);
-        if (notEmpty(html)) {
-            return removeHtmlTag(html);
+        if (CommonUtils.notEmpty(html)) {
+            return HtmlUtils.removeHtmlTag(html);
         }
         return null;
     }

@@ -1,24 +1,23 @@
 package com.publiccms.test;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import com.publiccms.entities.cms.CmsContent;
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.service.cms.CmsContentService;
-import com.publiccms.logic.service.sys.SysSiteService;
-import com.publiccms.logic.service.tools.SqlService;
-import com.publiccms.test.config.CmsTestConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.sys.SysSiteService;
+import com.publiccms.logic.service.tools.SqlService;
+import com.publiccms.test.config.CmsTestConfig;
 
 /**
  *
@@ -44,7 +43,7 @@ public class SysSiteServiceTest {
     @SuppressWarnings("unchecked")
     @Test
     public void searchTest() {
-        PageHandler page = cmsService.query(1, "啊", null, null, getDate(), null, null);
+        PageHandler page = cmsService.query(1, "啊", null, null, CommonUtils.getDate(), null, null);
         for (CmsContent site : (List<CmsContent>) page.getList()) {
             System.out.println(site.getTitle());
         }

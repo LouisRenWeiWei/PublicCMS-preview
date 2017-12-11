@@ -1,12 +1,11 @@
 package com.publiccms.views.method.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
+import com.publiccms.common.tools.CommonUtils;
 
 import freemarker.template.TemplateModelException;
 
@@ -22,7 +21,7 @@ public class GetRandomMethod extends BaseMethod {
     @Override
     public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
         Integer max = getInteger(0, arguments);
-        if (notEmpty(max)) {
+        if (CommonUtils.notEmpty(max)) {
             return random.nextInt(max);
         }
         return random.nextInt();

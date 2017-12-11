@@ -1,16 +1,12 @@
 package com.publiccms.logic.dao.home;
 
-// Generated 2016-11-13 11:38:14 by com.publiccms.common.source.SourceGenerator
-
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
-import com.publiccms.entities.home.HomeActive;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.home.HomeActive;
 
 /**
  *
@@ -30,13 +26,13 @@ public class HomeActiveDao extends BaseDao<HomeActive> {
      */
     public PageHandler getPage(String itemType, Long userId, Long[] userIds, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from HomeActive bean");
-        if (notEmpty(itemType)) {
+        if (CommonUtils.notEmpty(itemType)) {
             queryHandler.condition("bean.itemType = :itemType").setParameter("itemType", itemType);
         }
-        if (notEmpty(userId)) {
+        if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
-        if (notEmpty(userIds)) {
+        if (CommonUtils.notEmpty(userIds)) {
             queryHandler.condition("bean.userIds = :userIds").setParameter("userIds", userIds);
         }
         queryHandler.order("bean.id desc");
@@ -46,7 +42,7 @@ public class HomeActiveDao extends BaseDao<HomeActive> {
     @Override
     protected HomeActive init(HomeActive entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(getDate());
+            entity.setCreateDate(CommonUtils.getDate());
         }
         return entity;
     }

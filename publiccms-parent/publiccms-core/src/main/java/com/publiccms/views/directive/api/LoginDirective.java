@@ -1,16 +1,18 @@
 package com.publiccms.views.directive.api;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.RequestUtils.getIpAddress;
-import static com.publiccms.common.tools.VerificationUtils.md5Encode;
-import static org.apache.commons.lang3.StringUtils.trim;
-
 import java.io.IOException;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.publiccms.common.base.AbstractAppDirective;
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogLogin;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysSite;
@@ -19,10 +21,6 @@ import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.publiccms.common.handler.RenderHandler;
 
 /**
  *
@@ -34,24 +32,24 @@ public class LoginDirective extends AbstractAppDirective {
 
     @Override
     public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
-        String username = trim(handler.getString("username"));
-        String password = trim(handler.getString("password"));
+        String username = StringUtils.trim(handler.getString("username"));
+        String password = StringUtils.trim(handler.getString("password"));
         boolean result = false;
-        if (notEmpty(username) && notEmpty(password)) {
+        if (CommonUtils.notEmpty(username) && CommonUtils.notEmpty(password)) {
             SysSite site = getSite(handler);
             if (AbstractController.verifyNotEMail(username)) {
                 user = service.findByName(site.getId(), username);
             } else {
                 user = service.findByEmail(site.getId(), username);
             }
-            String ip = getIpAddress(handler.getRequest());
-            if (null != user && !user.isDisabled() && user.getPassword().equals(md5Encode(password))) {
+            String ip = RequestUtils.getIpAddress(handler.getRequest());
+            if (null != user && !user.isDisabled() && user.getPassword().equals(VerificationUtils.md5Encode(password))) {
                 String authToken = UUID.randomUUID().toString();
-                sysUserTokenService
-                        .save(new SysUserToken(authToken, site.getId(), user.getId(), app.getChannel(), getDate(), ip));
+                sysUserTokenService.save(
+                        new SysUserToken(authToken, site.getId(), user.getId(), app.getChannel(), CommonUtils.getDate(), ip));
                 service.updateLoginStatus(user.getId(), ip);
-                logLoginService
-                        .save(new LogLogin(site.getId(), username, user.getId(), ip, app.getChannel(), true, getDate(), null));
+                logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, app.getChannel(), true,
+                        CommonUtils.getDate(), null));
                 user.setPassword(null);
                 result = true;
                 handler.put("authToken", authToken).put("user", user);

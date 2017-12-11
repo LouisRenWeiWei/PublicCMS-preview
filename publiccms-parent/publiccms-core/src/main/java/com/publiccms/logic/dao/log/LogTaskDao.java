@@ -1,16 +1,14 @@
 package com.publiccms.logic.dao.log;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.Date;
 
-import com.publiccms.entities.log.LogTask;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.log.LogTask;
 
 /**
  *
@@ -35,10 +33,10 @@ public class LogTaskDao extends BaseDao<LogTask> {
             String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new LogTask(id, siteId, taskId, begintime, endtime, success) from LogTask bean");
-        if (notEmpty(siteId)) {
+        if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
-        if (notEmpty(taskId)) {
+        if (CommonUtils.notEmpty(taskId)) {
             queryHandler.condition("bean.taskId = :taskId").setParameter("taskId", taskId);
         }
         if (null != startBegintime) {
@@ -63,9 +61,9 @@ public class LogTaskDao extends BaseDao<LogTask> {
      * @return number of data deleted
      */
     public int delete(Integer siteId, Date begintime) {
-        if (notEmpty(siteId) || null != begintime) {
+        if (CommonUtils.notEmpty(siteId) || null != begintime) {
             QueryHandler queryHandler = getDeleteQueryHandler("from LogTask bean");
-            if (notEmpty(siteId)) {
+            if (CommonUtils.notEmpty(siteId)) {
                 queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
             }
             if (null != begintime) {
@@ -79,7 +77,7 @@ public class LogTaskDao extends BaseDao<LogTask> {
     @Override
     protected LogTask init(LogTask entity) {
         if (null == entity.getBegintime()) {
-            entity.setBegintime(getDate());
+            entity.setBegintime(CommonUtils.getDate());
         }
         return entity;
     }

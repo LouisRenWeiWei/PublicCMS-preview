@@ -1,17 +1,16 @@
 package com.publiccms.views.directive.tools;
 
-import static com.publiccms.common.tools.RequestUtils.getUserAgent;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.publiccms.common.base.AbstractTemplateDirective;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.RequestUtils;
 
 import eu.bitwalker.useragentutils.UserAgent;
 
@@ -27,7 +26,7 @@ public class UserAgentDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         HttpServletRequest request = handler.getRequest();
         if (null != request) {
-            String userAgent = getUserAgent(request);
+            String userAgent = RequestUtils.getUserAgent(request);
             UserAgent ua = UserAgent.parseUserAgentString(userAgent);
             Map<String, Object> map = new HashMap<>();
             map.put("id", ua.getId());

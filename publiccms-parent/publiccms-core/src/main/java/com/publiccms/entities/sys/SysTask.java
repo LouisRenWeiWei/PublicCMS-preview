@@ -1,7 +1,5 @@
 package com.publiccms.entities.sys;
 
-import static com.publiccms.common.database.CmsUpgrader.IDENTIFIER_GENERATOR;
-
 import java.util.Date;
 
 // Generated 2016-1-19 11:28:06 by Hibernate Tools 4.3.1
@@ -14,9 +12,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -24,6 +24,7 @@ import com.publiccms.common.generator.annotation.GeneratorColumn;
  */
 @Entity
 @Table(name = "sys_task")
+@DynamicUpdate
 public class SysTask implements java.io.Serializable {
     /**
      * 
@@ -70,7 +71,7 @@ public class SysTask implements java.io.Serializable {
 
     @Id
     @GeneratedValue(generator = "cmsGenerator")
-    @GenericGenerator(name = "cmsGenerator", strategy = IDENTIFIER_GENERATOR)
+    @GenericGenerator(name = "cmsGenerator", strategy = CmsUpgrader.IDENTIFIER_GENERATOR)
     @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return this.id;

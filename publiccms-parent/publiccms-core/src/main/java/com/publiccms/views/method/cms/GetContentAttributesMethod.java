@@ -1,18 +1,17 @@
 package com.publiccms.views.method.cms;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.ExtendUtils.getExtendMap;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.publiccms.entities.cms.CmsContentAttribute;
-import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ExtendUtils;
+import com.publiccms.entities.cms.CmsContentAttribute;
+import com.publiccms.logic.service.cms.CmsContentAttributeService;
 
 import freemarker.template.TemplateModelException;
 
@@ -28,10 +27,10 @@ public class GetContentAttributesMethod extends BaseMethod {
     @Override
     public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
         Long[] ids = getLongArray(0, arguments);
-        if (notEmpty(ids)) {
+        if (CommonUtils.notEmpty(ids)) {
             Map<String, Map<String, String>> resultMap = new HashMap<>();
             for (CmsContentAttribute entity : service.getEntitysWithoutText(ids)) {
-                Map<String, String> map = getExtendMap(entity.getData());
+                Map<String, String> map = ExtendUtils.getExtendMap(entity.getData());
                 map.put("source", entity.getSource());
                 map.put("sourceUrl", entity.getSourceUrl());
                 map.put("wordCount", String.valueOf(entity.getWordCount()));

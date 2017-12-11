@@ -1,23 +1,21 @@
 package com.publiccms.logic.service.sys;
 
-// Generated 2015-7-24 16:54:11 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static org.apache.commons.lang3.StringUtils.split;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.publiccms.entities.sys.SysMoudle;
-import com.publiccms.entities.sys.SysRoleAuthorized;
-import com.publiccms.entities.sys.SysRoleAuthorizedId;
-import com.publiccms.logic.dao.sys.SysRoleAuthorizedDao;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysMoudle;
+import com.publiccms.entities.sys.SysRoleAuthorized;
+import com.publiccms.entities.sys.SysRoleAuthorizedId;
+import com.publiccms.logic.dao.sys.SysRoleAuthorizedDao;
 
 /**
  *
@@ -55,16 +53,16 @@ public class SysRoleAuthorizedService extends BaseService<SysRoleAuthorized> {
      * @param pageUrls
      */
     public void dealRoleMoudles(Integer roleId, boolean showAllMoudle, List<SysMoudle> moudles, Set<String> pageUrls) {
-        if (notEmpty(roleId)) {
+        if (CommonUtils.notEmpty(roleId)) {
             Set<String> urls = new HashSet<>();
-            if (notEmpty(moudles)) {
+            if (CommonUtils.notEmpty(moudles)) {
                 for (SysMoudle moudle : moudles) {
-                    if (notEmpty(moudle.getUrl()) && !showAllMoudle) {
+                    if (CommonUtils.notEmpty(moudle.getUrl()) && !showAllMoudle) {
                         int index = moudle.getUrl().indexOf("?");
                         urls.add(moudle.getUrl().substring(0, index > 0 ? index : moudle.getUrl().length()));
                     }
-                    if (notEmpty(moudle.getAuthorizedUrl())) {
-                        for (String url : split(moudle.getAuthorizedUrl(), ',')) {
+                    if (CommonUtils.notEmpty(moudle.getAuthorizedUrl())) {
+                        for (String url : StringUtils.split(moudle.getAuthorizedUrl(), ',')) {
                             urls.add(url);
                         }
                     }
@@ -99,8 +97,8 @@ public class SysRoleAuthorizedService extends BaseService<SysRoleAuthorized> {
      */
     @Transactional(readOnly = true)
     public long count(String roleIds, String url) {
-        String[] roleIdArray = split(roleIds, ',');
-        if (notEmpty(roleIds) && 0 < roleIdArray.length) {
+        String[] roleIdArray = StringUtils.split(roleIds, ',');
+        if (CommonUtils.notEmpty(roleIds) && 0 < roleIdArray.length) {
             Integer[] intRoleIds = new Integer[roleIdArray.length];
             for (int i = 0; i < roleIdArray.length; i++) {
                 intRoleIds[i] = Integer.parseInt(roleIdArray[i]);

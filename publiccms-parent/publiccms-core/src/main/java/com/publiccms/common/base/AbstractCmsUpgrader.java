@@ -1,17 +1,11 @@
 package com.publiccms.common.base;
 
-import static com.publiccms.common.constants.CommonConstants.CMS_FILEPATH;
-import static com.publiccms.logic.component.site.SiteComponent.MODEL_FILE;
-import static com.publiccms.logic.component.site.SiteComponent.SITE_PATH_PREFIX;
-import static com.publiccms.logic.component.site.SiteComponent.TEMPLATE_PATH;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
-import java.nio.channels.FileLock;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +19,8 @@ import java.util.Properties;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.publiccms.common.base.Base;
+import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.entities.ExtendField;
 
@@ -66,7 +61,7 @@ public abstract class AbstractCmsUpgrader implements Base {
      * @return version list
      */
     public abstract List<String> getVersionList();
-    
+
     /**
      * @return default port
      */
@@ -88,8 +83,8 @@ public abstract class AbstractCmsUpgrader implements Base {
                 ResultSet rs = statement.executeQuery("select * from cms_model");) {
             while (rs.next()) {
                 CmsModel entity = new CmsModel();
-                String filePath = CMS_FILEPATH + SEPARATOR + TEMPLATE_PATH + SEPARATOR + SITE_PATH_PREFIX
-                        + rs.getString("site_id") + SEPARATOR + MODEL_FILE;
+                String filePath = CommonConstants.CMS_FILEPATH + SEPARATOR + SiteComponent.TEMPLATE_PATH + SEPARATOR
+                        + SiteComponent.SITE_PATH_PREFIX + rs.getString("site_id") + SEPARATOR + SiteComponent.MODEL_FILE;
                 File file = new File(filePath);
                 file.getParentFile().mkdirs();
                 Map<String, CmsModel> modelMap;
@@ -125,8 +120,7 @@ public abstract class AbstractCmsUpgrader implements Base {
                     entity.setExtendList(extendList);
                 }
                 modelMap.put(entity.getId(), entity);
-                try (FileOutputStream outputStream = new FileOutputStream(file);
-                        FileLock fileLock = outputStream.getChannel().tryLock();) {
+                try (FileOutputStream outputStream = new FileOutputStream(file);) {
                     objectMapper.writeValue(outputStream, modelMap);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -139,8 +133,8 @@ public abstract class AbstractCmsUpgrader implements Base {
         try (Statement statement = connection.createStatement();
                 ResultSet rs = statement.executeQuery("select * from sys_site");) {
             while (rs.next()) {
-                String filePath = CMS_FILEPATH + SEPARATOR + TEMPLATE_PATH + SEPARATOR + SITE_PATH_PREFIX + rs.getString("id")
-                        + SEPARATOR + MODEL_FILE;
+                String filePath = CommonConstants.CMS_FILEPATH + SEPARATOR + SiteComponent.TEMPLATE_PATH + SEPARATOR
+                        + SiteComponent.SITE_PATH_PREFIX + rs.getString("id") + SEPARATOR + SiteComponent.MODEL_FILE;
                 File file = new File(filePath);
                 try {
                     Map<String, CmsModel> modelMap = objectMapper.readValue(file, new TypeReference<Map<String, CmsModel>>() {

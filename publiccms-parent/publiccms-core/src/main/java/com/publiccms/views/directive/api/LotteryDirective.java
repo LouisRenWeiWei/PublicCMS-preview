@@ -1,12 +1,16 @@
 package com.publiccms.views.directive.api;
 
 //Generated 2015-5-10 17:54:56 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.RequestUtils.getIpAddress;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.publiccms.common.base.AbstractAppDirective;
+import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsLottery;
 import com.publiccms.entities.cms.CmsLotteryUser;
 import com.publiccms.entities.sys.SysApp;
@@ -14,10 +18,6 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.service.cms.CmsLotteryService;
 import com.publiccms.logic.service.cms.CmsLotteryUserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.publiccms.common.handler.RenderHandler;
 
 /**
  *
@@ -37,7 +37,7 @@ public class LotteryDirective extends AbstractAppDirective {
                 if (lottery.getLotteryCount() - lotteryUserService
                         .getPage(lotteryId, user.getId(), null, null, null, null, null, null).getTotalCount() > 0) {
                     CmsLotteryUser entity = new CmsLotteryUser(lotteryId, user.getId(), false, false,
-                            getIpAddress(handler.getRequest()), getDate());
+                            RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate());
                     entity.setUserId(user.getId());
                     if (lottery.getFractions() > random.nextInt(lottery.getNumerator()) && lottery.getLastGift() > 0
                             && lottery.getLotteryCount() > lotteryUserService

@@ -1,16 +1,14 @@
 package com.publiccms.logic.dao.sys;
 
-// Generated 2016-3-2 13:39:54 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import com.publiccms.entities.sys.SysExtendField;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysExtendField;
 
 /**
  *
@@ -26,7 +24,7 @@ public class SysExtendFieldDao extends BaseDao<SysExtendField> {
      */
     @SuppressWarnings("unchecked")
     public List<SysExtendField> getList(Integer extendId) {
-        if (notEmpty(extendId)) {
+        if (CommonUtils.notEmpty(extendId)) {
             QueryHandler queryHandler = getQueryHandler("from SysExtendField bean");
             queryHandler.condition("bean.id.extendId = :extendId").setParameter("extendId", extendId);
             queryHandler.order("bean.sort asc");

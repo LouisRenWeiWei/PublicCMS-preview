@@ -1,16 +1,14 @@
 package com.publiccms.logic.dao.log;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.Date;
 
-import com.publiccms.entities.log.LogUpload;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.log.LogUpload;
 
 /**
  *
@@ -35,19 +33,19 @@ public class LogUploadDao extends BaseDao<LogUpload> {
     public PageHandler getPage(Integer siteId, Long userId, String channel, Boolean image, String filePath, String orderField,
             String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from LogUpload bean");
-        if (notEmpty(siteId)) {
+        if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
-        if (notEmpty(userId)) {
+        if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
-        if (notEmpty(channel)) {
+        if (CommonUtils.notEmpty(channel)) {
             queryHandler.condition("bean.channel = :channel").setParameter("channel", channel);
         }
         if (null != image) {
             queryHandler.condition("bean.image = :image").setParameter("image", image);
         }
-        if (notEmpty(filePath)) {
+        if (CommonUtils.notEmpty(filePath)) {
             queryHandler.condition("bean.filePath like :filePath").setParameter("filePath", like(filePath));
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
@@ -75,9 +73,9 @@ public class LogUploadDao extends BaseDao<LogUpload> {
      * @return number of data deleted
      */
     public int delete(Integer siteId, Date createDate) {
-        if (notEmpty(siteId) || null != createDate) {
+        if (CommonUtils.notEmpty(siteId) || null != createDate) {
             QueryHandler queryHandler = getDeleteQueryHandler("from LogUpload bean");
-            if (notEmpty(siteId)) {
+            if (CommonUtils.notEmpty(siteId)) {
                 queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
             }
             if (null != createDate) {
@@ -91,7 +89,7 @@ public class LogUploadDao extends BaseDao<LogUpload> {
     @Override
     protected LogUpload init(LogUpload entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(getDate());
+            entity.setCreateDate(CommonUtils.getDate());
         }
         return entity;
     }

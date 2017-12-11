@@ -1,10 +1,5 @@
 package com.publiccms.common.database;
 
-import static com.publiccms.common.tools.VerificationUtils.base64Decode;
-import static com.publiccms.common.tools.VerificationUtils.decrypt;
-import static java.lang.Integer.parseInt;
-import static com.publiccms.common.constants.CommonConstants.ENCRYPT_KEY;
-
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,7 +12,9 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.datasource.MultiDataSource;
+import com.publiccms.common.tools.VerificationUtils;
 
 /**
  *
@@ -75,17 +72,17 @@ public class CmsDataSource extends MultiDataSource {
         String password = properties.getProperty("jdbc.password");
         String encryptPassword = properties.getProperty("jdbc.encryptPassword");
         if (null != encryptPassword) {
-            password = decrypt(base64Decode(encryptPassword), ENCRYPT_KEY);
+            password = VerificationUtils.decrypt(VerificationUtils.base64Decode(encryptPassword), CommonConstants.ENCRYPT_KEY);
         }
         dataSource.setPassword(password);
         dataSource.setAutoCommitOnClose(Boolean.parseBoolean(properties.getProperty("cpool.autoCommitOnClose")));
-        dataSource.setCheckoutTimeout(parseInt(properties.getProperty("cpool.checkoutTimeout")));
-        dataSource.setInitialPoolSize(parseInt(properties.getProperty("cpool.minPoolSize")));
-        dataSource.setMinPoolSize(parseInt(properties.getProperty("cpool.minPoolSize")));
-        dataSource.setMaxPoolSize(parseInt(properties.getProperty("cpool.maxPoolSize")));
-        dataSource.setMaxIdleTime(parseInt(properties.getProperty("cpool.maxIdleTime")));
-        dataSource.setAcquireIncrement(parseInt(properties.getProperty("cpool.acquireIncrement")));
-        dataSource.setMaxIdleTimeExcessConnections(parseInt(properties.getProperty("cpool.maxIdleTimeExcessConnections")));
+        dataSource.setCheckoutTimeout(Integer.parseInt(properties.getProperty("cpool.checkoutTimeout")));
+        dataSource.setInitialPoolSize(Integer.parseInt(properties.getProperty("cpool.minPoolSize")));
+        dataSource.setMinPoolSize(Integer.parseInt(properties.getProperty("cpool.minPoolSize")));
+        dataSource.setMaxPoolSize(Integer.parseInt(properties.getProperty("cpool.maxPoolSize")));
+        dataSource.setMaxIdleTime(Integer.parseInt(properties.getProperty("cpool.maxIdleTime")));
+        dataSource.setAcquireIncrement(Integer.parseInt(properties.getProperty("cpool.acquireIncrement")));
+        dataSource.setMaxIdleTimeExcessConnections(Integer.parseInt(properties.getProperty("cpool.maxIdleTimeExcessConnections")));
         return dataSource;
     }
 

@@ -7,7 +7,7 @@
             queryHandler.condition("bean.${a.name} <= :end${a.name?cap_first}").setParameter("end${a.name?cap_first}", end${a.name?cap_first});
         }
     <#else>
-        if (<#if ["Long","Integer","String"]?seq_contains(a.type)>notEmpty(${a.name})<#else>null != ${a.name}</#if>) {
+        if (<#if ["Long","Integer","String"]?seq_contains(a.type)>CommonUtils.notEmpty(${a.name})<#else>null != ${a.name}</#if>) {
             queryHandler.condition("<@condition a/>").setParameter("${a.name}", <#if "String"=a.type&&a.like>like(${a.name})<#else>${a.name}</#if>);
         }
     </#if>

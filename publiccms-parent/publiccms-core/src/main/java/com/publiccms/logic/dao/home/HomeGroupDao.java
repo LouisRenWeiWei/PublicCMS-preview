@@ -1,16 +1,12 @@
 package com.publiccms.logic.dao.home;
 
-// Generated 2016-11-19 9:58:46 by com.publiccms.common.source.SourceGenerator
-
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
-import com.publiccms.entities.home.HomeGroup;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.home.HomeGroup;
 
 /**
  *
@@ -32,10 +28,10 @@ public class HomeGroupDao extends BaseDao<HomeGroup> {
     public PageHandler getPage(Integer siteId, Long userId, String orderField, String orderType, Integer pageIndex,
             Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from HomeGroup bean");
-        if (notEmpty(siteId)) {
+        if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
-        if (notEmpty(userId)) {
+        if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
@@ -60,7 +56,7 @@ public class HomeGroupDao extends BaseDao<HomeGroup> {
     @Override
     protected HomeGroup init(HomeGroup entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(getDate());
+            entity.setCreateDate(CommonUtils.getDate());
         }
         return entity;
     }

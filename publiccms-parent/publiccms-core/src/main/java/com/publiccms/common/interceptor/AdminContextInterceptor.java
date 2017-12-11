@@ -1,27 +1,25 @@
 package com.publiccms.common.interceptor;
 
-import static com.publiccms.common.tools.RequestUtils.getEncodePath;
-import static org.apache.commons.lang3.StringUtils.split;
-import static com.publiccms.common.base.AbstractController.setAdminToSession;
-import static com.publiccms.common.base.AbstractController.getAdminFromSession;
-import static com.publiccms.common.constants.CommonConstants.getCookiesAdmin;
-import static com.publiccms.logic.service.log.LogLoginService.CHANNEL_WEB_MANAGER;
-
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.base.Base;
+import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysRoleAuthorizedService;
 import com.publiccms.logic.service.sys.SysRoleService;
 import com.publiccms.logic.service.sys.SysUserService;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.publiccms.common.base.Base;
 
 /**
  *
@@ -61,8 +59,8 @@ public class AdminContextInterceptor extends WebContextInterceptor implements Ba
         } else if (verifyNeedLogin(path)) {
             HttpSession session = request.getSession();
             SysSite site = siteComponent.getSite(request.getServerName());
-            SysUser user = initUser(getAdminFromSession(session), CHANNEL_WEB_MANAGER, getCookiesAdmin(), site, request,
-                    response);
+            SysUser user = initUser(AbstractController.getAdminFromSession(session), LogLoginService.CHANNEL_WEB_MANAGER,
+                    CommonConstants.getCookiesAdmin(), site, request, response);
             if (null == user) {
                 try {
                     redirectLogin(ctxPath, path, request.getQueryString(), request.getHeader("X-Requested-With"), response);
@@ -100,7 +98,7 @@ public class AdminContextInterceptor extends WebContextInterceptor implements Ba
             user.setNickName(entity.getNickName());
             user.setRoles(entity.getRoles());
             user.setDeptId(entity.getDeptId());
-            setAdminToSession(request.getSession(), user);
+            AbstractController.setAdminToSession(session, user);
         }
         return true;
     }
@@ -114,13 +112,13 @@ public class AdminContextInterceptor extends WebContextInterceptor implements Ba
         } else {
             StringBuilder sb = new StringBuilder(ctxPath);
             sb.append(adminBasePath).append(loginUrl).append("?returnUrl=");
-            sb.append(getEncodePath(adminBasePath + path, queryString));
+            sb.append(RequestUtils.getEncodePath(adminBasePath + path, queryString));
             response.sendRedirect(sb.toString());
         }
     }
 
     private boolean ownsAllRight(String roles) {
-        String[] roleIdArray = split(roles, ",");
+        String[] roleIdArray = StringUtils.split(roles, ",");
         if (null != roles && 0 < roleIdArray.length) {
             Integer[] roleIds = new Integer[roleIdArray.length];
             for (int i = 0; i < roleIdArray.length; i++) {

@@ -1,13 +1,12 @@
 package com.publiccms.logic.dao.cms;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
-import com.publiccms.entities.cms.CmsCategoryModel;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsCategoryModel;
 
 /**
  *
@@ -26,10 +25,10 @@ public class CmsCategoryModelDao extends BaseDao<CmsCategoryModel> {
      */
     public PageHandler getPage(String modelId, Integer categoryId, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsCategoryModel bean");
-        if (notEmpty(modelId)) {
+        if (CommonUtils.notEmpty(modelId)) {
             queryHandler.condition("bean.id.modelId = :modelId").setParameter("modelId", modelId);
         }
-        if (notEmpty(categoryId)) {
+        if (CommonUtils.notEmpty(categoryId)) {
             queryHandler.condition("bean.id.categoryId = :categoryId").setParameter("categoryId", categoryId);
         }
         queryHandler.order("bean.id desc");

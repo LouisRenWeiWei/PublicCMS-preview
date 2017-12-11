@@ -1,21 +1,19 @@
 package com.publiccms.views.directive.sys;
 
-// Generated 2015-7-22 13:48:39 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysRoleAuthorized;
 import com.publiccms.entities.sys.SysRoleAuthorizedId;
 import com.publiccms.logic.service.sys.SysRoleAuthorizedService;
 import com.publiccms.logic.service.sys.SysRoleService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.publiccms.common.handler.RenderHandler;
 
 /**
  *
@@ -30,18 +28,18 @@ public class SysAuthorizedDirective extends AbstractTemplateDirective {
         Integer[] roleIds = handler.getIntegerArray("roleIds");
         String url = handler.getString("url");
         String[] urls = handler.getStringArray("urls");
-        if (notEmpty(roleIds)) {
-            if (notEmpty(url) && sysRoleService.showAllMoudle(roleIds)) {
+        if (CommonUtils.notEmpty(roleIds)) {
+            if (CommonUtils.notEmpty(url) && sysRoleService.showAllMoudle(roleIds)) {
                 handler.put("object", true).render();
-            } else if (notEmpty(url)) {
+            } else if (CommonUtils.notEmpty(url)) {
                 SysRoleAuthorizedId[] ids = new SysRoleAuthorizedId[roleIds.length];
                 for (int i = 0; i < roleIds.length; i++) {
                     ids[i] = new SysRoleAuthorizedId(roleIds[i], url);
                 }
-                if (notEmpty(service.getEntitys(ids))) {
+                if (CommonUtils.notEmpty(service.getEntitys(ids))) {
                     handler.put("object", true).render();
                 }
-            } else if (notEmpty(urls)) {
+            } else if (CommonUtils.notEmpty(urls)) {
                 Map<String, Boolean> map = new LinkedHashMap<>();
                 if (sysRoleService.showAllMoudle(roleIds)) {
                     for (String u : urls) {

@@ -1,15 +1,14 @@
 package com.publiccms.views.method.home;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.List;
 
-import com.publiccms.entities.home.HomeGroupPostContent;
-import com.publiccms.logic.service.home.HomeGroupPostContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.home.HomeGroupPostContent;
+import com.publiccms.logic.service.home.HomeGroupPostContentService;
 
 import freemarker.template.TemplateModelException;
 
@@ -25,7 +24,7 @@ public class GetHomeGroupPostContentMethod extends BaseMethod {
     @Override
     public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
         Long id = getLong(0, arguments);
-        if (notEmpty(id)) {
+        if (CommonUtils.notEmpty(id)) {
             HomeGroupPostContent entity = service.getEntity(id);
             if (null != entity) {
                 return entity.getContent();

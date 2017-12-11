@@ -12,6 +12,22 @@ import java.util.Map;
  */
 public class DateFormatUtils {
     private static ThreadLocal<Map<String, DateFormat>> threadLocal = new ThreadLocal<>();
+    /**
+     * 
+     */
+    public static final String FULL_DATE_FORMAT_STRING = "yyyy-MM-dd HH:mm:ss";
+    /**
+     * 
+     */
+    public static final String SHORT_DATE_FORMAT_STRING = "yyyy-MM-dd";
+    /**
+     * 
+     */
+    public static final int FULL_DATE_LENGTH = FULL_DATE_FORMAT_STRING.length();
+    /**
+     * 
+     */
+    public static final int SHORT_DATE_LENGTH = SHORT_DATE_FORMAT_STRING.length();
 
     /**
      * @param pattern

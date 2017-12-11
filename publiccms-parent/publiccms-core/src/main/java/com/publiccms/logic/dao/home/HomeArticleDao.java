@@ -1,14 +1,12 @@
 package com.publiccms.logic.dao.home;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
-import com.publiccms.entities.home.HomeArticle;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.home.HomeArticle;
 
 /**
  *
@@ -32,13 +30,13 @@ public class HomeArticleDao extends BaseDao<HomeArticle> {
     public PageHandler getPage(Integer siteId, Long directoryId, Long userId, Boolean disabled, String orderField,
             String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from HomeArticle bean");
-        if (notEmpty(siteId)) {
+        if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
-        if (notEmpty(directoryId)) {
+        if (CommonUtils.notEmpty(directoryId)) {
             queryHandler.condition("bean.directoryId = :directoryId").setParameter("directoryId", directoryId);
         }
-        if (notEmpty(userId)) {
+        if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
         if (null != disabled) {
@@ -72,7 +70,7 @@ public class HomeArticleDao extends BaseDao<HomeArticle> {
     @Override
     protected HomeArticle init(HomeArticle entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(getDate());
+            entity.setCreateDate(CommonUtils.getDate());
         }
         return entity;
     }

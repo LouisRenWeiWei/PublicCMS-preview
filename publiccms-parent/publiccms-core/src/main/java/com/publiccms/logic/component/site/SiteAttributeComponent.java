@@ -1,17 +1,16 @@
 package com.publiccms.logic.component.site;
 
-import static com.publiccms.common.tools.LanguagesUtils.getMessage;
-import static com.publiccms.common.constants.CommonConstants.applicationContext;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.springframework.stereotype.Component;
+
 import com.publiccms.common.api.Config;
+import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.views.pojo.entities.ExtendField;
-
-import org.springframework.stereotype.Component;
 
 /**
  * 
@@ -28,7 +27,7 @@ public class SiteAttributeComponent implements Config {
 
     @Override
     public String getCodeDescription(SysSite site, Locale locale) {
-        return getMessage(applicationContext, locale, CONFIGPREFIX + CONFIG_CODE_SITEA_TTRIBUTE);
+        return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIGPREFIX + CONFIG_CODE_SITEA_TTRIBUTE);
     }
 
     @Override

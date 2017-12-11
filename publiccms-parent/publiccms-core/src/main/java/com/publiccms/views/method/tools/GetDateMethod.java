@@ -1,12 +1,11 @@
 package com.publiccms.views.method.tools;
 
-import static org.apache.commons.lang3.time.DateUtils.addDays;
-
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
@@ -67,28 +66,28 @@ public class GetDateMethod extends BaseMethod {
 
     Date getThisMonday(Date date) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(addDays(date, -1));
+        calendar.setTime(DateUtils.addDays(date, -1));
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         return calendar.getTime();
     }
 
     Date getThisSunday(Date date) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(addDays(date, 6));
+        calendar.setTime(DateUtils.addDays(date, 6));
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
         return calendar.getTime();
     }
 
     Date getLastMonday(Date date) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(addDays(date, -8));
+        calendar.setTime(DateUtils.addDays(date, -8));
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         return calendar.getTime();
     }
 
     Date getLastSunday(Date date) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(addDays(date, -1));
+        calendar.setTime(DateUtils.addDays(date, -1));
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
         return calendar.getTime();
     }

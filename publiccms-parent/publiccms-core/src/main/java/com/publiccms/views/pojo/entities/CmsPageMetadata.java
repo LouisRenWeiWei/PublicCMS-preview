@@ -1,14 +1,12 @@
 package com.publiccms.views.pojo.entities;
 
-import static com.publiccms.common.tools.CommonUtils.empty;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.publiccms.common.tools.CommonUtils;
 
 /**
  *
@@ -172,9 +170,9 @@ public class CmsPageMetadata implements java.io.Serializable {
      */
     @JsonIgnore
     public Map<String, String> getExtendData() {
-        if (empty(extendData)) {
+        if (CommonUtils.empty(extendData)) {
             extendData = new HashMap<>();
-            if (notEmpty(extendDataList)) {
+            if (CommonUtils.notEmpty(extendDataList)) {
                 for (ExtendData extend : extendDataList) {
                     extendData.put(extend.getName(), extend.getValue());
                 }

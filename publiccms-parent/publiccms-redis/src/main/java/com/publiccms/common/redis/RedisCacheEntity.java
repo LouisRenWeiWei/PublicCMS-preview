@@ -1,7 +1,5 @@
 package com.publiccms.common.redis;
 
-import static com.publiccms.common.tools.RedisUtils.createJedisPool;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +11,7 @@ import com.publiccms.common.base.Base;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.redis.serializer.BinarySerializer;
 import com.publiccms.common.redis.serializer.StringSerializer;
+import com.publiccms.common.tools.RedisUtils;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -72,7 +71,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
         Jedis jedis = jedisPool.getResource();
         byte[] byteKey = getKey(key);
         V value = null;
-        if (1==jedis.zrem(byteName, keySerializer.serialize(key))) {
+        if (1 == jedis.zrem(byteName, keySerializer.serialize(key))) {
             value = valueSerializer.deserialize(jedis.get(byteKey));
             jedis.del(byteKey);
         }
@@ -167,7 +166,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
 
     @Override
     public void init(String name, Integer size, Properties properties) {
-        init(name, size, createJedisPool(properties));
+        init(name, size, RedisUtils.createJedisPool(properties));
     }
 
     public void init(String name, Integer size, JedisPool jedisPool) {

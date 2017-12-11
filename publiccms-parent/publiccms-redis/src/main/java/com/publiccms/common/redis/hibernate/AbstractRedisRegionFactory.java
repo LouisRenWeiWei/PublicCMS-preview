@@ -1,10 +1,9 @@
 package com.publiccms.common.redis.hibernate;
 
-import static org.apache.commons.logging.LogFactory.getLog;
-
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.boot.spi.SessionFactoryOptions;
 import org.hibernate.cache.CacheException;
 import org.hibernate.cache.spi.CacheDataDescription;
@@ -38,7 +37,7 @@ public abstract class AbstractRedisRegionFactory implements RegionFactory, Confi
      * 
      */
     private static final long serialVersionUID = 1L;
-    protected final Log log = getLog(getClass());
+    protected final Log log = LogFactory.getLog(getClass());
     protected final Properties props;
     protected SessionFactoryOptions options;
     protected final RedisAccessStrategyFactory accessStrategyFactory = new RedisAccessStrategyFactoryImpl();

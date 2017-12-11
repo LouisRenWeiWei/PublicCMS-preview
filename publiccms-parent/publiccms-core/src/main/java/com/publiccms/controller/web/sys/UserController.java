@@ -1,23 +1,5 @@
 package com.publiccms.controller.web.sys;
 
-import static com.publiccms.common.tools.CommonUtils.empty;
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.ControllerUtils.verifyHasExist;
-import static com.publiccms.common.tools.ControllerUtils.verifyNotEmpty;
-import static com.publiccms.common.tools.ControllerUtils.verifyNotEquals;
-import static com.publiccms.common.tools.ControllerUtils.verifyNotExist;
-import static com.publiccms.common.tools.FreeMarkerUtils.generateStringByFile;
-import static com.publiccms.common.tools.FreeMarkerUtils.generateStringByString;
-import static com.publiccms.common.tools.RequestUtils.getCookie;
-import static com.publiccms.common.tools.RequestUtils.getIpAddress;
-import static com.publiccms.common.tools.VerificationUtils.md5Encode;
-import static com.publiccms.common.constants.CommonConstants.getCookiesUser;
-import static com.publiccms.common.constants.CommonConstants.getCookiesUserSplit;
-import static com.publiccms.logic.component.config.EmailTemplateConfigComponent.CONFIG_EMAIL_PATH;
-import static com.publiccms.logic.component.config.EmailTemplateConfigComponent.CONFIG_EMAIL_TITLE;
-import static com.publiccms.logic.component.site.EmailComponent.CONFIG_CODE;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,23 +11,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.FreeMarkerUtils;
+import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysEmailToken;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.EmailTemplateConfigComponent;
 import com.publiccms.logic.component.site.EmailComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysEmailTokenService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import freemarker.template.TemplateException;
 
@@ -85,30 +75,30 @@ public class UserController extends AbstractController {
     public String changePassword(String oldpassword, String password, String repassword, String returnUrl,
             HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
-        if (empty(returnUrl)) {
+        if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
         }
         SysUser user = getUserFromSession(session);
-        if (verifyNotEmpty("user", user, model) || verifyNotEmpty("password", password, model)
-                || verifyNotEquals("repassword", password, repassword, model)
-                || verifyNotEquals("password", user.getPassword(), md5Encode(oldpassword), model)) {
+        if (ControllerUtils.verifyNotEmpty("user", user, model) || ControllerUtils.verifyNotEmpty("password", password, model)
+                || ControllerUtils.verifyNotEquals("repassword", password, repassword, model) || ControllerUtils
+                        .verifyNotEquals("password", user.getPassword(), VerificationUtils.md5Encode(oldpassword), model)) {
             return REDIRECT + returnUrl;
         } else {
-            Cookie userCookie = getCookie(request.getCookies(), getCookiesUser());
-            if (null != userCookie && notEmpty(userCookie.getValue())) {
+            Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
+            if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
                 String value = userCookie.getValue();
                 if (null != value) {
-                    String[] userData = value.split(getCookiesUserSplit());
+                    String[] userData = value.split(CommonConstants.getCookiesUserSplit());
                     if (userData.length > 1) {
                         sysUserTokenService.delete(userData[1]);
                     }
                 }
             }
             clearUserToSession(request.getContextPath(), session, response);
-            service.updatePassword(user.getId(), md5Encode(password));
+            service.updatePassword(user.getId(), VerificationUtils.md5Encode(password));
             model.addAttribute(MESSAGE, SUCCESS);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "changepassword",
-                    getIpAddress(request), getDate(), user.getPassword()));
+                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), user.getPassword()));
             return REDIRECT + returnUrl;
         }
     }
@@ -126,17 +116,17 @@ public class UserController extends AbstractController {
     public String saveEmail(String email, String returnUrl, HttpServletRequest request, HttpSession session,
             HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
-        if (empty(returnUrl)) {
+        if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
         }
-        Map<String, String> config = configComponent.getConfigData(site.getId(), CONFIG_CODE);
-        String emailTitle = config.get(CONFIG_EMAIL_TITLE);
-        String emailPath = config.get(CONFIG_EMAIL_PATH);
+        Map<String, String> config = configComponent.getConfigData(site.getId(), EmailComponent.CONFIG_CODE);
+        String emailTitle = config.get(EmailTemplateConfigComponent.CONFIG_EMAIL_TITLE);
+        String emailPath = config.get(EmailTemplateConfigComponent.CONFIG_EMAIL_PATH);
         SysUser user = getUserFromSession(session);
-        if (verifyNotEmpty("user", user, model) || verifyNotEmpty("email", email, model)
-                || verifyNotEmpty("email.config", emailTitle, model) || verifyNotEmpty("email.config", emailPath, model)
-                || verifyNotEMail("email", email, model)
-                || verifyHasExist("email", service.findByEmail(site.getId(), email), model)) {
+        if (ControllerUtils.verifyNotEmpty("user", user, model) || ControllerUtils.verifyNotEmpty("email", email, model)
+                || ControllerUtils.verifyNotEmpty("email.config", emailTitle, model)
+                || ControllerUtils.verifyNotEmpty("email.config", emailPath, model) || verifyNotEMail("email", email, model)
+                || ControllerUtils.verifyHasExist("email", service.findByEmail(site.getId(), email), model)) {
             return REDIRECT + returnUrl;
         } else {
             SysEmailToken sysEmailToken = new SysEmailToken();
@@ -151,8 +141,8 @@ public class UserController extends AbstractController {
                 emailModel.put("email", email);
                 emailModel.put("authToken", sysEmailToken.getAuthToken());
                 if (emailComponent.sendHtml(site.getId(), email,
-                        generateStringByString(emailTitle, templateComponent.getWebConfiguration(), emailModel),
-                        generateStringByFile(siteComponent.getWebTemplateFilePath(site, emailPath),
+                        FreeMarkerUtils.generateStringByString(emailTitle, templateComponent.getWebConfiguration(), emailModel),
+                        FreeMarkerUtils.generateStringByFile(siteComponent.getWebTemplateFilePath(site, emailPath),
                                 templateComponent.getWebConfiguration(), emailModel))) {
                     model.addAttribute(MESSAGE, "sendEmail.success");
                 } else {
@@ -178,12 +168,12 @@ public class UserController extends AbstractController {
     public String verifyEmail(String authToken, String returnUrl, HttpServletRequest request, HttpSession session,
             HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
-        if (empty(returnUrl)) {
+        if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
         }
         SysEmailToken sysEmailToken = sysEmailTokenService.getEntity(authToken);
-        if (verifyNotEmpty("verifyEmail.authToken", authToken, model)
-                || verifyNotExist("verifyEmail.sysEmailToken", sysEmailToken, model)) {
+        if (ControllerUtils.verifyNotEmpty("verifyEmail.authToken", authToken, model)
+                || ControllerUtils.verifyNotExist("verifyEmail.sysEmailToken", sysEmailToken, model)) {
             return REDIRECT + returnUrl;
         } else {
             sysEmailTokenService.delete(sysEmailToken.getAuthToken());
@@ -203,7 +193,7 @@ public class UserController extends AbstractController {
     @RequestMapping(value = "deleteToken", method = RequestMethod.POST)
     public String deleteToken(String authToken, String returnUrl, HttpServletRequest request) {
         SysSite site = getSite(request);
-        if (empty(returnUrl)) {
+        if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
         }
         sysUserTokenService.delete(authToken);

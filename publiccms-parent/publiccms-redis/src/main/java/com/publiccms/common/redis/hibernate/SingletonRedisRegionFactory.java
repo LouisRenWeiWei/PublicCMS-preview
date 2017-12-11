@@ -1,16 +1,15 @@
 package com.publiccms.common.redis.hibernate;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.RedisUtils.createJedisPool;
-import static org.springframework.core.io.support.PropertiesLoaderUtils.loadAllProperties;
-
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.hibernate.boot.spi.SessionFactoryOptions;
 import org.hibernate.cache.CacheException;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import com.publiccms.common.redis.DatabaseRedisClient;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.RedisUtils;
 /**
  *
  * SingletonRedisRegionFactory
@@ -40,9 +39,9 @@ public class SingletonRedisRegionFactory extends AbstractRedisRegionFactory {
             if (redisClient == null) {
                 String configurationResourceName = (String) properties
                         .get("hibernate.redis.configurationResourceName");
-                if (notEmpty(configurationResourceName)) {
-                    Properties redisProperties = loadAllProperties(configurationResourceName);
-                    this.redisClient = new DatabaseRedisClient(createJedisPool(redisProperties));
+                if (CommonUtils.notEmpty(configurationResourceName)) {
+                    Properties redisProperties = PropertiesLoaderUtils.loadAllProperties(configurationResourceName);
+                    this.redisClient = new DatabaseRedisClient(RedisUtils.createJedisPool(redisProperties));
                 }
                 this.cacheTimestamper = createCacheTimestamper(redisClient, SingletonRedisRegionFactory.class.getName());
             }

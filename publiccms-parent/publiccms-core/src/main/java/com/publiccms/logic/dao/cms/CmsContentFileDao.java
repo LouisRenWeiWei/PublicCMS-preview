@@ -1,15 +1,12 @@
 package com.publiccms.logic.dao.cms;
 
-// Generated 2016-1-25 10:53:21 by com.publiccms.common.source.SourceGenerator
-
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
-import com.publiccms.entities.cms.CmsContentFile;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsContentFile;
 
 /**
  *
@@ -32,10 +29,10 @@ public class CmsContentFileDao extends BaseDao<CmsContentFile> {
     public PageHandler getPage(Long contentId, Long userId, Boolean image, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsContentFile bean");
-        if (notEmpty(contentId)) {
+        if (CommonUtils.notEmpty(contentId)) {
             queryHandler.condition("bean.contentId = :contentId").setParameter("contentId", contentId);
         }
-        if (notEmpty(userId)) {
+        if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
         if (null != image) {

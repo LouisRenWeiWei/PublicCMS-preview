@@ -1,15 +1,12 @@
 package com.publiccms.logic.dao.cms;
 
-// Generated 2015-7-10 16:36:23 by com.publiccms.common.source.SourceGenerator
-
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
-import com.publiccms.entities.cms.CmsTag;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsTag;
 
 /**
  * 标签DAO
@@ -36,13 +33,13 @@ public class CmsTagDao extends BaseDao<CmsTag> {
     public PageHandler getPage(Integer siteId, Integer typeId, String name, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsTag bean");
-        if (notEmpty(siteId)) {
+        if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
-        if (notEmpty(typeId)) {
+        if (CommonUtils.notEmpty(typeId)) {
             queryHandler.condition("bean.typeId = :typeId").setParameter("typeId", typeId);
         }
-        if (notEmpty(name)) {
+        if (CommonUtils.notEmpty(name)) {
             queryHandler.condition("bean.name like :name").setParameter("name", rightLike(name));
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {

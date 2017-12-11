@@ -1,8 +1,7 @@
 package com.publiccms.common.redis.hibernate.strategy;
 
-import static org.apache.commons.logging.LogFactory.getLog;
-
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.cache.spi.access.AccessType;
 import org.hibernate.cache.spi.access.CollectionRegionAccessStrategy;
 import org.hibernate.cache.spi.access.EntityRegionAccessStrategy;
@@ -18,7 +17,7 @@ import com.publiccms.common.redis.hibernate.regions.RedisNaturalIdRegion;
  * 
  */
 public class RedisAccessStrategyFactoryImpl implements RedisAccessStrategyFactory {
-    protected final Log log = getLog(getClass());
+    protected final Log log = LogFactory.getLog(getClass());
 
     /**
      * {@inheritDoc}

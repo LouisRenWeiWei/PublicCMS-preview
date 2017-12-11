@@ -1,26 +1,24 @@
 package com.publiccms.views.directive.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileLock;
 
-import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.site.FileComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileComponent;
 
 import net.coobird.thumbnailator.Thumbnails;
 
 /**
  *
  * ThumbDirective
- * 
+ *
  */
 @Component
 public class ThumbDirective extends AbstractTemplateDirective {
@@ -31,7 +29,7 @@ public class ThumbDirective extends AbstractTemplateDirective {
         Integer width = handler.getInteger("width");
         Integer height = handler.getInteger("height");
         SysSite site = getSite(handler);
-        if (notEmpty(path) && notEmpty(width) && notEmpty(height)) {
+        if (CommonUtils.notEmpty(path) && CommonUtils.notEmpty(width) && CommonUtils.notEmpty(height)) {
             String thumbPath = path.substring(0, path.lastIndexOf(DOT)) + "_" + width + "_" + height
                     + fileComponent.getSuffix(path);
             File thumbFile = new File(siteComponent.getWebFilePath(site, thumbPath));
@@ -39,8 +37,7 @@ public class ThumbDirective extends AbstractTemplateDirective {
             if (thumbFile.exists()) {
                 handler.print(thumbPath);
             } else {
-                try (FileOutputStream outputStream = new FileOutputStream(thumbFile);
-                        FileLock fileLock = outputStream.getChannel().tryLock();) {
+                try (FileOutputStream outputStream = new FileOutputStream(thumbFile);) {
                     Thumbnails.of(siteComponent.getWebFilePath(site, path)).size(width, height).toOutputStream(outputStream);
                     handler.print(thumbPath);
                 } catch (IOException e) {

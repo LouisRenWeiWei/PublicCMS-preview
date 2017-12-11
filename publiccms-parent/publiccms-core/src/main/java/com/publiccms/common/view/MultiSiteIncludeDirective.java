@@ -1,15 +1,13 @@
 package com.publiccms.common.view;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.TemplateModelUtils.converString;
-import static com.publiccms.logic.component.site.SiteComponent.getFullFileName;
-
 import java.io.IOException;
 import java.util.Map;
 
-import com.publiccms.entities.sys.SysSite;
-
 import com.publiccms.common.base.Base;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.TemplateModelUtils;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.SiteComponent;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
@@ -37,9 +35,9 @@ public class MultiSiteIncludeDirective implements TemplateDirectiveModel, Base {
     public void execute(Environment environment, @SuppressWarnings("rawtypes") Map parameters, TemplateModel[] loopVars,
             TemplateDirectiveBody templateDirectiveBody) throws TemplateException, IOException {
         @SuppressWarnings("unchecked")
-        String path = converString(((Map<String, TemplateModel>) parameters).get("path"));
-        if (notEmpty(path) && null != environment) {
-            environment.include(getFullFileName(site, path), DEFAULT_CHARSET_NAME, true);
+        String path = TemplateModelUtils.converString(((Map<String, TemplateModel>) parameters).get("path"));
+        if (CommonUtils.notEmpty(path) && null != environment) {
+            environment.include(SiteComponent.getFullFileName(site, path), DEFAULT_CHARSET_NAME, true);
         }
     }
 }

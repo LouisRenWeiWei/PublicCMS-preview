@@ -1,16 +1,14 @@
 package com.publiccms.logic.dao.cms;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.Date;
 
-import com.publiccms.entities.cms.CmsVoteUser;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsVoteUser;
 
 /**
  *
@@ -34,13 +32,13 @@ public class CmsVoteUserDao extends BaseDao<CmsVoteUser> {
     public PageHandler getPage(Integer lotteryId, Long userId, String ip, Date startCreateDate, Date endCreateDate,
             String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsVoteUser bean");
-        if (notEmpty(lotteryId)) {
+        if (CommonUtils.notEmpty(lotteryId)) {
             queryHandler.condition("bean.lotteryId = :lotteryId").setParameter("lotteryId", lotteryId);
         }
-        if (notEmpty(userId)) {
+        if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
-        if (notEmpty(ip)) {
+        if (CommonUtils.notEmpty(ip)) {
             queryHandler.condition("bean.ip = :ip").setParameter("ip", ip);
         }
         if (null != startCreateDate) {
@@ -59,7 +57,7 @@ public class CmsVoteUserDao extends BaseDao<CmsVoteUser> {
     @Override
     protected CmsVoteUser init(CmsVoteUser entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(getDate());
+            entity.setCreateDate(CommonUtils.getDate());
         }
         return entity;
     }

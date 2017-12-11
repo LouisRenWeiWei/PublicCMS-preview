@@ -1,16 +1,14 @@
 package com.publiccms.logic.dao.sys;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.Date;
 
-import com.publiccms.entities.sys.SysAppToken;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysAppToken;
 
 /**
  *
@@ -28,7 +26,7 @@ public class SysAppTokenDao extends BaseDao<SysAppToken> {
      */
     public PageHandler getPage(Integer appId, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysAppToken bean");
-        if (notEmpty(appId)) {
+        if (CommonUtils.notEmpty(appId)) {
             queryHandler.condition("bean.appId = :appId").setParameter("appId", appId);
         }
         queryHandler.order("bean.id desc");
@@ -51,7 +49,7 @@ public class SysAppTokenDao extends BaseDao<SysAppToken> {
     @Override
     protected SysAppToken init(SysAppToken entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(getDate());
+            entity.setCreateDate(CommonUtils.getDate());
         }
         return entity;
     }

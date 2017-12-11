@@ -1,29 +1,25 @@
 package com.publiccms.controller.admin.sys;
 
-import static com.publiccms.common.tools.CommonUtils.empty;
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.ControllerUtils.verifyCustom;
-import static com.publiccms.common.tools.ControllerUtils.verifyHasExist;
-import static com.publiccms.common.tools.ControllerUtils.verifyNotEquals;
-import static com.publiccms.common.tools.JsonUtils.getString;
-import static com.publiccms.common.tools.RequestUtils.getIpAddress;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.publiccms.common.base.AbstractController;
-import com.publiccms.common.constants.CmsVersion;
-import com.publiccms.entities.log.LogOperate;
-import com.publiccms.entities.sys.SysDomain;
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.logic.service.sys.SysDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CmsVersion;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.JsonUtils;
+import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.entities.log.LogOperate;
+import com.publiccms.entities.sys.SysDomain;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.sys.SysDomainService;
 
 /**
  *
@@ -48,25 +44,26 @@ public class SysDomainAdminController extends AbstractController {
     @RequestMapping("save")
     public String save(SysDomain entity, String id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
-        if (verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
+        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return TEMPLATE_ERROR;
         }
-        if (verifyCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)
-                || verifyCustom("unauthorizedDomain", !CmsVersion.verifyDomain(entity.getName()), model)) {
+        if (ControllerUtils.verifyCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)
+                || ControllerUtils.verifyCustom("unauthorizedDomain", !CmsVersion.verifyDomain(entity.getName()), model)) {
             return TEMPLATE_ERROR;
         }
-        if (notEmpty(id)) {
-            if (!entity.getName().equals(id) && verifyHasExist("domain", service.getEntity(entity.getName()), model)) {
+        if (CommonUtils.notEmpty(id)) {
+            if (!entity.getName().equals(id)
+                    && ControllerUtils.verifyHasExist("domain", service.getEntity(entity.getName()), model)) {
                 return TEMPLATE_ERROR;
             }
             entity = service.update(id, entity);
             if (null != entity) {
-                logOperateService.save(
-                        new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                "update.domain", getIpAddress(request), getDate(), getString(entity)));
+                logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "update.domain", RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
-            if (verifyHasExist("domain", service.getEntity(entity.getName()), model)) {
+            if (ControllerUtils.verifyHasExist("domain", service.getEntity(entity.getName()), model)) {
                 return TEMPLATE_ERROR;
             }
             if (0 == entity.getSiteId()) {
@@ -74,7 +71,8 @@ public class SysDomainAdminController extends AbstractController {
             }
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.domain", getIpAddress(request), getDate(), getString(entity)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.domain", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    JsonUtils.getString(entity)));
         }
         siteComponent.clear();
         return TEMPLATE_DONE;
@@ -89,17 +87,17 @@ public class SysDomainAdminController extends AbstractController {
      */
     @RequestMapping("saveConfig")
     public String saveConfig(SysDomain entity, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (notEmpty(entity.getName())) {
+        if (CommonUtils.notEmpty(entity.getName())) {
             SysSite site = getSite(request);
             SysDomain oldEntity = service.getEntity(entity.getName());
-            if (null == oldEntity || verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+            if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
             entity = service.update(entity.getName(), entity, ignoreProperties);
             if (null != entity) {
-                logOperateService.save(
-                        new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                "update.domain", getIpAddress(request), getDate(), getString(entity)));
+                logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "update.domain", RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
             siteComponent.clear();
         }
@@ -116,17 +114,17 @@ public class SysDomainAdminController extends AbstractController {
     @RequestMapping("virify")
     @ResponseBody
     public boolean virify(String name, String domainName, String id, ModelMap model) {
-        if (notEmpty(name)) {
-            if (notEmpty(id) && !name.equals(service.getEntity(id).getName())
-                    && verifyHasExist("domain", service.getEntity(name), model)
-                    || empty(id) && verifyHasExist("domain", service.getEntity(name), model)) {
+        if (CommonUtils.notEmpty(name)) {
+            if (CommonUtils.notEmpty(id) && !name.equals(service.getEntity(id).getName())
+                    && ControllerUtils.verifyHasExist("domain", service.getEntity(name), model)
+                    || CommonUtils.empty(id) && ControllerUtils.verifyHasExist("domain", service.getEntity(name), model)) {
                 return false;
             }
         }
-        if (notEmpty(domainName)) {
-            if (notEmpty(id) && !domainName.equals(service.getEntity(id).getName())
-                    && verifyHasExist("domain", service.getEntity(domainName), model)
-                    || empty(id) && verifyHasExist("domain", service.getEntity(domainName), model)) {
+        if (CommonUtils.notEmpty(domainName)) {
+            if (CommonUtils.notEmpty(id) && !domainName.equals(service.getEntity(id).getName())
+                    && ControllerUtils.verifyHasExist("domain", service.getEntity(domainName), model)
+                    || CommonUtils.empty(id) && ControllerUtils.verifyHasExist("domain", service.getEntity(domainName), model)) {
                 return false;
             }
         }
@@ -143,14 +141,15 @@ public class SysDomainAdminController extends AbstractController {
     @RequestMapping("delete")
     public String delete(String id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
-        if (verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
+        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return TEMPLATE_ERROR;
         }
         SysDomain entity = service.getEntity(id);
         if (null != entity) {
             service.delete(id);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.domain", getIpAddress(request), getDate(), getString(entity)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.domain", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         siteComponent.clear();
         return TEMPLATE_DONE;

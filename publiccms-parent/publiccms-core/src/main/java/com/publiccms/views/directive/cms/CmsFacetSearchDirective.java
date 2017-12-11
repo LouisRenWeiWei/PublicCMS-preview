@@ -1,21 +1,20 @@
 package com.publiccms.views.directive.cms;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
 // Generated 2015-5-10 17:54:56 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
 
 import java.io.IOException;
 
-import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.site.StatisticsComponent;
-import com.publiccms.logic.service.cms.CmsContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.StatisticsComponent;
+import com.publiccms.logic.service.cms.CmsContentService;
 
 /**
  *
@@ -29,13 +28,13 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String word = handler.getString("word");
         String tagId = handler.getString("tagId");
-        if (notEmpty(word) || notEmpty(tagId)) {
+        if (CommonUtils.notEmpty(word) || CommonUtils.notEmpty(tagId)) {
             SysSite site = getSite(handler);
-            if (notEmpty(word)) {
+            if (CommonUtils.notEmpty(word)) {
                 statisticsComponent.search(site.getId(), word);
             }
             String[] tagIds = handler.getStringArray("tagId");
-            if (notEmpty(tagIds)) {
+            if (CommonUtils.notEmpty(tagIds)) {
                 for (String id : tagIds) {
                     try {
                         statisticsComponent.searchTag(Long.parseLong(id));
@@ -49,7 +48,7 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
             try {
                 page = service.facetQuery(site.getId(), handler.getStringArray("categoryId"), handler.getStringArray("modelId"),
                         handler.getStringArray("userId"), word, tagId, handler.getDate("startPublishDate"),
-                        handler.getDate("endPublishDate", getDate()), pageIndex, count);
+                        handler.getDate("endPublishDate", CommonUtils.getDate()), pageIndex, count);
             } catch (Exception e) {
                 page = new FacetPageHandler(pageIndex, count, 0, null);
             }

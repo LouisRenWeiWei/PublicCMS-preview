@@ -1,13 +1,12 @@
 package com.publiccms.common.redis.serializer;
 
-import static org.apache.commons.logging.LogFactory.getLog;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.publiccms.common.base.Base;
 
@@ -19,7 +18,7 @@ import com.publiccms.common.base.Base;
  * 
  */
 public class BinarySerializer<T> implements Serializer<T>, Base {
-    protected final Log log = getLog(getClass());
+    protected final Log log = LogFactory.getLog(getClass());
 
     @Override
     public byte[] serialize(final T graph) {

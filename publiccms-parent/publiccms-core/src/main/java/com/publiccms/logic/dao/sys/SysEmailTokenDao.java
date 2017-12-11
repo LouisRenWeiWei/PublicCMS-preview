@@ -1,16 +1,14 @@
 package com.publiccms.logic.dao.sys;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.Date;
 
-import com.publiccms.entities.sys.SysEmailToken;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysEmailToken;
 
 /**
  *
@@ -28,7 +26,7 @@ public class SysEmailTokenDao extends BaseDao<SysEmailToken> {
      */
     public PageHandler getPage(Long userId, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysEmailToken bean");
-        if (notEmpty(userId)) {
+        if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
         queryHandler.order("bean.id desc");
@@ -51,7 +49,7 @@ public class SysEmailTokenDao extends BaseDao<SysEmailToken> {
     @Override
     protected SysEmailToken init(SysEmailToken entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(getDate());
+            entity.setCreateDate(CommonUtils.getDate());
         }
         return entity;
     }

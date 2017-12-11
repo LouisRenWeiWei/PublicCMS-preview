@@ -1,24 +1,25 @@
 package com.publiccms.controller.admin.sys;
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.RequestUtils.getIpAddress;
-import static com.publiccms.logic.service.log.LogLoginService.CHANNEL_WEB_MANAGER;
 
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.publiccms.common.base.AbstractController;
-import com.publiccms.entities.log.LogUpload;
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.site.FileComponent;
-import com.publiccms.logic.service.log.LogUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.entities.log.LogUpload;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileComponent;
+import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogUploadService;
 
 /**
  *
@@ -52,8 +53,9 @@ public class FileAdminController extends AbstractController {
                 fileComponent.upload(file, siteComponent.getWebFilePath(site, fileName));
                 model.put("field", field);
                 model.put(field, fileName);
-                logUploadService.save(new LogUpload(site.getId(), getAdminFromSession(session).getId(), CHANNEL_WEB_MANAGER,
-                        onlyImage, file.getSize(), getIpAddress(request), getDate(), fileName));
+                logUploadService.save(
+                        new LogUpload(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                onlyImage, file.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
             } catch (IllegalStateException | IOException e) {
                 log.error(e.getMessage(), e);
                 return "common/uploadResult";

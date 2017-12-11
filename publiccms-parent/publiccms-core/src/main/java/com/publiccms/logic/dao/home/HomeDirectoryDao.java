@@ -1,14 +1,12 @@
 package com.publiccms.logic.dao.home;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
-import com.publiccms.entities.home.HomeDirectory;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.home.HomeDirectory;
 
 /**
  *
@@ -30,10 +28,10 @@ public class HomeDirectoryDao extends BaseDao<HomeDirectory> {
     public PageHandler getPage(Integer siteId, Long userId, Boolean disabled, String orderType, Integer pageIndex,
             Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from HomeDirectory bean");
-        if (notEmpty(siteId)) {
+        if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
-        if (notEmpty(userId)) {
+        if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
         if (null != disabled) {
@@ -49,7 +47,7 @@ public class HomeDirectoryDao extends BaseDao<HomeDirectory> {
     @Override
     protected HomeDirectory init(HomeDirectory entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(getDate());
+            entity.setCreateDate(CommonUtils.getDate());
         }
         return entity;
     }

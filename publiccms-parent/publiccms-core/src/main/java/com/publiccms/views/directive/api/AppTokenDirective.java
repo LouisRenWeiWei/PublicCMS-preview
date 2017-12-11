@@ -1,21 +1,19 @@
 package com.publiccms.views.directive.api;
 
-//Generated 2015-5-10 17:54:56 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.getDate;
-
 import java.io.IOException;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.publiccms.common.base.AbstractAppDirective;
+import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysAppToken;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.service.sys.SysAppService;
 import com.publiccms.logic.service.sys.SysAppTokenService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.publiccms.common.handler.RenderHandler;
 
 /**
  *
@@ -32,7 +30,7 @@ public class AppTokenDirective extends AbstractAppDirective {
         SysApp entity = appService.getEntity(handler.getString("appKey"));
         if (null != entity) {
             if (entity.getAppSecret().equalsIgnoreCase(handler.getString("appSecret"))) {
-                SysAppToken token = new SysAppToken(UUID.randomUUID().toString(), entity.getId(), getDate());
+                SysAppToken token = new SysAppToken(UUID.randomUUID().toString(), entity.getId(), CommonUtils.getDate());
                 appTokenService.save(token);
                 handler.put("appToken", token.getAuthToken());
             } else {

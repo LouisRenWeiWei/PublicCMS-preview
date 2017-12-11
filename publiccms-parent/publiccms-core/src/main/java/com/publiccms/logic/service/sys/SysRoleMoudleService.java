@@ -1,21 +1,18 @@
 package com.publiccms.logic.service.sys;
 
-// Generated 2015-7-22 13:48:39 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static org.apache.commons.lang3.ArrayUtils.contains;
-import static org.apache.commons.lang3.ArrayUtils.removeElement;
-
 import java.util.List;
 
-import com.publiccms.entities.sys.SysRoleMoudle;
-import com.publiccms.entities.sys.SysRoleMoudleId;
-import com.publiccms.logic.dao.sys.SysRoleMoudleDao;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysRoleMoudle;
+import com.publiccms.entities.sys.SysRoleMoudleId;
+import com.publiccms.logic.dao.sys.SysRoleMoudleDao;
 
 /**
  *
@@ -43,17 +40,17 @@ public class SysRoleMoudleService extends BaseService<SysRoleMoudle> {
      * @param moudleIds
      */
     public void updateRoleMoudles(Integer roleId, Integer[] moudleIds) {
-        if (notEmpty(roleId)) {
+        if (CommonUtils.notEmpty(roleId)) {
             @SuppressWarnings("unchecked")
             List<SysRoleMoudle> list = (List<SysRoleMoudle>) getPage(roleId, null, null, null).getList();
             for (SysRoleMoudle roleMoudle : list) {
-                if (contains(moudleIds, roleMoudle.getId().getMoudleId())) {
-                    moudleIds = removeElement(moudleIds, roleMoudle.getId().getMoudleId());
+                if (ArrayUtils.contains(moudleIds, roleMoudle.getId().getMoudleId())) {
+                    moudleIds = ArrayUtils.removeElement(moudleIds, roleMoudle.getId().getMoudleId());
                 } else {
                     delete(roleMoudle.getId());
                 }
             }
-            if (notEmpty(moudleIds)) {
+            if (CommonUtils.notEmpty(moudleIds)) {
                 for (int moudleId : moudleIds) {
                     save(new SysRoleMoudle(new SysRoleMoudleId(roleId, moudleId)));
                 }

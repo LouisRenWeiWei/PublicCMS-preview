@@ -1,13 +1,11 @@
 package config.initializer;
 
-import static config.initializer.InitializationInitializer.INSTALL_HTTPREQUEST_HANDLER;
-
-import com.publiccms.common.servlet.WebDispatcherServlet;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import com.publiccms.common.base.BaseServletInitializer;
+import com.publiccms.common.servlet.WebDispatcherServlet;
 
 import config.spring.WebConfig;
 
@@ -20,7 +18,7 @@ public class WebInitializer extends BaseServletInitializer implements WebApplica
 
     @Override
     protected DispatcherServlet createDispatcherServlet(WebApplicationContext servletAppContext) {
-        return new WebDispatcherServlet(servletAppContext, INSTALL_HTTPREQUEST_HANDLER);
+        return new WebDispatcherServlet(servletAppContext, InitializationInitializer.INSTALL_HTTPREQUEST_HANDLER);
     }
 
     @Override

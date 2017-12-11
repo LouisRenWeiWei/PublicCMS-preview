@@ -1,19 +1,17 @@
 package com.publiccms.logic.component.config;
 
-import static com.publiccms.common.tools.LanguagesUtils.getMessage;
-import static com.publiccms.common.constants.CommonConstants.applicationContext;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import com.publiccms.common.api.Config;
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.views.pojo.entities.ExtendField;
-
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.api.Config;
 import com.publiccms.common.base.Base;
+import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.LanguagesUtils;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.views.pojo.entities.ExtendField;
 
 /**
  *
@@ -42,16 +40,16 @@ public class LoginConfigComponent implements Config, Base {
 
     @Override
     public String getCodeDescription(SysSite site, Locale locale) {
-        return getMessage(applicationContext, locale, CONFIG_CODE_DESCRIPTION);
+        return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION);
     }
 
     @Override
     public List<ExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<ExtendField> extendFieldList = new ArrayList<>();
-        extendFieldList.add(new ExtendField(CONFIG_REGISTER_URL, INPUTTYPE_TEXT, true,
-                getMessage(applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_REGISTER_URL), null, null));
-        extendFieldList.add(new ExtendField(CONFIG_LOGIN_PATH, INPUTTYPE_TEXT, false,
-                getMessage(applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_LOGIN_PATH), null, null));
+        extendFieldList.add(new ExtendField(CONFIG_REGISTER_URL, INPUTTYPE_TEXT, true, LanguagesUtils.getMessage(
+                CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_REGISTER_URL), null, null));
+        extendFieldList.add(new ExtendField(CONFIG_LOGIN_PATH, INPUTTYPE_TEXT, false, LanguagesUtils.getMessage(
+                CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_LOGIN_PATH), null, null));
         return extendFieldList;
     }
 }

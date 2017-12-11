@@ -1,16 +1,14 @@
 package com.publiccms.logic.dao.sys;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.Date;
 
-import com.publiccms.entities.sys.SysUser;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysUser;
 
 /**
  *
@@ -41,10 +39,10 @@ public class SysUserDao extends BaseDao<SysUser> {
             Date startLastLoginDate, Date endLastLoginDate, Boolean superuserAccess, Boolean emailChecked, Boolean disabled,
             String name, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysUser bean");
-        if (notEmpty(siteId)) {
+        if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
-        if (notEmpty(deptId)) {
+        if (CommonUtils.notEmpty(deptId)) {
             queryHandler.condition("bean.deptId = :deptId").setParameter("deptId", deptId);
         }
         if (null != startRegisteredDate) {
@@ -71,7 +69,7 @@ public class SysUserDao extends BaseDao<SysUser> {
         if (null != disabled) {
             queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", disabled);
         }
-        if (notEmpty(name)) {
+        if (CommonUtils.notEmpty(name)) {
             queryHandler.condition("(bean.name like :name or bean.nickName like :name or bean.email like :name)")
                     .setParameter("name", like(name));
         }
@@ -137,7 +135,7 @@ public class SysUserDao extends BaseDao<SysUser> {
     @Override
     protected SysUser init(SysUser entity) {
         if (null == entity.getRegisteredDate()) {
-            entity.setRegisteredDate(getDate());
+            entity.setRegisteredDate(CommonUtils.getDate());
         }
         return entity;
     }

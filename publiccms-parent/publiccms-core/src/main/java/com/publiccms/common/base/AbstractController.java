@@ -1,16 +1,5 @@
 package com.publiccms.common.base;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.RequestUtils.cancleCookie;
-import static org.apache.commons.logging.LogFactory.getLog;
-import static com.publiccms.common.constants.CommonConstants.getCookiesUser;
-import static com.publiccms.common.constants.CommonConstants.getCookiesAdmin;
-import static com.publiccms.common.constants.CommonConstants.getSessionAdmin;
-import static com.publiccms.common.constants.CommonConstants.getSessionUser;
-import static com.publiccms.common.constants.CommonConstants.getSessionUserTime;
-import static org.springframework.web.servlet.view.UrlBasedViewResolver.FORWARD_URL_PREFIX;
-import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT_URL_PREFIX;
-
 import java.util.Date;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -21,16 +10,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
+
+import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogOperateService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-
-import com.publiccms.common.base.Base;
 
 /**
  *
@@ -38,8 +31,8 @@ import com.publiccms.common.base.Base;
  * 
  */
 public abstract class AbstractController implements Base {
-    protected static final String REDIRECT = REDIRECT_URL_PREFIX;
-    protected static final String FORWARD = FORWARD_URL_PREFIX;
+    protected static final String REDIRECT = UrlBasedViewResolver.REDIRECT_URL_PREFIX;
+    protected static final String FORWARD = UrlBasedViewResolver.FORWARD_URL_PREFIX;
     protected static final String TEMPLATE_INDEX = "index";
     protected static final String TEMPLATE_DONE = "common/ajaxDone";
     protected static final String TEMPLATE_ERROR = "common/ajaxError";
@@ -48,7 +41,7 @@ public abstract class AbstractController implements Base {
     protected static final String ERROR = "error";
     protected static final String ERROR_PAGE = "error.html";
     protected static MediaType jsonMediaType = new MediaType("application", "json", DEFAULT_CHARSET);
-    protected final Log log = getLog(getClass());
+    protected final Log log = LogFactory.getLog(getClass());
     /**
      * Number Pattern
      */
@@ -61,7 +54,7 @@ public abstract class AbstractController implements Base {
      * NickName Pattern
      */
     public static final Pattern NICKNAME_PATTERN = Pattern.compile("^[0-9A-Za-z_\u4E00-\uFA29\uE7C7-\uE7F3]{2,45}$");
-    
+
     private static final String VALID_CHARS = "[^\\s\\(\\)<>@,;:\\\\\\\"\\.\\[\\]+]+";
     /**
      * Email Pattern
@@ -89,7 +82,7 @@ public abstract class AbstractController implements Base {
      * @return SysUser
      */
     public static SysUser getUserFromSession(HttpSession session) {
-        return (SysUser) session.getAttribute(getSessionUser());
+        return (SysUser) session.getAttribute(CommonConstants.getSessionUser());
     }
 
     /**
@@ -97,7 +90,7 @@ public abstract class AbstractController implements Base {
      * @return Date
      */
     public static Date getUserTimeFromSession(HttpSession session) {
-        return (Date) session.getAttribute(getSessionUserTime());
+        return (Date) session.getAttribute(CommonConstants.getSessionUserTime());
     }
 
     /**
@@ -105,8 +98,8 @@ public abstract class AbstractController implements Base {
      * @param user
      */
     public static void setUserToSession(HttpSession session, SysUser user) {
-        session.setAttribute(getSessionUser(), user);
-        session.setAttribute(getSessionUserTime(), getDate());
+        session.setAttribute(CommonConstants.getSessionUser(), user);
+        session.setAttribute(CommonConstants.getSessionUserTime(), CommonUtils.getDate());
     }
 
     /**
@@ -115,15 +108,15 @@ public abstract class AbstractController implements Base {
      * @param response
      */
     public static void clearUserToSession(String contextPath, HttpSession session, HttpServletResponse response) {
-        cancleCookie(contextPath, response, getCookiesUser(), null);
-        session.removeAttribute(getSessionUser());
+        RequestUtils.cancleCookie(contextPath, response, CommonConstants.getCookiesUser(), null);
+        session.removeAttribute(CommonConstants.getSessionUser());
     }
 
     /**
      * @param session
      */
     public static void clearUserTimeToSession(HttpSession session) {
-        session.removeAttribute(getSessionUserTime());
+        session.removeAttribute(CommonConstants.getSessionUserTime());
     }
 
     /**
@@ -131,7 +124,7 @@ public abstract class AbstractController implements Base {
      * @return SysUser
      */
     public static SysUser getAdminFromSession(HttpSession session) {
-        return (SysUser) session.getAttribute(getSessionAdmin());
+        return (SysUser) session.getAttribute(CommonConstants.getSessionAdmin());
     }
 
     /**
@@ -139,17 +132,17 @@ public abstract class AbstractController implements Base {
      * @param user
      */
     public static void setAdminToSession(HttpSession session, SysUser user) {
-        session.setAttribute(getSessionAdmin(), user);
+        session.setAttribute(CommonConstants.getSessionAdmin(), user);
     }
 
     /**
-     * @param contextPath 
+     * @param contextPath
      * @param session
-     * @param response 
+     * @param response
      */
     public static void clearAdminToSession(String contextPath, HttpSession session, HttpServletResponse response) {
-        cancleCookie(contextPath, response, getCookiesAdmin(), null);
-        session.removeAttribute(getSessionAdmin());
+        RequestUtils.cancleCookie(contextPath, response, CommonConstants.getCookiesAdmin(), null);
+        session.removeAttribute(CommonConstants.getSessionAdmin());
     }
 
     /**

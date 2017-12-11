@@ -1,6 +1,6 @@
 package com.publiccms.views.pojo.entities;
 
-import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
+import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 /**
@@ -50,6 +50,6 @@ public class ExtendData implements java.io.Serializable {
      * @param values 
      */
     public void setValues(String[] values) {
-        this.value = arrayToCommaDelimitedString(values);
+        this.value = StringUtils.arrayToCommaDelimitedString(values);
     }
 }

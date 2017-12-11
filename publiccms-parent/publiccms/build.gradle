@@ -18,9 +18,8 @@ dependencies {
         // http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
         "javax.servlet:javax.servlet-api:3.1.0"
     )
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
     compile(
-        "org.springframework.boot:spring-boot-starter-web:1.5.4.RELEASE") {
+        "org.springframework.boot:spring-boot-starter-web:${springBootVersion}") {
         exclude group:"org.springframework.boot", module: 'spring-boot-starter-logging'
     }
     compile fileTree(dir: 'src/main/webapp/WEB-INF/lib', include: ['*.jar'])

@@ -1,12 +1,11 @@
 package com.publiccms.views.method.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
+import com.publiccms.common.tools.CommonUtils;
 
 import freemarker.template.TemplateModelException;
 
@@ -23,7 +22,7 @@ public class GetPageMethod extends BaseMethod {
     public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
         String url = getString(0, arguments);
         Integer pageIndex = getInteger(1, arguments);
-        if (notEmpty(url) && notEmpty(pageIndex)) {
+        if (CommonUtils.notEmpty(url) && CommonUtils.notEmpty(pageIndex)) {
             return getPageUrl(url, pageIndex);
         }
         return url;

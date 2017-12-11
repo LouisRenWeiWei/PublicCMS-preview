@@ -1,16 +1,14 @@
 package com.publiccms.logic.dao.cms;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.Date;
 
-import com.publiccms.entities.cms.CmsWord;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsWord;
 
 /**
  *
@@ -35,7 +33,7 @@ public class CmsWordDao extends BaseDao<CmsWord> {
     public PageHandler getPage(Integer siteId, Boolean hidden, Date startCreateDate, Date endCreateDate, String name,
             String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsWord bean");
-        if (notEmpty(siteId)) {
+        if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
         if (null != hidden) {
@@ -47,7 +45,7 @@ public class CmsWordDao extends BaseDao<CmsWord> {
         if (null != endCreateDate) {
             queryHandler.condition("bean.createDate <= :endCreateDate").setParameter("endCreateDate", endCreateDate);
         }
-        if (notEmpty(name)) {
+        if (CommonUtils.notEmpty(name)) {
             queryHandler.condition("bean.name like :name").setParameter("name", like(name));
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
@@ -75,7 +73,7 @@ public class CmsWordDao extends BaseDao<CmsWord> {
      * @return entity
      */
     public CmsWord getEntity(int siteId, String name) {
-        if (notEmpty(name)) {
+        if (CommonUtils.notEmpty(name)) {
             QueryHandler queryHandler = getQueryHandler("from CmsWord bean");
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
             queryHandler.condition("bean.name = :name").setParameter("name", name);
@@ -88,9 +86,9 @@ public class CmsWordDao extends BaseDao<CmsWord> {
     @Override
     protected CmsWord init(CmsWord entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(getDate());
+            entity.setCreateDate(CommonUtils.getDate());
         }
-        if (notEmpty(entity.getName()) && entity.getName().length() > 255) {
+        if (CommonUtils.notEmpty(entity.getName()) && entity.getName().length() > 255) {
             entity.setName(entity.getName().substring(0, 255));
         }
         return entity;

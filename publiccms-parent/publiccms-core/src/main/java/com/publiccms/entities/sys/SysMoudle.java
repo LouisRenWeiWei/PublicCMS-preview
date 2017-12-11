@@ -1,15 +1,15 @@
 package com.publiccms.entities.sys;
 
-import static com.publiccms.common.database.CmsUpgrader.IDENTIFIER_GENERATOR;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
+import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -17,6 +17,7 @@ import com.publiccms.common.generator.annotation.GeneratorColumn;
  */
 @Entity
 @Table(name = "sys_moudle")
+@DynamicUpdate
 public class SysMoudle implements java.io.Serializable {
 
     /**
@@ -61,7 +62,7 @@ public class SysMoudle implements java.io.Serializable {
 
     @Id
     @GeneratedValue(generator = "cmsGenerator")
-    @GenericGenerator(name = "cmsGenerator", strategy = IDENTIFIER_GENERATOR)
+    @GenericGenerator(name = "cmsGenerator", strategy = CmsUpgrader.IDENTIFIER_GENERATOR)
     @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return this.id;

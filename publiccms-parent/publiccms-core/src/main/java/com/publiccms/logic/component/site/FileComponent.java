@@ -1,18 +1,8 @@
 package com.publiccms.logic.component.site;
 
-import static com.publiccms.common.tools.CommonUtils.empty;
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.DateFormatUtils.getDateFormat;
-import static org.apache.commons.io.FileUtils.deleteQuietly;
-import static org.apache.commons.io.FileUtils.readFileToString;
-import static org.apache.commons.io.FileUtils.writeStringToFile;
-import static com.publiccms.logic.component.template.TemplateComponent.INCLUDE_DIRECTORY;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileLock;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,13 +12,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.base.Base;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.DateFormatUtils;
+import com.publiccms.logic.component.template.TemplateComponent;
 
 /**
- * 
+ *
  * FileComponent 文件操作组件
  *
  */
@@ -38,7 +32,7 @@ public class FileComponent implements Base {
 
     /**
      * 获取目录下文件列表
-     * 
+     *
      * @param dirPath
      * @return file info list
      */
@@ -50,7 +44,7 @@ public class FileComponent implements Base {
                 Path fileNamePath = entry.getFileName();
                 if (null != fileNamePath) {
                     String fileName = fileNamePath.toString();
-                    if (!fileName.endsWith(".data") && !INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
+                    if (!fileName.endsWith(".data") && !TemplateComponent.INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
                         BasicFileAttributes attrs = Files.readAttributes(entry, BasicFileAttributes.class);
                         if (attrs.isDirectory()) {
                             fileList.add(new FileInfo(fileName, true, attrs));
@@ -68,15 +62,15 @@ public class FileComponent implements Base {
 
     /**
      * 写入文件
-     * 
+     *
      * @param file
      * @param content
      * @return whether to create successfully
      * @throws IOException
      */
     public boolean createFile(File file, String content) throws IOException {
-        if (empty(file)) {
-            writeStringToFile(file, content, DEFAULT_CHARSET);
+        if (CommonUtils.empty(file)) {
+            FileUtils.writeStringToFile(file, content, DEFAULT_CHARSET);
             return true;
         }
         return false;
@@ -84,14 +78,14 @@ public class FileComponent implements Base {
 
     /**
      * 删除文件或目录
-     * 
+     *
      * @param filePath
      * @return whether to delete successfully
      */
     public boolean deleteFile(String filePath) {
         File file = new File(filePath);
-        if (notEmpty(file)) {
-            deleteQuietly(file);
+        if (CommonUtils.notEmpty(file)) {
+            FileUtils.deleteQuietly(file);
             return true;
         }
         return false;
@@ -99,16 +93,15 @@ public class FileComponent implements Base {
 
     /**
      * 修改文件内容
-     * 
+     *
      * @param file
      * @param content
      * @return whether to modify successfully
      * @throws IOException
      */
     public boolean updateFile(File file, String content) throws IOException {
-        if (notEmpty(file) && notEmpty(content)) {
-            try (FileOutputStream outputStream = new FileOutputStream(file);
-                    FileLock fileLock = outputStream.getChannel().tryLock();) {
+        if (CommonUtils.notEmpty(file) && CommonUtils.notEmpty(content)) {
+            try (FileOutputStream outputStream = new FileOutputStream(file);) {
                 outputStream.write(content.getBytes(DEFAULT_CHARSET));
             }
             return true;
@@ -118,7 +111,7 @@ public class FileComponent implements Base {
 
     /**
      * 获取文件内容
-     * 
+     *
      * @param filePath
      * @return file content
      */
@@ -126,7 +119,7 @@ public class FileComponent implements Base {
         File file = new File(filePath);
         try {
             if (file.isFile()) {
-                return readFileToString(file, DEFAULT_CHARSET);
+                return FileUtils.readFileToString(file, DEFAULT_CHARSET);
             }
         } catch (IOException e) {
             return null;
@@ -136,19 +129,19 @@ public class FileComponent implements Base {
 
     /**
      * 获取文件名
-     * 
+     *
      * @param suffix
      * @return upload file name
      */
     public String getUploadFileName(String suffix) {
         StringBuilder sb = new StringBuilder("upload/");
-        sb.append(getDateFormat(FILE_NAME_FORMAT_STRING).format(getDate()));
+        sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
         return sb.append(random.nextInt()).append(suffix).toString();
     }
 
     /**
      * 获取文件后缀
-     * 
+     *
      * @param originalFilename
      * @return suffix
      */
@@ -158,7 +151,7 @@ public class FileComponent implements Base {
 
     /**
      * 上传文件
-     * 
+     *
      * @param file
      * @param fileName
      * @return file name
@@ -173,7 +166,7 @@ public class FileComponent implements Base {
     }
 
     /**
-     * 
+     *
      * FileInfo 文件信息封装类
      *
      */

@@ -1,14 +1,13 @@
 package com.publiccms.common.redis.hibernate;
 
-import static com.publiccms.common.tools.RedisUtils.createJedisPool;
-import static org.springframework.core.io.support.PropertiesLoaderUtils.loadAllProperties;
-
 import java.util.Properties;
 
 import org.hibernate.boot.spi.SessionFactoryOptions;
 import org.hibernate.cache.CacheException;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import com.publiccms.common.redis.DatabaseRedisClient;
+import com.publiccms.common.tools.RedisUtils;
 
 /**
  * Redis领域工厂
@@ -40,8 +39,8 @@ public class RedisRegionFactory extends AbstractRedisRegionFactory {
                 String configurationResourceName = (String) properties
                         .get("hibernate.redis.configurationResourceName");
                 if (null != configurationResourceName) {
-                    Properties redisProperties = loadAllProperties(configurationResourceName);
-                    this.redisClient = new DatabaseRedisClient(createJedisPool(redisProperties));
+                    Properties redisProperties = PropertiesLoaderUtils.loadAllProperties(configurationResourceName);
+                    this.redisClient = new DatabaseRedisClient(RedisUtils.createJedisPool(redisProperties));
                 }
                 this.cacheTimestamper = createCacheTimestamper(redisClient, RedisRegionFactory.class.getName());
             }

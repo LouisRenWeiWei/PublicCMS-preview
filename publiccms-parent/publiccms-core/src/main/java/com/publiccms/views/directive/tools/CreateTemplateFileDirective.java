@@ -1,17 +1,16 @@
 package com.publiccms.views.directive.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.logic.component.site.SiteComponent.getFullFileName;
-
 import java.io.IOException;
 
-import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.template.TemplateComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 
 import freemarker.template.TemplateException;
 
@@ -28,9 +27,9 @@ public class CreateTemplateFileDirective extends AbstractTemplateDirective {
         String templatePath = handler.getString("templatePath");
         String filePath = handler.getString("filePath");
         Integer pageIndex = handler.getInteger("pageIndex");
-        if (notEmpty(templatePath) && notEmpty(filePath)) {
+        if (CommonUtils.notEmpty(templatePath) && CommonUtils.notEmpty(filePath)) {
             SysSite site = getSite(handler);
-            String templateFullPath = getFullFileName(site, templatePath);
+            String templateFullPath = SiteComponent.getFullFileName(site, templatePath);
             try {
                 handler.put("url", templateComponent.createStaticFile(site, templateFullPath, filePath, pageIndex, null, null))
                         .render();

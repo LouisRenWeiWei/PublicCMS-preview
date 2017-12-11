@@ -1,14 +1,5 @@
 package com.publiccms.controller.admin.sys;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.ControllerUtils.verifyCustom;
-import static com.publiccms.common.tools.FreeMarkerUtils.generateStringByFile;
-import static com.publiccms.common.tools.JsonUtils.getString;
-import static com.publiccms.common.tools.RequestUtils.getIpAddress;
-import static com.publiccms.logic.component.site.SiteComponent.getFullFileName;
-import static com.publiccms.common.base.AbstractFreemarkerView.exposeAttribute;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,16 +8,24 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.publiccms.common.base.AbstractController;
-import com.publiccms.entities.log.LogOperate;
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.site.FileComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.logic.service.log.LogLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.base.AbstractFreemarkerView;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.FreeMarkerUtils;
+import com.publiccms.common.tools.JsonUtils;
+import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.entities.log.LogOperate;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileComponent;
+import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.service.log.LogLoginService;
 
 import freemarker.template.TemplateException;
 
@@ -54,18 +53,20 @@ public class TaskTemplateAdminController extends AbstractController {
     @RequestMapping("save")
     public String save(String path, String content, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
-        if (notEmpty(path)) {
+        if (CommonUtils.notEmpty(path)) {
             try {
                 String filePath = siteComponent.getTaskTemplateFilePath(site, path);
                 File templateFile = new File(filePath);
-                if (notEmpty(templateFile)) {
+                if (CommonUtils.notEmpty(templateFile)) {
                     fileComponent.updateFile(templateFile, content);
                     logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                            LogLoginService.CHANNEL_WEB_MANAGER, "update.task.template", getIpAddress(request), getDate(), path));
+                            LogLoginService.CHANNEL_WEB_MANAGER, "update.task.template", RequestUtils.getIpAddress(request),
+                            CommonUtils.getDate(), path));
                 } else {
                     fileComponent.createFile(templateFile, content);
                     logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                            LogLoginService.CHANNEL_WEB_MANAGER, "save.task.template", getIpAddress(request), getDate(), path));
+                            LogLoginService.CHANNEL_WEB_MANAGER, "save.task.template", RequestUtils.getIpAddress(request),
+                            CommonUtils.getDate(), path));
                 }
                 templateComponent.clear();
             } catch (IOException e) {
@@ -89,16 +90,19 @@ public class TaskTemplateAdminController extends AbstractController {
         SysSite site = getSite(request);
         model.addAttribute("filePath", filePath);
         try {
-            String fulllPath = getFullFileName(site, filePath);
+            String fulllPath = SiteComponent.getFullFileName(site, filePath);
             Map<String, Object> map = new HashMap<>();
-            exposeAttribute(map, request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath());
-            model.addAttribute("result", generateStringByFile(fulllPath, templateComponent.getTaskConfiguration(), map));
+            AbstractFreemarkerView.exposeAttribute(map, request.getScheme(), request.getServerName(), request.getServerPort(),
+                    request.getContextPath());
+            model.addAttribute("result",
+                    FreeMarkerUtils.generateStringByFile(fulllPath, templateComponent.getTaskConfiguration(), map));
         } catch (IOException | TemplateException e) {
             model.addAttribute(ERROR, e.getMessage());
             log.error(e.getMessage(), e);
         }
         logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                LogLoginService.CHANNEL_WEB_MANAGER, "run.task.template", getIpAddress(request), getDate(), getString(model)));
+                LogLoginService.CHANNEL_WEB_MANAGER, "run.task.template", RequestUtils.getIpAddress(request),
+                CommonUtils.getDate(), JsonUtils.getString(model)));
         return TEMPLATE_DONE;
     }
 
@@ -111,15 +115,16 @@ public class TaskTemplateAdminController extends AbstractController {
      */
     @RequestMapping("delete")
     public String delete(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (notEmpty(path)) {
+        if (CommonUtils.notEmpty(path)) {
             SysSite site = getSite(request);
             String filePath = siteComponent.getTaskTemplateFilePath(site, path);
-            if (verifyCustom("notExist.template", !fileComponent.deleteFile(filePath), model)) {
+            if (ControllerUtils.verifyCustom("notExist.template", !fileComponent.deleteFile(filePath), model)) {
                 return TEMPLATE_ERROR;
             }
             templateComponent.clear();
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.task.template", getIpAddress(request), getDate(), path));
+            logOperateService
+                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "delete.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
         return TEMPLATE_DONE;
     }

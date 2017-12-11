@@ -1,8 +1,5 @@
 package com.publiccms.common.base;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static org.apache.commons.logging.LogFactory.getLog;
-
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -12,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -29,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
 
 /**
  * DAO基类
@@ -39,7 +38,7 @@ import com.publiccms.common.handler.QueryHandler;
  * 
  */
 public abstract class BaseDao<E> implements Base {
-    protected final Log log = getLog(getClass());
+    protected final Log log = LogFactory.getLog(getClass());
     /**
      * 分面名称搜索前缀
      * 
@@ -171,7 +170,7 @@ public abstract class BaseDao<E> implements Base {
      */
     @SuppressWarnings("unchecked")
     public List<E> getEntitys(Serializable[] ids, String pk) {
-        if (notEmpty(ids)) {
+        if (CommonUtils.notEmpty(ids)) {
             QueryHandler queryHandler = getQueryHandler("from").append(getEntityClass().getSimpleName()).append("bean");
             queryHandler.condition("bean." + pk).append("in (:ids)").setParameter("ids", ids);
             queryHandler.setCacheable(false);
@@ -262,7 +261,7 @@ public abstract class BaseDao<E> implements Base {
      */
     protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize, Integer maxResults) {
         PageHandler page;
-        if (notEmpty(pageSize)) {
+        if (CommonUtils.notEmpty(pageSize)) {
             page = new PageHandler(pageIndex, pageSize, countResult(queryHandler), maxResults);
             queryHandler.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
             if (0 != pageSize) {
@@ -290,7 +289,12 @@ public abstract class BaseDao<E> implements Base {
      * @return number of results
      */
     protected long countResult(QueryHandler queryHandler) {
-        return ((Number) getCountQuery(queryHandler).list().iterator().next()).longValue();
+        Number result = (Number) getCountQuery(queryHandler).list().iterator().next();
+        if (null == result) {
+            return 0;
+        } else {
+            return result.longValue();
+        }
     }
 
     /**
@@ -298,7 +302,12 @@ public abstract class BaseDao<E> implements Base {
      * @return number of data
      */
     protected long count(QueryHandler queryHandler) {
-        return ((Number) getQuery(queryHandler).list().iterator().next()).longValue();
+        Number result = (Number) getQuery(queryHandler).list().iterator().next();
+        if (null == result) {
+            return 0;
+        } else {
+            return result.longValue();
+        }
     }
 
     private Query getQuery(QueryHandler queryHandler) {
@@ -345,7 +354,7 @@ public abstract class BaseDao<E> implements Base {
         QueryBuilder queryBuilder = fullTextSession.getSearchFactory().buildQueryBuilder().forEntity(getEntityClass()).get();
         org.apache.lucene.search.Query query = queryBuilder.keyword().onFields(fields).matching(text).createQuery();
         FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(query, getEntityClass());
-        if (notEmpty(facetFields)) {
+        if (CommonUtils.notEmpty(facetFields)) {
             FacetManager facetManager = fullTextQuery.getFacetManager();
             for (String facetField : facetFields) {
                 FacetingRequest facetingRequest = queryBuilder.facet().name(facetField + FACET_NAME_SUFFIX).onField(facetField)
@@ -376,7 +385,7 @@ public abstract class BaseDao<E> implements Base {
      */
     protected PageHandler getPage(FullTextQuery fullTextQuery, Integer pageIndex, Integer pageSize, Integer maxResults) {
         PageHandler page = new PageHandler(pageIndex, pageSize, fullTextQuery.getResultSize(), maxResults);
-        if (notEmpty(pageSize)) {
+        if (CommonUtils.notEmpty(pageSize)) {
             fullTextQuery.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
         }
         page.setList(fullTextQuery.list());
@@ -408,15 +417,15 @@ public abstract class BaseDao<E> implements Base {
     protected FacetPageHandler getFacetPage(FullTextQuery fullTextQuery, String[] facetFields, Map<String, List<String>> valueMap,
             Integer pageIndex, Integer pageSize, Integer maxResults) {
         FacetPageHandler page = new FacetPageHandler(pageIndex, pageSize, fullTextQuery.getResultSize(), maxResults);
-        if (notEmpty(pageSize)) {
+        if (CommonUtils.notEmpty(pageSize)) {
             fullTextQuery.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
         }
-        if (0 < page.getTotalCount() && notEmpty(facetFields) && notEmpty(valueMap)) {
+        if (0 < page.getTotalCount() && CommonUtils.notEmpty(facetFields) && CommonUtils.notEmpty(valueMap)) {
             FacetManager facetManager = fullTextQuery.getFacetManager();
             for (String facetField : facetFields) {
                 List<Facet> facets = facetManager.getFacets(facetField + FACET_NAME_SUFFIX);
                 Map<String, Integer> facetMap = new LinkedHashMap<>();
-                if (notEmpty(valueMap.get(facetField))) {
+                if (CommonUtils.notEmpty(valueMap.get(facetField))) {
                     List<Facet> facetList = new ArrayList<>();
                     for (Facet facet : facets) {
                         facetMap.put(facet.getValue(), facet.getCount());
@@ -439,7 +448,7 @@ public abstract class BaseDao<E> implements Base {
             }
             page.setTotalCount(fullTextQuery.getResultSize(), maxResults);
             page.init();
-            if (notEmpty(pageSize)) {
+            if (CommonUtils.notEmpty(pageSize)) {
                 fullTextQuery.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
             }
         }

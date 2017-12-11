@@ -1,7 +1,5 @@
 package com.publiccms.common.base;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static org.apache.commons.logging.LogFactory.getLog;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,8 +11,10 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
 
 /**
  * 指令处理器基类
@@ -23,7 +23,7 @@ import com.publiccms.common.handler.RenderHandler;
  *
  */
 public abstract class BaseHandler implements RenderHandler {
-    protected final Log log = getLog(getClass());
+    protected final Log log = LogFactory.getLog(getClass());
     /**
      * 参数名称
      * 
@@ -182,7 +182,7 @@ public abstract class BaseHandler implements RenderHandler {
         try {
             String result = getString(name);
             regristerParamter(PARAMETER_TYPE_STRING, name, defaultValue);
-            return notEmpty(result) ? result : defaultValue;
+            return CommonUtils.notEmpty(result) ? result : defaultValue;
         } catch (Exception e) {
             return defaultValue;
         }
@@ -192,7 +192,7 @@ public abstract class BaseHandler implements RenderHandler {
     public Character getCharacter(String name) throws Exception {
         regristerParamter(PARAMETER_TYPE_CHAR, name);
         String result = getStringWithoutRegrister(name);
-        if (notEmpty(result)) {
+        if (CommonUtils.notEmpty(result)) {
             return result.charAt(0);
         }
         return null;
@@ -209,7 +209,7 @@ public abstract class BaseHandler implements RenderHandler {
         try {
             regristerParamter(PARAMETER_TYPE_INTEGER, name, defaultValue);
             Integer result = getIntegerWithoutRegrister(name);
-            return notEmpty(result) ? result : defaultValue;
+            return CommonUtils.notEmpty(result) ? result : defaultValue;
         } catch (Exception e) {
             return defaultValue;
         }
@@ -219,7 +219,7 @@ public abstract class BaseHandler implements RenderHandler {
     public Integer[] getIntegerArray(String name) throws Exception {
         regristerParamter(PARAMETER_TYPE_INTEGERARRAY, name);
         String[] arr = getStringArrayWithoutRegrister(name);
-        if (notEmpty(arr)) {
+        if (CommonUtils.notEmpty(arr)) {
             Set<Integer> set = new TreeSet<>();
             for (String s : arr) {
                 try {
@@ -241,7 +241,7 @@ public abstract class BaseHandler implements RenderHandler {
     public Long[] getLongArray(String name) throws Exception {
         regristerParamter(PARAMETER_TYPE_LONGARRAY, name);
         String[] arr = getStringArrayWithoutRegrister(name);
-        if (notEmpty(arr)) {
+        if (CommonUtils.notEmpty(arr)) {
             Set<Long> set = new TreeSet<>();
             for (String s : arr) {
                 try {

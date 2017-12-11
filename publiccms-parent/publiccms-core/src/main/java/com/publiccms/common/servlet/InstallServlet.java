@@ -1,16 +1,5 @@
 package com.publiccms.common.servlet;
 
-import static com.publiccms.common.tools.VerificationUtils.base64Encode;
-import static com.publiccms.common.tools.VerificationUtils.encrypt;
-import static org.apache.commons.logging.LogFactory.getLog;
-import static com.publiccms.common.constants.CommonConstants.CMS_FILEPATH;
-import static com.publiccms.common.constants.CommonConstants.ENCRYPT_KEY;
-import static com.publiccms.common.constants.CommonConstants.INSTALL_LOCK_FILENAME;
-import static com.publiccms.common.database.CmsDataSource.DATABASE_CONFIG_FILENAME;
-import static com.publiccms.common.database.CmsDataSource.DATABASE_CONFIG_TEMPLATE;
-import static com.publiccms.common.tools.DatabaseUtils.getConnection;
-import static org.springframework.core.io.support.PropertiesLoaderUtils.loadAllProperties;
-
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,7 +8,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.nio.channels.FileLock;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -32,13 +20,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.jdbc.ScriptRunner;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
+
 import com.publiccms.common.base.AbstractCmsUpgrader;
+import com.publiccms.common.base.Base;
 import com.publiccms.common.constants.CmsVersion;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.database.CmsUpgrader;
-
-import com.publiccms.common.base.Base;
+import com.publiccms.common.tools.DatabaseUtils;
+import com.publiccms.common.tools.VerificationUtils;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -77,7 +70,7 @@ public class InstallServlet extends HttpServlet implements Base {
      */
     public static final String STEP_START = "start";
 
-    private final Log log = getLog(getClass());
+    private final Log log = LogFactory.getLog(getClass());
 
     private Configuration freemarkerConfiguration;
     private String startStep;
@@ -166,9 +159,8 @@ public class InstallServlet extends HttpServlet implements Base {
     private void start() throws IOException, PropertyVetoException {
         CmsVersion.setInitialized(true);
         CmsDataSource.initDefautlDataSource();
-        File file = new File(CMS_FILEPATH + INSTALL_LOCK_FILENAME);
-        try (FileOutputStream outputStream = new FileOutputStream(file);
-                FileLock fileLock = outputStream.getChannel().tryLock();) {
+        File file = new File(CommonConstants.CMS_FILEPATH + CommonConstants.INSTALL_LOCK_FILENAME);
+        try (FileOutputStream outputStream = new FileOutputStream(file);) {
             outputStream.write(CmsVersion.getVersion().getBytes(DEFAULT_CHARSET));
         }
         log.info("PublicCMS " + CmsVersion.getVersion() + " started!");
@@ -179,20 +171,20 @@ public class InstallServlet extends HttpServlet implements Base {
      */
     private void configDatabase(HttpServletRequest request, Map<String, Object> map) {
         try {
-            Properties dbconfig = loadAllProperties(DATABASE_CONFIG_TEMPLATE);
+            Properties dbconfig = PropertiesLoaderUtils.loadAllProperties(CmsDataSource.DATABASE_CONFIG_TEMPLATE);
             String host = request.getParameter("host");
             String port = request.getParameter("port");
             String database = request.getParameter("database");
             cmsUpgrader.setDataBaseUrl(dbconfig, host, port, database);
             dbconfig.setProperty("jdbc.username", request.getParameter("username"));
-            dbconfig.setProperty("jdbc.encryptPassword", base64Encode(encrypt(request.getParameter("password"), ENCRYPT_KEY)));
-            String databaseConfiFile = CMS_FILEPATH + DATABASE_CONFIG_FILENAME;
+            dbconfig.setProperty("jdbc.encryptPassword",
+                    VerificationUtils.base64Encode(VerificationUtils.encrypt(request.getParameter("password"), CommonConstants.ENCRYPT_KEY)));
+            String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
             File file = new File(databaseConfiFile);
-            try (FileOutputStream outputStream = new FileOutputStream(file);
-                    FileLock fileLock = outputStream.getChannel().tryLock();) {
+            try (FileOutputStream outputStream = new FileOutputStream(file);) {
                 dbconfig.store(outputStream, null);
             }
-            try (Connection connection = getConnection(databaseConfiFile)) {
+            try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile)) {
             }
             map.put("message", "success");
         } catch (Exception e) {
@@ -202,14 +194,14 @@ public class InstallServlet extends HttpServlet implements Base {
 
     /**
      * 检查数据库
-     * 
+     *
      * @param map
      * @throws ServletException
      * @throws IOException
      */
     private void checkDatabse(Map<String, Object> map) {
-        String databaseConfiFile = CMS_FILEPATH + DATABASE_CONFIG_FILENAME;
-        try (Connection connection = getConnection(databaseConfiFile);) {
+        String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
+        try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile);) {
             map.put("message", "success");
         } catch (Exception e) {
             map.put("error", e.getMessage());
@@ -218,14 +210,14 @@ public class InstallServlet extends HttpServlet implements Base {
 
     /**
      * 初始化数据库
-     * 
+     *
      * @param type
      * @param map
      * @throws IOException
      */
     private void initDatabase(String type, Map<String, Object> map) throws Exception {
-        String databaseConfiFile = CMS_FILEPATH + DATABASE_CONFIG_FILENAME;
-        try (Connection connection = getConnection(databaseConfiFile)) {
+        String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
+        try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile)) {
             try {
                 map.put("history", install(connection, null != type));
                 map.put("message", "success");
@@ -258,8 +250,8 @@ public class InstallServlet extends HttpServlet implements Base {
      */
     private void upgradeDatabase(String fromVersion, Map<String, Object> map) throws Exception {
         if (cmsUpgrader.getVersionList().contains(fromVersion)) {
-            String databaseConfiFile = CMS_FILEPATH + DATABASE_CONFIG_FILENAME;
-            try (Connection connection = getConnection(databaseConfiFile);) {
+            String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
+            try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile);) {
                 try {
                     cmsUpgrader.update(connection, fromVersion);
                     map.put("message", "success");

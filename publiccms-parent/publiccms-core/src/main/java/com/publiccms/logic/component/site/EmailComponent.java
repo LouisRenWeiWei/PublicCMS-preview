@@ -1,10 +1,5 @@
 package com.publiccms.logic.component.site;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.LanguagesUtils.getMessage;
-import static org.apache.commons.logging.LogFactory.getLog;
-import static com.publiccms.common.constants.CommonConstants.applicationContext;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -17,21 +12,24 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.logging.Log;
-import com.publiccms.common.api.Config;
-import com.publiccms.common.api.SiteCache;
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.views.pojo.entities.ExtendField;
-
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.api.Config;
+import com.publiccms.common.api.SiteCache;
 import com.publiccms.common.base.Base;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
+import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.LanguagesUtils;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.views.pojo.entities.ExtendField;
 
 /**
  * 
@@ -147,7 +145,7 @@ public class EmailComponent implements SiteCache, Config, Base {
      */
     private boolean send(int siteId, String toAddress, String title, String content, boolean isHtml) throws MessagingException {
         Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
-        if (notEmpty(config) && notEmpty(config.get(CONFIG_FROMADDRESS))) {
+        if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_FROMADDRESS))) {
             JavaMailSender mailSender = getMailSender(siteId, config);
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(message, false, DEFAULT_CHARSET_NAME);
@@ -168,30 +166,30 @@ public class EmailComponent implements SiteCache, Config, Base {
 
     @Override
     public String getCodeDescription(SysSite site, Locale locale) {
-        return getMessage(applicationContext, locale, CONFIG_CODE_DESCRIPTION);
+        return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION);
     }
 
     @Override
     public List<ExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<ExtendField> extendFieldList = new ArrayList<>();
         extendFieldList.add(new ExtendField(CONFIG_DEFAULTENCODING, INPUTTYPE_TEXT, true,
-                getMessage(applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_DEFAULTENCODING), null,
+                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_DEFAULTENCODING), null,
                 DEFAULT_CHARSET_NAME));
         extendFieldList.add(new ExtendField(CONFIG_HOST, INPUTTYPE_TEXT, true,
-                getMessage(applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_HOST), null, null));
+                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_HOST), null, null));
         extendFieldList.add(new ExtendField(CONFIG_PORT, INPUTTYPE_NUMBER, true,
-                getMessage(applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_PORT), null, String.valueOf(25)));
+                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_PORT), null, String.valueOf(25)));
         extendFieldList.add(new ExtendField(CONFIG_USERNAME, INPUTTYPE_TEXT, true,
-                getMessage(applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_USERNAME), null, null));
+                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_USERNAME), null, null));
         extendFieldList.add(new ExtendField(CONFIG_PASSWORD, INPUTTYPE_PASSWORD, true,
-                getMessage(applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_PASSWORD), null, null));
+                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_PASSWORD), null, null));
         extendFieldList.add(new ExtendField(CONFIG_TIMEOUT, INPUTTYPE_NUMBER, true,
-                getMessage(applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_TIMEOUT), null,
+                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_TIMEOUT), null,
                 String.valueOf(3000)));
         extendFieldList.add(new ExtendField(CONFIG_AUTH, INPUTTYPE_BOOLEAN, true,
-                getMessage(applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_AUTH), null, null));
+                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_AUTH), null, null));
         extendFieldList.add(new ExtendField(CONFIG_FROMADDRESS, INPUTTYPE_EMAIL, true,
-                getMessage(applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_FROMADDRESS), null, null));
+                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_FROMADDRESS), null, null));
         return extendFieldList;
     }
 
@@ -226,7 +224,7 @@ public class EmailComponent implements SiteCache, Config, Base {
 class SendTask implements Runnable {
     private JavaMailSender mailSender;
     private MimeMessage message;
-    private final Log log = getLog(getClass());
+    private final Log log = LogFactory.getLog(getClass());
 
     public SendTask(JavaMailSender mailSender, MimeMessage message) {
         this.message = message;

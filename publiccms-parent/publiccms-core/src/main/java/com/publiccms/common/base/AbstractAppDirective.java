@@ -1,17 +1,17 @@
 package com.publiccms.common.base;
 
-import static com.publiccms.common.tools.CommonUtils.empty;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static org.apache.commons.lang3.ArrayUtils.contains;
-import static org.apache.commons.lang3.StringUtils.split;
-import static com.publiccms.controller.api.ApiController.NEED_APP_TOKEN;
-import static com.publiccms.controller.api.ApiController.NEED_LOGIN;
-import static com.publiccms.controller.api.ApiController.UN_AUTHORIZED;
-
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.publiccms.common.directive.BaseHttpDirective;
+import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.controller.api.ApiController;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysAppToken;
 import com.publiccms.entities.sys.SysSite;
@@ -22,18 +22,13 @@ import com.publiccms.logic.service.sys.SysAppService;
 import com.publiccms.logic.service.sys.SysAppTokenService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.publiccms.common.base.Base;
-import com.publiccms.common.directive.BaseHttpDirective;
-import com.publiccms.common.handler.RenderHandler;
 
 /**
  * 
  * BaseDirective 自定义接口指令基类
  *
  */
-public abstract class AbstractAppDirective extends BaseHttpDirective implements Base  {
+public abstract class AbstractAppDirective extends BaseHttpDirective implements Base {
     /**
      * @param handler
      * @return site
@@ -49,15 +44,15 @@ public abstract class AbstractAppDirective extends BaseHttpDirective implements 
     public void execute(RenderHandler handler) throws IOException, Exception {
         SysApp app = null;
         SysUser user = null;
-        if (needAppToken() && (null == (app = getApp(handler)) || empty(app.getAuthorizedApis())
-                || !contains(split(app.getAuthorizedApis(), COMMA_DELIMITED), getName()))) {
+        if (needAppToken() && (null == (app = getApp(handler)) || CommonUtils.empty(app.getAuthorizedApis())
+                || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), COMMA_DELIMITED), getName()))) {
             if (null == app) {
-                handler.put("error", NEED_APP_TOKEN).render();
+                handler.put("error", ApiController.NEED_APP_TOKEN).render();
             } else {
-                handler.put("error", UN_AUTHORIZED).render();
+                handler.put("error", ApiController.UN_AUTHORIZED).render();
             }
         } else if (needUserToken() && null == (user = getUser(handler))) {
-            handler.put("error", NEED_LOGIN).render();
+            handler.put("error", ApiController.NEED_LOGIN).render();
         } else {
             execute(handler, app, user);
             handler.render();
@@ -75,7 +70,7 @@ public abstract class AbstractAppDirective extends BaseHttpDirective implements 
     protected SysUser getUser(RenderHandler handler) throws Exception {
         String authToken = handler.getString("authToken");
         Long authUserId = handler.getLong("authUserId");
-        if (notEmpty(authToken) && null != authUserId) {
+        if (CommonUtils.notEmpty(authToken) && null != authUserId) {
             SysUserToken sysUserToken = sysUserTokenService.getEntity(authToken);
             if (null != sysUserToken && sysUserToken.getUserId() == authUserId) {
                 return sysUserService.getEntity(sysUserToken.getUserId());

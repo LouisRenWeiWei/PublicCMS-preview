@@ -1,7 +1,5 @@
 package com.publiccms.logic.dao.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
 
 /**
  *
@@ -29,7 +28,7 @@ public class HqlDao extends BaseDao<Object> {
      */
     public PageHandler getPage(String hql, Map<String, Object> paramters, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler(hql);
-        if (notEmpty(paramters)) {
+        if (CommonUtils.notEmpty(paramters)) {
             for (Entry<String, Object> entry : paramters.entrySet()) {
                 queryHandler.setParameter(entry.getKey(), entry.getValue());
             }

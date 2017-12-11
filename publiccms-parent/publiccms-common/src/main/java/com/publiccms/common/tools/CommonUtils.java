@@ -1,13 +1,12 @@
 package com.publiccms.common.tools;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.time.DateUtils.*;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
 import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 /**
  * 基类 Base
@@ -26,7 +25,7 @@ public class CommonUtils {
      * @return 精确到分钟的当前日期
      */
     public static Date getMinuteDate() {
-        return setSeconds(setMilliseconds(getDate(), 0), 0);
+        return DateUtils.setSeconds(DateUtils.setMilliseconds(getDate(), 0), 0);
     }
 
     /**
@@ -34,7 +33,7 @@ public class CommonUtils {
      * @return 是否为非空
      */
     public static boolean notEmpty(String var) {
-        return isNotBlank(var);
+        return StringUtils.isNotBlank(var);
     }
 
     /**
@@ -42,7 +41,7 @@ public class CommonUtils {
      * @return 是否为空
      */
     public static boolean empty(String var) {
-        return isBlank(var);
+        return StringUtils.isBlank(var);
     }
 
     /**

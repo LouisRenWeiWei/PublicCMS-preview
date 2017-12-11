@@ -1,19 +1,10 @@
 package com.publiccms.logic.component.task;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static org.apache.commons.logging.LogFactory.getLog;
-
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
-import com.publiccms.entities.log.LogTask;
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.entities.sys.SysTask;
-import com.publiccms.logic.service.log.LogTaskService;
-import com.publiccms.logic.service.sys.SysSiteService;
-import com.publiccms.logic.service.sys.SysTaskService;
+import org.apache.commons.logging.LogFactory;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.JobBuilder;
@@ -27,6 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.Base;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.log.LogTask;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.sys.SysTask;
+import com.publiccms.logic.service.log.LogTaskService;
+import com.publiccms.logic.service.sys.SysSiteService;
+import com.publiccms.logic.service.sys.SysTaskService;
 
 /**
  * 
@@ -35,7 +33,7 @@ import com.publiccms.common.base.Base;
  */
 @Component
 public class ScheduledTask implements Base {
-    protected final Log log = getLog(getClass());
+    protected final Log log = LogFactory.getLog(getClass());
     /**
      * 
      */
@@ -94,8 +92,8 @@ public class ScheduledTask implements Base {
      * @param cronExpression
      */
     public void create(SysSite site, Integer id, String cronExpression) {
-        if (notEmpty(id) && notEmpty(cronExpression)) {
-            Date startTime = getDate();
+        if (CommonUtils.notEmpty(id) && CommonUtils.notEmpty(cronExpression)) {
+            Date startTime = CommonUtils.getDate();
             String taskName = getTaskName(id);
             TriggerKey triggerKey = TriggerKey.triggerKey(taskName);
             try {
@@ -115,7 +113,7 @@ public class ScheduledTask implements Base {
                 }
             } catch (SchedulerException e) {
                 sysTaskService.updateStatus(id, TASK_STATUS_ERROR);
-                logTaskService.save(new LogTask(site.getId(), id, startTime, getDate(), false, e.getMessage()));
+                logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
             }
         }
     }
@@ -127,13 +125,13 @@ public class ScheduledTask implements Base {
      * @param id
      */
     public void runOnce(SysSite site, Integer id) {
-        if (notEmpty(id)) {
-            Date startTime = getDate();
+        if (CommonUtils.notEmpty(id)) {
+            Date startTime = CommonUtils.getDate();
             try {
                 scheduler.triggerJob(JobKey.jobKey(getTaskName(id)));
             } catch (SchedulerException e) {
                 sysTaskService.updateStatus(id, TASK_STATUS_ERROR);
-                logTaskService.save(new LogTask(site.getId(), id, startTime, getDate(), false, e.getMessage()));
+                logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
             }
         }
     }
@@ -145,13 +143,13 @@ public class ScheduledTask implements Base {
      * @param id
      */
     public void pause(SysSite site, Integer id) {
-        if (notEmpty(id)) {
-            Date startTime = getDate();
+        if (CommonUtils.notEmpty(id)) {
+            Date startTime = CommonUtils.getDate();
             try {
                 scheduler.pauseJob(JobKey.jobKey(getTaskName(id)));
             } catch (SchedulerException e) {
                 sysTaskService.updateStatus(id, TASK_STATUS_ERROR);
-                logTaskService.save(new LogTask(site.getId(), id, startTime, getDate(), false, e.getMessage()));
+                logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
             }
         }
     }
@@ -163,13 +161,13 @@ public class ScheduledTask implements Base {
      * @param id
      */
     public void resume(SysSite site, Integer id) {
-        if (notEmpty(id)) {
-            Date startTime = getDate();
+        if (CommonUtils.notEmpty(id)) {
+            Date startTime = CommonUtils.getDate();
             try {
                 scheduler.resumeJob(JobKey.jobKey(getTaskName(id)));
             } catch (SchedulerException e) {
                 sysTaskService.updateStatus(id, TASK_STATUS_ERROR);
-                logTaskService.save(new LogTask(site.getId(), id, startTime, getDate(), false, e.getMessage()));
+                logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
             }
         }
     }
@@ -180,7 +178,7 @@ public class ScheduledTask implements Base {
      * @param id
      */
     public void delete(Integer id) {
-        if (notEmpty(id)) {
+        if (CommonUtils.notEmpty(id)) {
             try {
                 scheduler.deleteJob(JobKey.jobKey(getTaskName(id)));
             } catch (SchedulerException e) {

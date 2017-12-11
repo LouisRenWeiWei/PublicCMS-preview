@@ -1,7 +1,5 @@
 package com.publiccms.entities.home;
 
-import static com.publiccms.common.database.CmsUpgrader.IDENTIFIER_GENERATOR;
-
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,8 +10,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
+import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -21,6 +21,7 @@ import com.publiccms.common.generator.annotation.GeneratorColumn;
  */
 @Entity
 @Table(name = "home_group_active")
+@DynamicUpdate
 public class HomeGroupActive implements java.io.Serializable {
 
     /**
@@ -53,7 +54,7 @@ public class HomeGroupActive implements java.io.Serializable {
 
     @Id
     @GeneratedValue(generator = "cmsGenerator")
-    @GenericGenerator(name = "cmsGenerator", strategy = IDENTIFIER_GENERATOR)
+    @GenericGenerator(name = "cmsGenerator", strategy = CmsUpgrader.IDENTIFIER_GENERATOR)
     @Column(name = "id", unique = true, nullable = false)
     public Long getId() {
         return this.id;

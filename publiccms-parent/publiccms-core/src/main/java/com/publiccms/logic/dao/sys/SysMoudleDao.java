@@ -1,15 +1,12 @@
 package com.publiccms.logic.dao.sys;
 
-// Generated 2015-7-22 13:48:39 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.empty;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
-import com.publiccms.entities.sys.SysMoudle;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysMoudle;
 
 /**
  *
@@ -28,7 +25,7 @@ public class SysMoudleDao extends BaseDao<SysMoudle> {
      */
     public PageHandler getPage(Integer parentId, Boolean menu, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysMoudle bean");
-        if (notEmpty(parentId)) {
+        if (CommonUtils.notEmpty(parentId)) {
             queryHandler.condition("bean.parentId = :parentId").setParameter("parentId", parentId);
         } else {
             queryHandler.condition("bean.parentId is null");
@@ -42,10 +39,10 @@ public class SysMoudleDao extends BaseDao<SysMoudle> {
 
     @Override
     protected SysMoudle init(SysMoudle entity) {
-        if (empty(entity.getAuthorizedUrl())) {
+        if (CommonUtils.empty(entity.getAuthorizedUrl())) {
             entity.setAuthorizedUrl(null);
         }
-        if (empty(entity.getUrl())) {
+        if (CommonUtils.empty(entity.getUrl())) {
             entity.setUrl(null);
         }
         return entity;

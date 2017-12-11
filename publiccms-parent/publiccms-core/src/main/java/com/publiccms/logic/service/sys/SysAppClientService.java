@@ -1,19 +1,19 @@
 package com.publiccms.logic.service.sys;
 
 // Generated 2016-3-1 17:24:12 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.getDate;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import com.publiccms.entities.sys.SysAppClient;
-import com.publiccms.logic.dao.sys.SysAppClientDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysAppClient;
+import com.publiccms.logic.dao.sys.SysAppClientDao;
 
 /**
  *
@@ -71,7 +71,7 @@ public class SysAppClientService extends BaseService<SysAppClient> {
         SysAppClient entity = getEntity(id);
         if (null != entity) {
             entity.setClientVersion(clientVersion);
-            entity.setLastLoginDate(getDate());
+            entity.setLastLoginDate(CommonUtils.getDate());
             entity.setLastLoginIp(ip);
         }
         return entity;

@@ -1,15 +1,14 @@
 package com.publiccms.views.directive.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.IOException;
 
-import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.logic.component.template.MetadataComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.logic.component.template.MetadataComponent;
 
 /**
  *
@@ -23,7 +22,7 @@ public class MetadataDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path");
         String dir = handler.getString("dir");
-        if (notEmpty(path) && !path.endsWith(SEPARATOR)) {
+        if (CommonUtils.notEmpty(path) && !path.endsWith(SEPARATOR)) {
             handler.put("object",
                             metadataComponent.getTemplateMetadata(siteComponent.getWebTemplateFilePath(getSite(handler), path)))
                     .render();

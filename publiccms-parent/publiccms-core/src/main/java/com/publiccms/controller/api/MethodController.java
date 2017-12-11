@@ -1,11 +1,5 @@
 package com.publiccms.controller.api;
 
-import static com.publiccms.common.tools.CommonUtils.empty;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.controller.api.ApiController.EXCEPTION;
-import static com.publiccms.controller.api.ApiController.NEED_APP_TOKEN;
-import static com.publiccms.controller.api.ApiController.NOT_FOUND_MAP;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.base.BaseMethod;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysAppToken;
 import com.publiccms.logic.component.site.DirectiveComponent;
@@ -34,7 +29,7 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
- * 
+ *
  * MethodController 方法统一分发
  *
  */
@@ -44,18 +39,18 @@ public class MethodController extends AbstractController {
     private List<Map<String, String>> methodList = new ArrayList<>();
     private ObjectWrapper objectWrapper;
     /**
-     * 
+     *
      */
     public static final Map<String, String> NEED_APP_TOKEN_MAP = new HashMap<String, String>() {
         private static final long serialVersionUID = 1L;
         {
-            put(ERROR, NEED_APP_TOKEN);
+            put(ERROR, ApiController.NEED_APP_TOKEN);
         }
     };
 
     /**
      * 接口指令统一分发
-     * 
+     *
      * @param name
      * @param appToken
      * @param request
@@ -77,35 +72,37 @@ public class MethodController extends AbstractController {
                         return NEED_APP_TOKEN_MAP;
                     }
                 }
+                Map<String, Object> map = new HashMap<>();
                 String[] paramters = request.getParameterValues("paramters");
-                if (notEmpty(paramters) && paramters.length >= method.minParamtersNumber()) {
+                if (CommonUtils.notEmpty(paramters) && paramters.length >= method.minParamtersNumber()) {
                     List<TemplateModel> list = new ArrayList<>();
                     for (String paramter : paramters) {
                         list.add(getObjectWrapper().wrap(paramter));
                     }
-                    return method.exec(list);
-                } else if (empty(paramters) && 0 == method.minParamtersNumber()) {
-                    return method.exec(null);
+                    map.put("result", method.exec(list));
+                    return map;
+                } else if (CommonUtils.empty(paramters) && 0 == method.minParamtersNumber()) {
+                    map.put("result", method.exec(null));
+                    return map;
                 } else {
-                    Map<String, String> map = new HashMap<>();
                     map.put(ERROR, "paramtersError");
                     return map;
                 }
             } catch (TemplateModelException e) {
                 log.error(e.getMessage(), e);
                 Map<String, String> map = new HashMap<>();
-                map.put(ERROR, EXCEPTION);
+                map.put(ERROR, ApiController.EXCEPTION);
                 return map;
             }
         } else {
-            return NOT_FOUND_MAP;
+            return ApiController.NOT_FOUND_MAP;
         }
 
     }
 
     /**
      * 接口列表
-     * 
+     *
      * @return result
      */
     @RequestMapping("methods")
@@ -115,9 +112,9 @@ public class MethodController extends AbstractController {
 
     /**
      * 接口初始化
-     * 
+     *
      * @param directiveComponent
-     * 
+     *
      */
     @Autowired
     public void init(DirectiveComponent directiveComponent) {

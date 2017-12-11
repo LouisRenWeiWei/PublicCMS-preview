@@ -1,19 +1,18 @@
 package com.publiccms.logic.component.oauth;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.http.client.ClientProtocolException;
-import com.publiccms.common.base.oauth.AbstractOauth;
-import com.publiccms.view.pojo.oauth.OauthAccess;
-import com.publiccms.view.pojo.oauth.OauthConfig;
-import com.publiccms.view.pojo.oauth.OauthUser;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.publiccms.common.base.oauth.AbstractOauth;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.view.pojo.oauth.OauthAccess;
+import com.publiccms.view.pojo.oauth.OauthConfig;
+import com.publiccms.view.pojo.oauth.OauthUser;
 
 /**
  *
@@ -50,7 +49,7 @@ public class WeiboOauthComponent extends AbstractOauth {
     @Override
     public OauthAccess getAccessToken(int siteId, String code) throws ClientProtocolException, IOException {
         OauthConfig config = getConfig(siteId);
-        if (notEmpty(code) && null != config) {
+        if (CommonUtils.notEmpty(code) && null != config) {
             Map<String, String> paramters = new HashMap<>();
             paramters.put("client_id", config.getAppKey());
             paramters.put("client_secret", config.getAppSecret());
@@ -58,7 +57,7 @@ public class WeiboOauthComponent extends AbstractOauth {
             paramters.put("redirect_uri", config.getReturnUrl());
             paramters.put("code", code);
             String html = post("https://api.weibo.com/oauth2/access_token", paramters);
-            if (notEmpty(html)) {
+            if (CommonUtils.notEmpty(html)) {
                 Map<String, Object> map = objectMapper.readValue(html, new TypeReference<Map<String, Object>>() {
                 });
                 return new OauthAccess(code, (String) map.get("access_token"), String.valueOf((Integer) map.get("uid")));

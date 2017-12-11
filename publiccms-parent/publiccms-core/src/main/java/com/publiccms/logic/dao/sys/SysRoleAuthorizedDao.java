@@ -1,13 +1,12 @@
 package com.publiccms.logic.dao.sys;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
-import com.publiccms.entities.sys.SysRoleAuthorized;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysRoleAuthorized;
 
 /**
  *
@@ -26,10 +25,10 @@ public class SysRoleAuthorizedDao extends BaseDao<SysRoleAuthorized> {
      */
     public PageHandler getPage(Integer roleId, String url, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysRoleAuthorized bean");
-        if (notEmpty(roleId)) {
+        if (CommonUtils.notEmpty(roleId)) {
             queryHandler.condition("bean.id.roleId = :roleId").setParameter("roleId", roleId);
         }
-        if (notEmpty(url)) {
+        if (CommonUtils.notEmpty(url)) {
             queryHandler.condition("bean.id.url = :url").setParameter("url", url);
         }
         return getPage(queryHandler, pageIndex, pageSize);
@@ -42,10 +41,10 @@ public class SysRoleAuthorizedDao extends BaseDao<SysRoleAuthorized> {
      */
     public long count(Integer[] roleIds, String url) {
         QueryHandler queryHandler = getCountQueryHandler("from SysRoleAuthorized bean");
-        if (notEmpty(roleIds)) {
+        if (CommonUtils.notEmpty(roleIds)) {
             queryHandler.condition("bean.id.roleId in (:roleIds)").setParameter("roleIds", roleIds);
         }
-        if (notEmpty(url)) {
+        if (CommonUtils.notEmpty(url)) {
             queryHandler.condition("bean.id.url = :url").setParameter("url", url);
         }
         return count(queryHandler);
@@ -56,7 +55,7 @@ public class SysRoleAuthorizedDao extends BaseDao<SysRoleAuthorized> {
      * @return number of data deleted
      */
     public int deleteByRoleId(Integer roleId) {
-        if (notEmpty(roleId)) {
+        if (CommonUtils.notEmpty(roleId)) {
             QueryHandler queryHandler = getDeleteQueryHandler("from SysRoleAuthorized bean where bean.id.roleId = :roleId");
             queryHandler.setParameter("roleId", roleId);
             return delete(queryHandler);

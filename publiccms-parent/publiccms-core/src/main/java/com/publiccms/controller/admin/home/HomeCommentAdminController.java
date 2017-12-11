@@ -1,22 +1,22 @@
 package com.publiccms.controller.admin.home;
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.JsonUtils.getString;
-import static com.publiccms.common.tools.RequestUtils.getIpAddress;
-import static org.apache.commons.lang3.StringUtils.join;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.JsonUtils;
+import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.home.HomeComment;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.home.HomeCommentService;
 import com.publiccms.logic.service.log.LogLoginService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  *
@@ -41,13 +41,13 @@ public class HomeCommentAdminController extends AbstractController {
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "update.homeComment", getIpAddress(request), getDate(),
-                    getString(entity)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "update.homeComment", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
         } else {
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.homeComment", getIpAddress(request), getDate(),
-                    getString(entity)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.homeComment", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -61,10 +61,11 @@ public class HomeCommentAdminController extends AbstractController {
     @RequestMapping("delete")
     public String delete(Integer[] ids, HttpServletRequest request, HttpSession session) {
         SysSite site = getSite(request);
-        if (notEmpty(ids)) {
+        if (CommonUtils.notEmpty(ids)) {
             service.delete(ids);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.homeComment", getIpAddress(request), getDate(), join(ids, ',')));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.homeComment", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), StringUtils.join(ids, ',')));
         }
         return TEMPLATE_DONE;
     }

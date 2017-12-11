@@ -1,8 +1,5 @@
 package com.publiccms.views.directive.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.logic.component.template.TemplateComponent.INCLUDE_DIRECTORY;
-
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
@@ -11,16 +8,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.publiccms.common.handler.RenderHandler;
 
 import freemarker.template.TemplateException;
 
@@ -38,22 +35,22 @@ public class IncludePlaceDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path");
         String[] paths = handler.getStringArray("paths");
-        if (notEmpty(path)) {
+        if (CommonUtils.notEmpty(path)) {
             SysSite site = getSite(handler);
             CmsPlaceMetadata metadata = metadataComponent
-                    .getPlaceMetadata(siteComponent.getWebTemplateFilePath(site, INCLUDE_DIRECTORY + path));
+                    .getPlaceMetadata(siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path));
             if (site.isUseSsi()) {
-                handler.print(new StringBuilder("<!--#include virtual=\"/").append(INCLUDE_DIRECTORY).append(path).append("\"-->")
+                handler.print(new StringBuilder("<!--#include virtual=\"/").append(TemplateComponent.INCLUDE_DIRECTORY).append(path).append("\"-->")
                         .toString());
             } else {
                 templateComponent.printPlace(handler.getWriter(), site, path, metadata);
             }
-        } else if (notEmpty(paths)) {
+        } else if (CommonUtils.notEmpty(paths)) {
             SysSite site = getSite(handler);
             Map<String, String> map = new ConcurrentHashMap<>();
             if (site.isUseSsi()) {
                 for (String p : paths) {
-                    map.put(p, new StringBuilder("<!--#include virtual=\"/").append(INCLUDE_DIRECTORY).append(p).append("\"-->")
+                    map.put(p, new StringBuilder("<!--#include virtual=\"/").append(TemplateComponent.INCLUDE_DIRECTORY).append(p).append("\"-->")
                             .toString());
                 }
                 handler.put("map", map).render();
@@ -103,7 +100,7 @@ public class IncludePlaceDirective extends AbstractTemplateDirective {
         @Override
         public void run() {
             CmsPlaceMetadata metadata = metadataComponent
-                    .getPlaceMetadata(siteComponent.getWebTemplateFilePath(site, INCLUDE_DIRECTORY + path));
+                    .getPlaceMetadata(siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path));
             try {
                 resultMap.put(path, templateComponent.printPlace(site, path, metadata));
             } catch (IOException | TemplateException e) {

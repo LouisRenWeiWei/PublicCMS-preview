@@ -1,16 +1,14 @@
 package com.publiccms.logic.dao.cms;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.Date;
 
-import com.publiccms.entities.cms.CmsPlace;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsPlace;
 
 /**
  *
@@ -40,19 +38,19 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
             Date startPublishDate, Date endPublishDate, Integer status, Boolean disabled, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsPlace bean");
-        if (notEmpty(siteId)) {
+        if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
-        if (notEmpty(userId)) {
+        if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
-        if (notEmpty(path)) {
+        if (CommonUtils.notEmpty(path)) {
             queryHandler.condition("bean.path = :path").setParameter("path", path);
         }
-        if (notEmpty(itemType)) {
+        if (CommonUtils.notEmpty(itemType)) {
             queryHandler.condition("bean.itemType = :itemType").setParameter("itemType", itemType);
         }
-        if (notEmpty(itemId)) {
+        if (CommonUtils.notEmpty(itemId)) {
             queryHandler.condition("bean.itemId = :itemId").setParameter("itemId", itemId);
         }
         if (null != startPublishDate) {
@@ -92,7 +90,7 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
      * @return number of data deleted
      */
     public int delete(int siteId, String path) {
-        if (notEmpty(path)) {
+        if (CommonUtils.notEmpty(path)) {
             QueryHandler queryHandler = getDeleteQueryHandler("from CmsPlace bean");
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
             queryHandler.condition("bean.path = :path").setParameter("path", path);
@@ -104,10 +102,10 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
     @Override
     protected CmsPlace init(CmsPlace entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(getDate());
+            entity.setCreateDate(CommonUtils.getDate());
         }
         if (null == entity.getPublishDate()) {
-            entity.setPublishDate(getDate());
+            entity.setPublishDate(CommonUtils.getDate());
         }
         return entity;
     }

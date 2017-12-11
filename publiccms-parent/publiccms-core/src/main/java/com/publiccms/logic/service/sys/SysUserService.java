@@ -1,21 +1,21 @@
 package com.publiccms.logic.service.sys;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static org.apache.commons.lang3.ArrayUtils.removeElement;
-import static org.apache.commons.lang3.StringUtils.split;
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.dao.sys.SysUserDao;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.dao.sys.SysUserDao;
 
 /**
  *
@@ -25,7 +25,7 @@ import com.publiccms.common.handler.PageHandler;
 @Service
 @Transactional
 public class SysUserService extends BaseService<SysUser> {
-    
+
     /**
      * @param siteId
      * @param deptId
@@ -97,7 +97,7 @@ public class SysUserService extends BaseService<SysUser> {
     public SysUser updateLoginStatus(Serializable id, String ip) {
         SysUser entity = getEntity(id);
         if (null != entity) {
-            entity.setLastLoginDate(getDate());
+            entity.setLastLoginDate(CommonUtils.getDate());
             entity.setLastLoginIp(ip);
             entity.setLoginCount(entity.getLoginCount() + 1);
         }
@@ -112,8 +112,8 @@ public class SysUserService extends BaseService<SysUser> {
         SysUser entity = getEntity(userId);
         if (null != entity) {
             String roles = entity.getRoles();
-            String[] roleArray = split(roles, ',');
-            removeElement(roleArray, roleId.toString());
+            String[] roleArray = StringUtils.split(roles, ',');
+            ArrayUtils.removeElement(roleArray, roleId.toString());
             entity.setRoles(arrayToCommaDelimitedString(roleArray));
         }
     }
@@ -145,5 +145,5 @@ public class SysUserService extends BaseService<SysUser> {
 
     @Autowired
     private SysUserDao dao;
-    
+
 }

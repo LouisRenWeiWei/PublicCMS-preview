@@ -1,22 +1,19 @@
 package com.publiccms.views.directive.api;
 
-//Generated 2015-5-10 17:54:56 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.RequestUtils.getIpAddress;
-
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.publiccms.common.base.AbstractAppDirective;
+import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysAppClient;
 import com.publiccms.entities.sys.SysAppClientId;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.service.sys.SysAppClientService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.publiccms.common.handler.RenderHandler;
 
 /**
  *
@@ -30,16 +27,16 @@ public class AppClientDirective extends AbstractAppDirective {
     public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
         String uuid = handler.getString("uuid");
         String clientVersion = handler.getString("clientVersion");
-        if (notEmpty(uuid)) {
+        if (CommonUtils.notEmpty(uuid)) {
             SysAppClientId sysAppClientId = new SysAppClientId(getSite(handler).getId(), app.getChannel(), uuid);
             SysAppClient appClient = appClientService.getEntity(sysAppClientId);
             if (null == appClient) {
-                appClient = new SysAppClient(sysAppClientId, getDate(), false);
+                appClient = new SysAppClient(sysAppClientId, CommonUtils.getDate(), false);
                 appClient.setClientVersion(clientVersion);
-                appClient.setLastLoginIp(getIpAddress(handler.getRequest()));
+                appClient.setLastLoginIp(RequestUtils.getIpAddress(handler.getRequest()));
                 appClientService.save(appClient);
             } else {
-                appClientService.updateLastLogin(sysAppClientId, clientVersion, getIpAddress(handler.getRequest()));
+                appClientService.updateLastLogin(sysAppClientId, clientVersion, RequestUtils.getIpAddress(handler.getRequest()));
             }
         }
     }

@@ -1,9 +1,5 @@
 package com.publiccms.controller.admin.sys;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.RequestUtils.getIpAddress;
-import static com.publiccms.logic.service.log.LogLoginService.CHANNEL_WEB_MANAGER;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,16 +7,20 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.publiccms.common.base.AbstractController;
-import com.publiccms.entities.log.LogUpload;
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.site.FileComponent;
-import com.publiccms.logic.service.log.LogUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.entities.log.LogUpload;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.FileComponent;
+import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogUploadService;
 
 /**
  *
@@ -55,8 +55,9 @@ public class CkeditorAdminController extends AbstractController {
             String fileName = fileComponent.getUploadFileName(suffix);
             try {
                 fileComponent.upload(upload, siteComponent.getWebFilePath(site, fileName));
-                logUploadService.save(new LogUpload(site.getId(), getAdminFromSession(session).getId(), CHANNEL_WEB_MANAGER,
-                        false, upload.getSize(), getIpAddress(request), getDate(), fileName));
+                logUploadService.save(
+                        new LogUpload(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                false, upload.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
                 map.put(RESULT_FILENAME, originalName);
                 map.put(RESULT_URL, fileName);

@@ -1,11 +1,10 @@
 package com.publiccms.common.redis.hibernate.regions;
 
-import static org.apache.commons.logging.LogFactory.getLog;
-
 import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.cache.CacheException;
 import org.hibernate.cache.spi.Region;
 
@@ -21,7 +20,7 @@ import com.publiccms.common.redis.hibernate.timestamper.CacheTimestamper;
  * 
  */
 public abstract class RedisDataRegion implements Region, Base {
-    protected final Log log = getLog(getClass());
+    protected final Log log = LogFactory.getLog(getClass());
 
     private static final String EXPIRE_IN_SECONDS = "redis.expiryInSeconds";
     protected final RedisAccessStrategyFactory accessStrategyFactory;

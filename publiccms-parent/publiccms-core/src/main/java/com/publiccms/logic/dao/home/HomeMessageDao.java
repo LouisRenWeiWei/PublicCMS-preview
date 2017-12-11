@@ -1,16 +1,12 @@
 package com.publiccms.logic.dao.home;
 
-// Generated 2016-11-19 9:58:45 by com.publiccms.common.source.SourceGenerator
-
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
-import com.publiccms.entities.home.HomeMessage;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.home.HomeMessage;
 
 /**
  *
@@ -30,13 +26,13 @@ public class HomeMessageDao extends BaseDao<HomeMessage> {
      */
     public PageHandler getPage(Long userId, String itemType, Long itemId, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from HomeMessage bean");
-        if (notEmpty(userId)) {
+        if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
-        if (notEmpty(itemType)) {
+        if (CommonUtils.notEmpty(itemType)) {
             queryHandler.condition("bean.itemType = :itemType").setParameter("itemType", itemType);
         }
-        if (notEmpty(itemId)) {
+        if (CommonUtils.notEmpty(itemId)) {
             queryHandler.condition("bean.itemId = :itemId").setParameter("itemId", itemId);
         }
         queryHandler.order("bean.id desc");
@@ -46,7 +42,7 @@ public class HomeMessageDao extends BaseDao<HomeMessage> {
     @Override
     protected HomeMessage init(HomeMessage entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(getDate());
+            entity.setCreateDate(CommonUtils.getDate());
         }
         return entity;
     }

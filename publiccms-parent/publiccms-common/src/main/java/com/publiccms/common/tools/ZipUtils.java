@@ -1,8 +1,5 @@
 package com.publiccms.common.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.StreamUtils.copy;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -52,7 +49,7 @@ public class ZipUtils implements Base {
      * @throws IOException
      */
     public static boolean zip(String sourceFilePath, String zipFilePath, boolean overwrite) throws IOException {
-        if (notEmpty(sourceFilePath)) {
+        if (CommonUtils.notEmpty(sourceFilePath)) {
             File zipFile = new File(zipFilePath);
             if (zipFile.exists() && !overwrite) {
                 return false;
@@ -105,12 +102,12 @@ public class ZipUtils implements Base {
      * @throws IOException
      */
     private static void compressFile(File file, ZipOutputStream out, String fullName) throws IOException {
-        if (notEmpty(file)) {
+        if (CommonUtils.notEmpty(file)) {
             ZipEntry entry = new ZipEntry(fullName);
             entry.setTime(file.lastModified());
             out.putNextEntry(entry);
             try (FileInputStream fis = new FileInputStream(file);) {
-                copy(fis, out);
+                StreamUtils.copy(fis, out);
             }
         }
     }
@@ -157,7 +154,7 @@ public class ZipUtils implements Base {
                         try (InputStream inputStream = zipFile.getInputStream(zipEntry);
                                 FileOutputStream outputStream = new FileOutputStream(targetFile);
                                 FileLock fileLock = outputStream.getChannel().tryLock();) {
-                            copy(inputStream, outputStream);
+                            StreamUtils.copy(inputStream, outputStream);
                         }
                     }
                 }

@@ -1,20 +1,19 @@
 package com.publiccms.views.directive.cms;
 
 // Generated 2015-5-10 17:54:56 by com.publiccms.common.source.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
 
 import java.io.IOException;
 
-import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.site.StatisticsComponent;
-import com.publiccms.logic.service.cms.CmsContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.StatisticsComponent;
+import com.publiccms.logic.service.cms.CmsContentService;
 
 /**
  *
@@ -28,12 +27,12 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String word = handler.getString("word");
         String tagId = handler.getString("tagId");
-        if (notEmpty(word) || notEmpty(tagId)) {
+        if (CommonUtils.notEmpty(word) || CommonUtils.notEmpty(tagId)) {
             SysSite site = getSite(handler);
-            if (notEmpty(word)) {
+            if (CommonUtils.notEmpty(word)) {
                 statisticsComponent.search(site.getId(), word);
             }
-            if (notEmpty(tagId)) {
+            if (CommonUtils.notEmpty(tagId)) {
                 try {
                     statisticsComponent.searchTag(Long.parseLong(tagId));
                 } catch (NumberFormatException e) {
@@ -44,7 +43,7 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
             Integer count = handler.getInteger("count", 30);
             try {
                 page = service.query(site.getId(), word, tagId, handler.getDate("startPublishDate"),
-                        getDate(), pageIndex, count);
+                        CommonUtils.getDate(), pageIndex, count);
             } catch (Exception e) {
                 page = new PageHandler(pageIndex, count, 0, null);
             }

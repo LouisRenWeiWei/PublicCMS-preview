@@ -1,16 +1,14 @@
 package com.publiccms.logic.dao.sys;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.Date;
 
-import com.publiccms.entities.sys.SysUserToken;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysUserToken;
 
 /**
  *
@@ -32,13 +30,13 @@ public class SysUserTokenDao extends BaseDao<SysUserToken> {
     public PageHandler getPage(Integer siteId, Long userId, String channel, String orderType, Integer pageIndex,
             Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysUserToken bean");
-        if (notEmpty(siteId)) {
+        if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
-        if (notEmpty(userId)) {
+        if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
-        if (notEmpty(channel)) {
+        if (CommonUtils.notEmpty(channel)) {
             queryHandler.condition("bean.channel = :channel").setParameter("channel", channel);
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
@@ -66,7 +64,7 @@ public class SysUserTokenDao extends BaseDao<SysUserToken> {
      * @return number of data deleted
      */
     public int delete(Long userId) {
-        if (notEmpty(userId)) {
+        if (CommonUtils.notEmpty(userId)) {
             QueryHandler queryHandler = getDeleteQueryHandler("from SysUserToken bean");
             queryHandler.condition("bean.userId <= :userId").setParameter("userId", userId);
             return delete(queryHandler);
@@ -77,7 +75,7 @@ public class SysUserTokenDao extends BaseDao<SysUserToken> {
     @Override
     protected SysUserToken init(SysUserToken entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(getDate());
+            entity.setCreateDate(CommonUtils.getDate());
         }
         return entity;
     }

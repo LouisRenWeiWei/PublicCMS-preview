@@ -1,16 +1,14 @@
 package com.publiccms.logic.dao.log;
 
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.Date;
 
-import com.publiccms.entities.log.LogLogin;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.log.LogLogin;
 
 /**
  *
@@ -37,10 +35,10 @@ public class LogLoginDao extends BaseDao<LogLogin> {
     public PageHandler getPage(Integer siteId, Long userId, Date startCreateDate, Date endCreateDate, String channel,
             Boolean result, String name, String ip, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from LogLogin bean");
-        if (notEmpty(siteId)) {
+        if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
-        if (notEmpty(userId)) {
+        if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
         if (null != startCreateDate) {
@@ -49,16 +47,16 @@ public class LogLoginDao extends BaseDao<LogLogin> {
         if (null != endCreateDate) {
             queryHandler.condition("bean.createDate <= :endCreateDate").setParameter("endCreateDate", endCreateDate);
         }
-        if (notEmpty(channel)) {
+        if (CommonUtils.notEmpty(channel)) {
             queryHandler.condition("bean.channel = :channel").setParameter("channel", channel);
         }
         if (null != result) {
             queryHandler.condition("bean.result = :result").setParameter("result", result);
         }
-        if (notEmpty(name)) {
+        if (CommonUtils.notEmpty(name)) {
             queryHandler.condition("bean.name like :name").setParameter("name", like(name));
         }
-        if (notEmpty(ip)) {
+        if (CommonUtils.notEmpty(ip)) {
             queryHandler.condition("bean.ip like :ip").setParameter("ip", like(ip));
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
@@ -74,9 +72,9 @@ public class LogLoginDao extends BaseDao<LogLogin> {
      * @return number of data deleted
      */
     public int delete(Integer siteId, Date createDate) {
-        if (notEmpty(siteId) || null != createDate) {
+        if (CommonUtils.notEmpty(siteId) || null != createDate) {
             QueryHandler queryHandler = getDeleteQueryHandler("from LogLogin bean");
-            if (notEmpty(siteId)) {
+            if (CommonUtils.notEmpty(siteId)) {
                 queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
             }
             if (null != createDate) {
@@ -90,7 +88,7 @@ public class LogLoginDao extends BaseDao<LogLogin> {
     @Override
     protected LogLogin init(LogLogin entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(getDate());
+            entity.setCreateDate(CommonUtils.getDate());
         }
         return entity;
     }

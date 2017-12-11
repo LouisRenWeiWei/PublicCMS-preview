@@ -1,22 +1,20 @@
 package com.publiccms.logic.component.site;
 
-import static com.publiccms.common.tools.CommonUtils.empty;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static org.apache.commons.lang3.StringUtils.split;
-
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.publiccms.common.api.Cache;
+import com.publiccms.common.base.Base;
+import com.publiccms.common.cache.CacheEntity;
+import com.publiccms.common.cache.CacheEntityFactory;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.sys.SysDomainService;
 import com.publiccms.logic.service.sys.SysSiteService;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.publiccms.common.base.Base;
-import com.publiccms.common.cache.CacheEntity;
-import com.publiccms.common.cache.CacheEntityFactory;
 
 /**
  *
@@ -93,7 +91,7 @@ public class SiteComponent implements Cache, Base {
      * @return view name prefix
      */
     public String getViewNamePrefix(SysSite site, SysDomain sysDomain) {
-        return getFullFileName(site, empty(sysDomain.getPath()) ? BLANK : sysDomain.getPath() + SEPARATOR);
+        return getFullFileName(site, CommonUtils.empty(sysDomain.getPath()) ? BLANK : sysDomain.getPath() + SEPARATOR);
     }
 
     /**
@@ -200,7 +198,7 @@ public class SiteComponent implements Cache, Base {
      * @param masterSiteIds
      */
     public void setMasterSiteIds(String masterSiteIds) {
-        String[] masters = split(masterSiteIds, COMMA_DELIMITED);
+        String[] masters = StringUtils.split(masterSiteIds, COMMA_DELIMITED);
         for (String master : masters) {
             Integer id;
             try {
@@ -216,7 +214,7 @@ public class SiteComponent implements Cache, Base {
      * @param rootPath
      */
     public void setRootPath(String rootPath) {
-        if (notEmpty(rootPath)) {
+        if (CommonUtils.notEmpty(rootPath)) {
             if (!(rootPath.endsWith(SEPARATOR) || rootPath.endsWith("\\"))) {
                 rootPath += SEPARATOR;
             }

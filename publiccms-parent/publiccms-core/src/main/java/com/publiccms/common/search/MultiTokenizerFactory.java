@@ -1,11 +1,11 @@
 package com.publiccms.common.search;
 
-import static org.apache.commons.logging.LogFactory.getLog;
 
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.util.TokenizerFactory;
 import org.apache.lucene.util.AttributeFactory;
@@ -21,7 +21,7 @@ public class MultiTokenizerFactory extends TokenizerFactory {
      * 
      */
     public TokenizerFactory tokenizerFactory;
-    protected final Log log = getLog(getClass());
+    protected final Log log = LogFactory.getLog(getClass());
 
     /**
      * @param args

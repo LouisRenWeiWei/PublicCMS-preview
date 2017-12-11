@@ -176,13 +176,14 @@
 </#macro>
 <#macro extendData name extendList extendValues type='form'>
 	<#list extendList as e>
+	<#assign value=extendValues[e.id.code]!''/>
 		<#if 'customform'=type>
-	<p><label>${(e.name)}:</label><@input name e e?index extendValues[e.id.code]! true/></p>
+	<p><label>${(e.name)}:</label><@input name e e?index value type/></p>
 		<#else>
 	<dl class="nowrap">
 		<dt>${(e.name)}:</dt>
 		<dd<#if 'editor'=e.inputType> id="content"</#if>>
-			<@input name e e?index extendValues[e.id.code] type/>
+			<@input name e e?index value type/>
 			<span class="info">${(e.description)!}</span>
 		</dd>
 	</dl>

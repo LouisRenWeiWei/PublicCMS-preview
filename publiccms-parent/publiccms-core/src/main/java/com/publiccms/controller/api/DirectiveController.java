@@ -1,9 +1,5 @@
 package com.publiccms.controller.api;
 
-import static com.publiccms.common.base.AbstractFreemarkerView.CONTEXT_SITE;
-import static com.publiccms.controller.api.ApiController.EXCEPTION;
-import static com.publiccms.controller.api.ApiController.INTERFACE_NOT_FOUND;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,19 +9,20 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.publiccms.common.base.AbstractController;
-import com.publiccms.common.base.AbstractTaskDirective;
-import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.logic.component.site.DirectiveComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.base.AbstractFreemarkerView;
+import com.publiccms.common.base.AbstractTaskDirective;
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.directive.BaseTemplateDirective;
 import com.publiccms.common.directive.HttpDirective;
 import com.publiccms.common.handler.HttpParameterHandler;
+import com.publiccms.logic.component.site.DirectiveComponent;
 
 /**
  * 
@@ -51,18 +48,18 @@ public class DirectiveController extends AbstractController {
         try {
             HttpDirective directive = actionMap.get(action);
             if (null != directive) {
-                request.setAttribute(CONTEXT_SITE, getSite(request));
+                request.setAttribute(AbstractFreemarkerView.CONTEXT_SITE, getSite(request));
                 directive.execute(mappingJackson2HttpMessageConverter, jsonMediaType, request, callback, response);
             } else {
                 HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter, jsonMediaType,
                         request, callback, response);
-                handler.put(ERROR, INTERFACE_NOT_FOUND).render();
+                handler.put(ERROR, ApiController.INTERFACE_NOT_FOUND).render();
             }
         } catch (Exception e) {
             HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter, jsonMediaType, request,
                     callback, response);
             try {
-                handler.put(ERROR, EXCEPTION).render();
+                handler.put(ERROR, ApiController.EXCEPTION).render();
             } catch (Exception renderException) {
                 log.error(renderException.getMessage());
             }

@@ -1,15 +1,5 @@
 package com.publiccms.controller.admin.cms;
 
-import static com.publiccms.common.tools.CommonUtils.empty;
-import static com.publiccms.common.tools.CommonUtils.getDate;
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.ControllerUtils.verifyCustom;
-import static com.publiccms.common.tools.ControllerUtils.verifyNotEquals;
-import static com.publiccms.common.tools.JsonUtils.getString;
-import static com.publiccms.common.tools.RequestUtils.getIpAddress;
-import static org.apache.commons.lang3.StringUtils.join;
-import static com.publiccms.common.tools.ExtendUtils.getExtendString;
-import static com.publiccms.common.tools.ExtendUtils.getSysExtentDataMap;
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 
 import java.io.IOException;
@@ -19,7 +9,19 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.ExtendUtils;
+import com.publiccms.common.tools.JsonUtils;
+import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.cms.CmsCategoryType;
@@ -39,12 +41,6 @@ import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
 import com.publiccms.views.pojo.model.CmsCategoryModelParamters;
 import com.publiccms.views.pojo.model.CmsCategoryParamters;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import freemarker.template.TemplateException;
 
@@ -93,7 +89,7 @@ public class CmsCategoryAdminController extends AbstractController {
         SysSite site = getSite(request);
         if (null != entity.getId()) {
             CmsCategory oldEntity = service.getEntity(entity.getId());
-            if (null == oldEntity || verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+            if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, ignoreProperties);
@@ -104,9 +100,9 @@ public class CmsCategoryAdminController extends AbstractController {
                 } else if (null != entity.getParentId() && null == oldEntity.getParentId()) {
                     service.generateChildIds(site.getId(), entity.getParentId());
                 }
-                logOperateService.save(
-                        new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                "update.category", getIpAddress(request), getDate(), getString(entity)));
+                logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "update.category", RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
             if (entity.isOnlyUrl()) {
@@ -116,7 +112,8 @@ public class CmsCategoryAdminController extends AbstractController {
             service.save(entity);
             service.addChildIds(entity.getParentId(), entity.getId());
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.category", getIpAddress(request), getDate(), getString(entity)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.category", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         if (null == extendService.getEntity(entity.getExtendId())) {
             entity = service.updateExtendId(entity.getId(),
@@ -127,7 +124,7 @@ public class CmsCategoryAdminController extends AbstractController {
         service.updateTagTypeIds(entity.getId(), arrayToCommaDelimitedString(tagTypeIds));// 更新保存标签分类
 
         List<CmsCategoryModelParamters> categoryModelList = categoryParamters.getCategoryModelList();
-        if (notEmpty(categoryModelList)) {
+        if (CommonUtils.notEmpty(categoryModelList)) {
             for (CmsCategoryModelParamters cmsCategoryModelParamters : categoryModelList) {
                 if (null != cmsCategoryModelParamters.getCategoryModel()) {
                     cmsCategoryModelParamters.getCategoryModel().getId().setCategoryId(entity.getId());
@@ -142,10 +139,11 @@ public class CmsCategoryAdminController extends AbstractController {
         extendFieldService.update(entity.getExtendId(), categoryParamters.getContentExtends());// 修改或增加内容扩展字段
 
         CmsCategoryType categoryType = categoryTypeService.getEntity(entity.getTypeId());
-        if (null != categoryType && notEmpty(categoryType.getExtendId())) {
+        if (null != categoryType && CommonUtils.notEmpty(categoryType.getExtendId())) {
             List<SysExtendField> categoryTypeExtendList = extendFieldService.getList(categoryType.getExtendId());
-            Map<String, String> map = getSysExtentDataMap(categoryParamters.getExtendDataList(), categoryTypeExtendList);
-            attribute.setData(getExtendString(map));
+            Map<String, String> map = ExtendUtils.getSysExtentDataMap(categoryParamters.getExtendDataList(),
+                    categoryTypeExtendList);
+            attribute.setData(ExtendUtils.getExtendString(map));
         } else {
             attribute.setData(null);
         }
@@ -153,7 +151,7 @@ public class CmsCategoryAdminController extends AbstractController {
         try {
             publish(site, entity.getId(), null);
         } catch (IOException | TemplateException e) {
-            verifyCustom("static", true, model);
+            ControllerUtils.verifyCustom("static", true, model);
             log.error(e.getMessage(), e);
         }
         return TEMPLATE_DONE;
@@ -171,13 +169,14 @@ public class CmsCategoryAdminController extends AbstractController {
     public String move(Integer[] ids, Integer parentId, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         CmsCategory parent = service.getEntity(parentId);
-        if (notEmpty(ids) && (null == parent || null != parent && site.getId() == parent.getSiteId())) {
+        if (CommonUtils.notEmpty(ids) && (null == parent || null != parent && site.getId() == parent.getSiteId())) {
             for (Integer id : ids) {
                 move(site, id, parentId);
             }
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "move.category", getIpAddress(request), getDate(),
-                    new StringBuilder(join(ids, ',')).append(" to ").append(parentId).toString()));
+            logOperateService
+                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "move.category", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                            new StringBuilder(StringUtils.join(ids, ',')).append(" to ").append(parentId).toString()));
         }
         return TEMPLATE_DONE;
     }
@@ -209,19 +208,20 @@ public class CmsCategoryAdminController extends AbstractController {
     @RequestMapping("publish")
     public String publish(Integer[] ids, Integer max, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
-        if (notEmpty(ids)) {
+        if (CommonUtils.notEmpty(ids)) {
             try {
                 for (Integer id : ids) {
                     publish(site, id, max);
                 }
             } catch (IOException | TemplateException e) {
-                verifyCustom("static", true, model);
+                ControllerUtils.verifyCustom("static", true, model);
                 log.error(e.getMessage(), e);
                 return TEMPLATE_ERROR;
             }
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "static.category", getIpAddress(request), getDate(),
-                    new StringBuilder(join(ids, ',')).append(",pageSize:").append((empty(max) ? 1 : max)).toString()));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "static.category", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), new StringBuilder(StringUtils.join(ids, ',')).append(",pageSize:")
+                            .append((CommonUtils.empty(max) ? 1 : max)).toString()));
         }
         return TEMPLATE_DONE;
     }
@@ -237,11 +237,11 @@ public class CmsCategoryAdminController extends AbstractController {
     @RequestMapping("changeType")
     public String changeType(Integer id, Integer typeId, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
-        if (notEmpty(id)) {
+        if (CommonUtils.notEmpty(id)) {
             service.changeType(id, typeId);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "changeType.category", getIpAddress(request), getDate(),
-                    new StringBuilder(id).append(" to ").append(typeId).toString()));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "changeType.category", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), new StringBuilder(id).append(" to ").append(typeId).toString()));
         }
         return TEMPLATE_DONE;
     }
@@ -268,12 +268,13 @@ public class CmsCategoryAdminController extends AbstractController {
      */
     @RequestMapping("delete")
     public String delete(Integer[] ids, HttpServletRequest request, HttpSession session) {
-        if (notEmpty(ids)) {
+        if (CommonUtils.notEmpty(ids)) {
             SysSite site = getSite(request);
             service.delete(site.getId(), ids);
             contentService.deleteByCategoryIds(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.category", getIpAddress(request), getDate(), join(ids, ',')));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.category", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), StringUtils.join(ids, ',')));
         }
         return TEMPLATE_DONE;
     }
