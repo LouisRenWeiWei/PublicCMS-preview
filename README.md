@@ -49,7 +49,10 @@ PublicCMSÒÑ¾­ÐÞ¸ÄÊÚÈ¨Ð­ÒéÎª·ÇÉÌÓÃÃâ·Ñ£¬ÉÌÓÃ¸¶·Ñ£¬Äú¿ÉÒÔÔÚÆô¶¯³ÌÐòºó¿´µ½ÏêÏ¸µÄÊÚÈ
 1. ³éÏóÉý¼¶Æ÷
 1. ÄÚÈÝ·ÖÒ³·½·¨Ôö¼Órest·ç¸ñÖ§³Ö
 1. ¶¯Ì¬Ò³ÃæÂ·¾¶Ôö¼Órest·ç¸ñÖ§³Ö
-1. Ôö¼ÓÓÃ»§±¨±í
 1. ÐÞ¸´·ÖÀàÑ¡Ôñ¡¢Ä£¿éÑ¡ÔñÒ³Ãæbug
 1. ÉÏ´«ÎÄ¼þ´óÐ¡´óÐ¡¸ÄÎªMB
-1. ÍêÉÆ°²×°Ìø×ª£¬½â¾öä¯ÀÀÆ÷»º´æÎÊÌâ
+1. ÍêÉÆ°²×°Ìø×ª,½â¾öä¯ÀÀÆ÷»º´æÎÊÌâ
+1. ÍêÉÆÈ«ÎÄËÑË÷,É¾³ý¹ýÊ±µÄFilter
+1. siteId¸ÄÎªshortÀàÐÍ
+1. ÐÞ¸´µ¯´°Ò³Ãæ·­Ò³¡¢ÉèÖÃÃ¿Ò³Êý¾Ý´óÐ¡ÎÊÌâ
+1. È¡Ïû´ó²¿·Öimport staticÐ´·¨
