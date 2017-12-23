@@ -30,7 +30,7 @@ public class CmsTagDao extends BaseDao<CmsTag> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, Integer typeId, String name, String orderField, String orderType,
+    public PageHandler getPage(Short siteId, Integer typeId, String name, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsTag bean");
         if (CommonUtils.notEmpty(siteId)) {

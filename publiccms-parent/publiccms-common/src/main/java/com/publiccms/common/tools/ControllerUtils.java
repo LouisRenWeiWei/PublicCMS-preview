@@ -229,4 +229,19 @@ public abstract class ControllerUtils {
         }
         return false;
     }
+    
+    /**
+     * @param field
+     * @param value1
+     * @param value2
+     * @param model
+     * @return value1是否不为空并不等于value2
+     */
+    public static boolean verifyNotEquals(String field, Short value1, Short value2, Map<String, Object> model) {
+        if (CommonUtils.notEmpty(value1) && !value1.equals(value2)) {
+            model.put(ERROR, "verify.notEquals." + field);
+            return true;
+        }
+        return false;
+    }
 }

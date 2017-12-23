@@ -33,7 +33,7 @@ public class HomeGroupPost implements java.io.Serializable {
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "群组", condition = true)
     private Long groupId;
     @GeneratorColumn(title = "标题")
@@ -54,7 +54,7 @@ public class HomeGroupPost implements java.io.Serializable {
     public HomeGroupPost() {
     }
 
-    public HomeGroupPost(int siteId, String title, long userId, int scores, int comments, int clicks, Date createDate,
+    public HomeGroupPost(short siteId, String title, long userId, int scores, int comments, int clicks, Date createDate,
             boolean disabled) {
         this.siteId = siteId;
         this.title = title;
@@ -66,7 +66,7 @@ public class HomeGroupPost implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    public HomeGroupPost(int siteId, Long groupId, String title, long userId, int scores, int comments, int clicks,
+    public HomeGroupPost(short siteId, Long groupId, String title, long userId, int scores, int comments, int clicks,
             Date createDate, boolean disabled) {
         this.siteId = siteId;
         this.groupId = groupId;
@@ -92,11 +92,11 @@ public class HomeGroupPost implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

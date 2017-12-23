@@ -45,7 +45,7 @@ public class LogLoginService extends BaseService<LogLogin> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Long userId, Date startCreateDate, Date endCreateDate, String channel,
+    public PageHandler getPage(Short siteId, Long userId, Date startCreateDate, Date endCreateDate, String channel,
             Boolean result, String name, String ip, String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, userId, startCreateDate, endCreateDate, channel, result, name, ip, orderType, pageIndex,
                 pageSize);
@@ -55,7 +55,7 @@ public class LogLoginService extends BaseService<LogLogin> {
      * @param siteId
      * @param ids
      */
-    public void delete(int siteId, Serializable[] ids) {
+    public void delete(short siteId, Serializable[] ids) {
         for (LogLogin entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId()) {
                 delete(entity.getId());
@@ -68,7 +68,7 @@ public class LogLoginService extends BaseService<LogLogin> {
      * @param createDate
      * @return
      */
-    public int delete(Integer siteId, Date createDate) {
+    public int delete(Short siteId, Date createDate) {
         return dao.delete(siteId, createDate);
     }
 

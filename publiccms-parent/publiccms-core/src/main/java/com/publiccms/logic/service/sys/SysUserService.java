@@ -44,7 +44,7 @@ public class SysUserService extends BaseService<SysUser> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Integer deptId, Date startRegisteredDate, Date endRegisteredDate,
+    public PageHandler getPage(Short siteId, Integer deptId, Date startRegisteredDate, Date endRegisteredDate,
             Date startLastLoginDate, Date endLastLoginDate, Boolean superuserAccess, Boolean emailChecked, Boolean disabled,
             String name, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, deptId, startRegisteredDate, endRegisteredDate, startLastLoginDate, endLastLoginDate,
@@ -56,7 +56,7 @@ public class SysUserService extends BaseService<SysUser> {
      * @param name
      * @return
      */
-    public SysUser findByName(int siteId, String name) {
+    public SysUser findByName(short siteId, String name) {
         return dao.findByName(siteId, name);
     }
 
@@ -65,7 +65,7 @@ public class SysUserService extends BaseService<SysUser> {
      * @param nickname
      * @return
      */
-    public SysUser findByNickName(int siteId, String nickname) {
+    public SysUser findByNickName(short siteId, String nickname) {
         return dao.findByNickName(siteId, nickname);
     }
 
@@ -74,7 +74,7 @@ public class SysUserService extends BaseService<SysUser> {
      * @param email
      * @return
      */
-    public SysUser findByEmail(int siteId, String email) {
+    public SysUser findByEmail(short siteId, String email) {
         return dao.findByEmail(siteId, email);
     }
 

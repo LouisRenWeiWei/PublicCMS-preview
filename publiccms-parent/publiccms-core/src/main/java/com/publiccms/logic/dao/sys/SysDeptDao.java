@@ -24,7 +24,7 @@ public class SysDeptDao extends BaseDao<SysDept> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, Integer parentId, Long userId, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, Integer parentId, Long userId, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysDept bean");
         if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);

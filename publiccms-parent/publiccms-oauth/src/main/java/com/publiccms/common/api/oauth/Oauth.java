@@ -21,7 +21,7 @@ public interface Oauth {
      * @param siteId
      * @return enabled
      */
-    public boolean enabled(int siteId);
+    public boolean enabled(short siteId);
 
     /**
      * @param siteId
@@ -29,14 +29,14 @@ public interface Oauth {
      * @param mobilde
      * @return authorize url
      */
-    public String getAuthorizeUrl(int siteId, String state, boolean mobilde);
+    public String getAuthorizeUrl(short siteId, String state, boolean mobilde);
 
     /**
      * @param siteId
      * @param state
      * @return authorize url
      */
-    public String getAuthorizeUrl(int siteId, String state);
+    public String getAuthorizeUrl(short siteId, String state);
 
     /**
      * @param siteId
@@ -45,7 +45,7 @@ public interface Oauth {
      * @throws ClientProtocolException
      * @throws IOException
      */
-    public OauthAccess getOpenId(int siteId, String code) throws ClientProtocolException, IOException;
+    public OauthAccess getOpenId(short siteId, String code) throws ClientProtocolException, IOException;
     /**
      * @param siteId
      * @param oauthAccess
@@ -53,5 +53,5 @@ public interface Oauth {
      * @throws ClientProtocolException
      * @throws IOException
      */
-    public OauthUser getUserInfo(int siteId, OauthAccess oauthAccess) throws ClientProtocolException, IOException;
+    public OauthUser getUserInfo(short siteId, OauthAccess oauthAccess) throws ClientProtocolException, IOException;
 }

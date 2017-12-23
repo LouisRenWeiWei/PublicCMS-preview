@@ -31,7 +31,7 @@ public class SysDomainService extends BaseService<SysDomain> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Boolean wild, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, Boolean wild, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, wild, pageIndex, pageSize);
     }
 

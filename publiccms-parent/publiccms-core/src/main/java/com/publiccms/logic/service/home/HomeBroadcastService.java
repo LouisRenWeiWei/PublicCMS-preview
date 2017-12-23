@@ -36,7 +36,7 @@ public class HomeBroadcastService extends BaseService<HomeBroadcast> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Long userId, Boolean reposted, Long repostId, Boolean disabled, String orderField,
+    public PageHandler getPage(Short siteId, Long userId, Boolean reposted, Long repostId, Boolean disabled, String orderField,
             String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, userId, reposted, repostId, disabled, orderField, orderType, pageIndex, pageSize);
     }

@@ -34,7 +34,7 @@ public class HomeBroadcast implements java.io.Serializable {
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
     @GeneratorColumn(title = "分数", order = true)
@@ -57,7 +57,7 @@ public class HomeBroadcast implements java.io.Serializable {
     public HomeBroadcast() {
     }
 
-    public HomeBroadcast(int siteId, long userId, int scores, int reposts, int comments, String message, Date createDate,
+    public HomeBroadcast(short siteId, long userId, int scores, int reposts, int comments, String message, Date createDate,
             boolean disabled) {
         this.siteId = siteId;
         this.userId = userId;
@@ -82,11 +82,11 @@ public class HomeBroadcast implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

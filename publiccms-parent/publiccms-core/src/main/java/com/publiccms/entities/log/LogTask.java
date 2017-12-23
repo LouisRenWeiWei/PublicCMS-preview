@@ -33,7 +33,7 @@ public class LogTask implements java.io.Serializable {
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "任务", condition = true)
     private int taskId;
     @GeneratorColumn(title = "开始日期", condition = true, order = true)
@@ -48,14 +48,14 @@ public class LogTask implements java.io.Serializable {
     public LogTask() {
     }
 
-    public LogTask(int siteId, int taskId, Date begintime, boolean success) {
+    public LogTask(short siteId, int taskId, Date begintime, boolean success) {
         this.siteId = siteId;
         this.taskId = taskId;
         this.begintime = begintime;
         this.success = success;
     }
 
-    public LogTask(Long id, int siteId, int taskId, Date begintime, Date endtime, boolean success) {
+    public LogTask(Long id, short siteId, int taskId, Date begintime, Date endtime, boolean success) {
         this.id = id;
         this.siteId = siteId;
         this.taskId = taskId;
@@ -64,7 +64,7 @@ public class LogTask implements java.io.Serializable {
         this.success = success;
     }
 
-    public LogTask(int siteId, int taskId, Date begintime, Date endtime, boolean success, String result) {
+    public LogTask(short siteId, int taskId, Date begintime, Date endtime, boolean success, String result) {
         this.siteId = siteId;
         this.taskId = taskId;
         this.begintime = begintime;
@@ -86,11 +86,11 @@ public class LogTask implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

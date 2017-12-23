@@ -84,7 +84,7 @@ public abstract class AbstractOauth implements Config, Oauth, Base {
     }
 
     @Override
-    public boolean enabled(int siteId) {
+    public boolean enabled(short siteId) {
         return null != getConfig(siteId);
     }
 
@@ -92,7 +92,7 @@ public abstract class AbstractOauth implements Config, Oauth, Base {
      * @param siteId
      * @return
      */
-    protected OauthConfig getConfig(int siteId) {
+    protected OauthConfig getConfig(short siteId) {
         Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
         OauthConfig oauthConfig = new OauthConfig(config.get(prefix + CONFIG_APP_KEY), config.get(prefix + CONFIG_APP_SECRET),
                 config.get(prefix + CONFIG_RETURN_URL));
@@ -135,7 +135,7 @@ public abstract class AbstractOauth implements Config, Oauth, Base {
     }
 
     @Override
-    public String getAuthorizeUrl(int siteId, String state) {
+    public String getAuthorizeUrl(short siteId, String state) {
         return getAuthorizeUrl(siteId, state, false);
     }
 
@@ -146,11 +146,11 @@ public abstract class AbstractOauth implements Config, Oauth, Base {
      * @throws ClientProtocolException
      * @throws IOException
      */
-    public OauthAccess getOpenId(int siteId, OauthAccess oauthInfo) throws ClientProtocolException, IOException {
+    public OauthAccess getOpenId(short siteId, OauthAccess oauthInfo) throws ClientProtocolException, IOException {
         return oauthInfo;
     }
 
-    public OauthAccess getOpenId(int siteId, String code) throws ClientProtocolException, IOException {
+    public OauthAccess getOpenId(short siteId, String code) throws ClientProtocolException, IOException {
         return getOpenId(siteId, getAccessToken(siteId, code));
     }
 
@@ -161,7 +161,7 @@ public abstract class AbstractOauth implements Config, Oauth, Base {
      * @throws ClientProtocolException
      * @throws IOException
      */
-    public abstract OauthAccess getAccessToken(int siteId, String code) throws ClientProtocolException, IOException;
+    public abstract OauthAccess getAccessToken(short siteId, String code) throws ClientProtocolException, IOException;
 
     @Override
     public String getCode(SysSite site) {

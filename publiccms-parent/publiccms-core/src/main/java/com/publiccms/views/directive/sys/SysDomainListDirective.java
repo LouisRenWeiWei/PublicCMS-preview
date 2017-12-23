@@ -22,9 +22,9 @@ public class SysDomainListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Integer siteId = null;
+        Short siteId = null;
         if (handler.getBoolean("advanced", false)) {
-            siteId = handler.getInteger("siteId");
+            siteId = handler.getShort("siteId");
         } else {
             siteId = getSite(handler).getId();
         }

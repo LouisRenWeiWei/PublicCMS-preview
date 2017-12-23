@@ -56,8 +56,8 @@ public class SiteComponent implements Cache, Base {
     private String taskTemplateFilePath;
     private String webTemplateFilePath;
 
-    private int defaultSiteId;
-    private Set<Integer> masterSiteIdSet = new HashSet<>();
+    private short defaultSiteId;
+    private Set<Short> masterSiteIdSet = new HashSet<>();
     @Autowired
     private SysDomainService sysDomainService;
     @Autowired
@@ -140,7 +140,7 @@ public class SiteComponent implements Cache, Base {
      * @param siteId
      * @return whether the master site
      */
-    public boolean isMaster(int siteId) {
+    public boolean isMaster(short siteId) {
         return null != masterSiteIdSet && masterSiteIdSet.contains(siteId);
     }
 
@@ -190,7 +190,7 @@ public class SiteComponent implements Cache, Base {
     /**
      * @param defaultSiteId
      */
-    public void setDefaultSiteId(int defaultSiteId) {
+    public void setDefaultSiteId(short defaultSiteId) {
         this.defaultSiteId = defaultSiteId;
     }
 
@@ -200,12 +200,10 @@ public class SiteComponent implements Cache, Base {
     public void setMasterSiteIds(String masterSiteIds) {
         String[] masters = StringUtils.split(masterSiteIds, COMMA_DELIMITED);
         for (String master : masters) {
-            Integer id;
             try {
-                id = Integer.parseInt(master);
+                Short id = Short.parseShort(master);
                 masterSiteIdSet.add(id);
             } catch (NumberFormatException e) {
-                id = null;
             }
         }
     }

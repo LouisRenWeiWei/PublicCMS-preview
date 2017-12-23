@@ -25,7 +25,7 @@ public class SysSite implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     @GeneratorColumn(title = "ID")
-    private Integer id;
+    private Short id;
     @GeneratorColumn(title = "名称", condition = true, like = true)
     private String name;
     @GeneratorColumn(title = "启用静态化")
@@ -55,11 +55,11 @@ public class SysSite implements java.io.Serializable {
     @GeneratedValue(generator = "cmsGenerator")
     @GenericGenerator(name = "cmsGenerator", strategy = CmsUpgrader.IDENTIFIER_GENERATOR)
     @Column(name = "id", unique = true, nullable = false)
-    public Integer getId() {
+    public Short getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Short id) {
         this.id = id;
     }
 

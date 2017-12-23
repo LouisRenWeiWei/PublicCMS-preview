@@ -426,6 +426,13 @@ public class TemplateComponent implements Cache, Base {
      */
     public void clearTemplateCache() {
         webConfiguration.clearTemplateCache();
+    }
+    /**
+     * 清理任务计划模板缓存
+     * 
+     * Clear Template Cache
+     */
+    public void clearTaskTemplateCache() {
         taskConfiguration.clearTemplateCache();
     }
 

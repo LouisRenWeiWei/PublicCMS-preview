@@ -31,7 +31,7 @@ public class CmsLotteryDao extends BaseDao<CmsLottery> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, Date startStartDate, Date endStartDate, Date startEndDate, Date endEndDate,
+    public PageHandler getPage(Short siteId, Date startStartDate, Date endStartDate, Date startEndDate, Date endEndDate,
             Boolean disabled, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsLottery bean");
         if (CommonUtils.notEmpty(siteId)) {

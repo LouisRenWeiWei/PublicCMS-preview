@@ -31,7 +31,7 @@ public class HomeGroupService extends BaseService<HomeGroup> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Long userId, String orderField, String orderType, Integer pageIndex,
+    public PageHandler getPage(Short siteId, Long userId, String orderField, String orderType, Integer pageIndex,
             Integer pageSize) {
         return dao.getPage(siteId, userId, orderField, orderType, pageIndex, pageSize);
     }

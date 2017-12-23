@@ -29,7 +29,7 @@ public class WeiboOauthComponent extends AbstractOauth {
     /*
      * http://open.weibo.com/wiki/Oauth2/authorize
      */
-    public String getAuthorizeUrl(int siteId, String state, boolean mobile) {
+    public String getAuthorizeUrl(short siteId, String state, boolean mobile) {
         OauthConfig config = getConfig(siteId);
         if (null != config) {
             StringBuilder sb = new StringBuilder("https://api.weibo.com/oauth2/authorize?client_id=");
@@ -47,7 +47,7 @@ public class WeiboOauthComponent extends AbstractOauth {
      * http://open.weibo.com/wiki/Oauth2/access_token
      */
     @Override
-    public OauthAccess getAccessToken(int siteId, String code) throws ClientProtocolException, IOException {
+    public OauthAccess getAccessToken(short siteId, String code) throws ClientProtocolException, IOException {
         OauthConfig config = getConfig(siteId);
         if (CommonUtils.notEmpty(code) && null != config) {
             Map<String, String> paramters = new HashMap<>();
@@ -69,7 +69,7 @@ public class WeiboOauthComponent extends AbstractOauth {
     /*
      * http://open.weibo.com/wiki/2/users/show
      */
-    public OauthUser getUserInfo(int siteId, OauthAccess oauthInfo) throws ClientProtocolException, IOException {
+    public OauthUser getUserInfo(short siteId, OauthAccess oauthInfo) throws ClientProtocolException, IOException {
         if (null != oauthInfo) {
             StringBuilder sb = new StringBuilder("https://api.weibo.com/2/users/show.json?access_token=");
             sb.append(oauthInfo.getAccessToken()).append("&uid=").append(oauthInfo.getOpenId());

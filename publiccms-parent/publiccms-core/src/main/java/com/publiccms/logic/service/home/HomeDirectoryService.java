@@ -33,7 +33,7 @@ public class HomeDirectoryService extends BaseService<HomeDirectory> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Long userId, Boolean disabled, String orderType, Integer pageIndex,
+    public PageHandler getPage(Short siteId, Long userId, Boolean disabled, String orderType, Integer pageIndex,
             Integer pageSize) {
         return dao.getPage(siteId, userId, disabled, orderType, pageIndex, pageSize);
     }

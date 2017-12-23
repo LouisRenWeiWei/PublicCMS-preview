@@ -43,7 +43,7 @@ public class SysSiteServiceTest {
     @SuppressWarnings("unchecked")
     @Test
     public void searchTest() {
-        PageHandler page = cmsService.query(1, "啊", null, null, CommonUtils.getDate(), null, null);
+        PageHandler page = cmsService.query((short) 1, "啊", null, null, null, null, CommonUtils.getDate(), null, null);
         for (CmsContent site : (List<CmsContent>) page.getList()) {
             System.out.println(site.getTitle());
         }

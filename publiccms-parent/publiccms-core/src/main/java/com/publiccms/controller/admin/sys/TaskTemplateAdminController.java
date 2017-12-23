@@ -68,7 +68,7 @@ public class TaskTemplateAdminController extends AbstractController {
                             LogLoginService.CHANNEL_WEB_MANAGER, "save.task.template", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), path));
                 }
-                templateComponent.clear();
+                templateComponent.clearTaskTemplateCache();
             } catch (IOException e) {
                 model.addAttribute(ERROR, e.getMessage());
                 log.error(e.getMessage(), e);
@@ -121,7 +121,7 @@ public class TaskTemplateAdminController extends AbstractController {
             if (ControllerUtils.verifyCustom("notExist.template", !fileComponent.deleteFile(filePath), model)) {
                 return TEMPLATE_ERROR;
             }
-            templateComponent.clear();
+            templateComponent.clearTaskTemplateCache();
             logOperateService
                     .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "delete.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));

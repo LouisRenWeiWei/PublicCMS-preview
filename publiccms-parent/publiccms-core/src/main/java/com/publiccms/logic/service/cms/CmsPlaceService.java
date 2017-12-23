@@ -62,7 +62,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Long userId, String path, String itemType, Integer itemId, Date startPublishDate,
+    public PageHandler getPage(Short siteId, Long userId, String path, String itemType, Long itemId, Date startPublishDate,
             Date endPublishDate, Integer status, Boolean disabled, String orderField, String orderType, Integer pageIndex,
             Integer pageSize) {
         return dao.getPage(siteId, userId, path, itemType, itemId, startPublishDate, endPublishDate, status, disabled, orderField,
@@ -99,7 +99,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param siteId
      * @param ids
      */
-    public void check(int siteId, Serializable[] ids) {
+    public void check(short siteId, Serializable[] ids) {
         Date now = CommonUtils.getDate();
         for (CmsPlace entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && STATUS_CONTRIBUTE == entity.getStatus()) {
@@ -115,7 +115,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param siteId
      * @param ids
      */
-    public void refresh(int siteId, Serializable[] ids) {
+    public void refresh(short siteId, Serializable[] ids) {
         Date now = CommonUtils.getDate();
         for (CmsPlace entity : getEntitys(ids)) {
             if (null != entity && STATUS_NORMAL == entity.getStatus() && siteId == entity.getSiteId()) {
@@ -137,7 +137,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param siteId
      * @param ids
      */
-    public void delete(int siteId, Serializable[] ids) {
+    public void delete(short siteId, Serializable[] ids) {
         for (CmsPlace entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && !entity.isDisabled()) {
                 entity.setDisabled(true);
@@ -150,7 +150,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param path
      * @return
      */
-    public int delete(int siteId, String path) {
+    public int delete(short siteId, String path) {
         return dao.delete(siteId, path);
     }
 

@@ -28,7 +28,7 @@ public class CmsCategoryType implements java.io.Serializable {
     private Integer id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "名称")
     private String name;
     @GeneratorColumn(title = "排序")
@@ -39,13 +39,13 @@ public class CmsCategoryType implements java.io.Serializable {
     public CmsCategoryType() {
     }
 
-    public CmsCategoryType(int siteId, String name, int sort) {
+    public CmsCategoryType(short siteId, String name, int sort) {
         this.siteId = siteId;
         this.name = name;
         this.sort = sort;
     }
 
-    public CmsCategoryType(int siteId, String name, int sort, Integer extendId) {
+    public CmsCategoryType(short siteId, String name, int sort, Integer extendId) {
         this.siteId = siteId;
         this.name = name;
         this.sort = sort;
@@ -64,12 +64,12 @@ public class CmsCategoryType implements java.io.Serializable {
         this.id = id;
     }
 
-    @Column(name = "siteId", nullable = false)
-    public int getSiteId() {
+    @Column(name = "site_id", nullable = false)
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

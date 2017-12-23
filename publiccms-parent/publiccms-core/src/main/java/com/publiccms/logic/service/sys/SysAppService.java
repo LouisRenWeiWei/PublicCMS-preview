@@ -29,7 +29,7 @@ public class SysAppService extends BaseService<SysApp> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, String channel, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, String channel, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, channel, pageIndex, pageSize);
     }
 

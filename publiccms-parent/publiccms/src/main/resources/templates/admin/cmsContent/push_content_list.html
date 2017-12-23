@@ -1,4 +1,4 @@
-<@_contentList categoryId=categoryId modelId=modelId containChild=true title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+<@_contentList categoryId=categoryId modelId=modelId parentId=parentId containChild=true title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
 	<form id="pagerForm" action="cmsContent/push_content_list.html?contentId=${contentId}" onsubmit="return divSearch(this, 'push_content_list');" method="post">
 		<#include "../include_page/paramters.html"/>
@@ -105,6 +105,7 @@
 			</#list>
 		</tbody>
 	</table>
+	<#assign rel='push_content_list'/>
 	<#include "../include_page/pageDialog.html"/>
 </div>
 </@_contentList>

@@ -27,7 +27,7 @@ public class HomeCommentDao extends BaseDao<HomeComment> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, Long userId, String itemType, Long itemId, Boolean disabled, String orderType,
+    public PageHandler getPage(Short siteId, Long userId, String itemType, Long itemId, Boolean disabled, String orderType,
             Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from HomeComment bean");
         if (CommonUtils.notEmpty(siteId)) {

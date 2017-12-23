@@ -26,24 +26,23 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         String word = handler.getString("word");
-        String tagId = handler.getString("tagId");
-        if (CommonUtils.notEmpty(word) || CommonUtils.notEmpty(tagId)) {
+        Long[] tagIds = handler.getLongArray("tagId");
+        if (CommonUtils.notEmpty(word) || CommonUtils.notEmpty(tagIds)) {
             SysSite site = getSite(handler);
             if (CommonUtils.notEmpty(word)) {
                 statisticsComponent.search(site.getId(), word);
             }
-            if (CommonUtils.notEmpty(tagId)) {
-                try {
-                    statisticsComponent.searchTag(Long.parseLong(tagId));
-                } catch (NumberFormatException e) {
+            if (CommonUtils.notEmpty(tagIds)) {
+                for (Long tagId : tagIds) {
+                    statisticsComponent.searchTag(tagId);
                 }
             }
             PageHandler page;
             Integer pageIndex = handler.getInteger("pageIndex", 1);
             Integer count = handler.getInteger("count", 30);
             try {
-                page = service.query(site.getId(), word, tagId, handler.getDate("startPublishDate"),
-                        CommonUtils.getDate(), pageIndex, count);
+                page = service.query(site.getId(), word, tagIds, handler.getInteger("categoryId"), handler.getString("modelId"),
+                        handler.getDate("startPublishDate"), CommonUtils.getDate(), pageIndex, count);
             } catch (Exception e) {
                 page = new PageHandler(pageIndex, count, 0, null);
             }

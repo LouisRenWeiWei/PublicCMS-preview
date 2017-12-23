@@ -30,7 +30,7 @@ public class HomeUser implements java.io.Serializable {
     private long userId;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "标题")
     private String title;
     @GeneratorColumn(title = "签名")
@@ -67,7 +67,7 @@ public class HomeUser implements java.io.Serializable {
     public HomeUser() {
     }
 
-    public HomeUser(long userId, int siteId, int friends, int messages, int questions, int answers, int articles, int clicks,
+    public HomeUser(long userId, short siteId, int friends, int messages, int questions, int answers, int articles, int clicks,
             int broadcasts, int comments, int attentions, int fans, Date createDate, boolean disabled) {
         this.userId = userId;
         this.siteId = siteId;
@@ -85,7 +85,7 @@ public class HomeUser implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    public HomeUser(long userId, int siteId, String title, String signature, int friends, int messages, int questions,
+    public HomeUser(long userId, short siteId, String title, String signature, int friends, int messages, int questions,
             int answers, int articles, int clicks, int broadcasts, int comments, String attentionIds, int attentions, int fans,
             Date lastLoginDate, Date createDate, boolean disabled) {
         this.userId = userId;
@@ -120,11 +120,11 @@ public class HomeUser implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

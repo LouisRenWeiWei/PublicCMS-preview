@@ -10,7 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.TermQuery;
 import org.hibernate.search.FullTextQuery;
+import org.hibernate.search.query.dsl.MustJunction;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
@@ -42,17 +46,26 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler query(Integer siteId, String text, String tagId, Date startPublishDate, Date endPublishDate,
-            Integer pageIndex, Integer pageSize) {
-        FullTextQuery query;
-        if (CommonUtils.notEmpty(tagId)) {
-            query = getQuery(tagFields, tagId);
-        } else {
-            query = getQuery(textFields, text);
+    public PageHandler query(Short siteId, String text, String tagId, Integer categoryId, String modelId, Date startPublishDate,
+            Date endPublishDate, Integer pageIndex, Integer pageSize) {
+        QueryBuilder queryBuilder = getFullTextQueryBuilder();
+        MustJunction termination = queryBuilder.bool()
+                .must(queryBuilder.keyword().onFields(CommonUtils.empty(tagId) ? textFields : tagFields)
+                        .matching(CommonUtils.empty(tagId) ? text : tagId).createQuery())
+                .must(new TermQuery(new Term("siteId", siteId.toString())));
+        if (null != startPublishDate) {
+            termination.must(queryBuilder.range().onField("publishDate").above(startPublishDate).createQuery());
         }
-        query.enableFullTextFilter("publishDate").setParameter("startPublishDate", startPublishDate)
-                .setParameter("endPublishDate", endPublishDate);
-        query.enableFullTextFilter("siteId").setParameter("siteId", siteId);
+        if (null != endPublishDate) {
+            termination.must(queryBuilder.range().onField("publishDate").below(endPublishDate).createQuery());
+        }
+        if (null != categoryId) {
+            termination.must(new TermQuery(new Term("categoryId", categoryId.toString())));
+        }
+        if (null != modelId) {
+            termination.must(new TermQuery(new Term("modelId", modelId)));
+        }
+        FullTextQuery query = getFullTextQuery(termination.createQuery());
         return getPage(query, pageIndex, pageSize);
     }
 
@@ -69,17 +82,19 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param pageSize
      * @return results page
      */
-    public FacetPageHandler facetQuery(Integer siteId, String[] categoryIds, String[] modelIds, String[] userIds, String text,
+    public FacetPageHandler facetQuery(Short siteId, String[] categoryIds, String[] modelIds, String[] userIds, String text,
             String tagId, Date startPublishDate, Date endPublishDate, Integer pageIndex, Integer pageSize) {
-        FullTextQuery query;
-        if (CommonUtils.notEmpty(tagId)) {
-            query = getFacetQuery(tagFields, facetFields, tagId, 10);
-        } else {
-            query = getFacetQuery(textFields, facetFields, text, 10);
+        QueryBuilder queryBuilder = getFullTextQueryBuilder();
+        MustJunction termination = queryBuilder.bool()
+                .must(queryBuilder.keyword().onFields(CommonUtils.empty(tagId) ? textFields : tagFields)
+                        .matching(CommonUtils.empty(tagId) ? text : tagId).createQuery())
+                .must(new TermQuery(new Term("siteId", siteId.toString())));
+        if (null != startPublishDate) {
+            termination.must(queryBuilder.range().onField("publishDate").above(startPublishDate).createQuery());
         }
-        query.enableFullTextFilter("publishDate").setParameter("startPublishDate", startPublishDate)
-                .setParameter("endPublishDate", endPublishDate);
-        query.enableFullTextFilter("siteId").setParameter("siteId", siteId);
+        if (null != endPublishDate) {
+            termination.must(queryBuilder.range().onField("publishDate").below(endPublishDate).createQuery());
+        }
         Map<String, List<String>> valueMap = new HashMap<>();
         if (CommonUtils.notEmpty(categoryIds)) {
             valueMap.put("categoryId", Arrays.asList(categoryIds));
@@ -90,7 +105,8 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (CommonUtils.notEmpty(userIds)) {
             valueMap.put("userId", Arrays.asList(userIds));
         }
-        return getFacetPage(query, facetFields, valueMap, pageIndex, pageSize);
+        FullTextQuery query = getFullTextQuery(termination.createQuery());
+        return getFacetPage(queryBuilder, query, facetFields, valueMap, 10, pageIndex, pageSize);
     }
 
     /**
@@ -98,7 +114,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param categoryIds
      * @return number of data deleted
      */
-    public int deleteByCategoryIds(int siteId, Integer[] categoryIds) {
+    public int deleteByCategoryIds(short siteId, Integer[] categoryIds) {
         if (CommonUtils.notEmpty(categoryIds)) {
             QueryHandler queryHandler = getQueryHandler("update CmsContent bean set bean.disabled = :disabled");
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
@@ -113,7 +129,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param siteId
      * @param ids
      */
-    public void index(int siteId, Serializable[] ids) {
+    public void index(short siteId, Serializable[] ids) {
         for (CmsContent entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId()) {
                 index(entity);
@@ -171,10 +187,12 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", queryEntitry.getUserId());
         }
         if (null != queryEntitry.getStartPublishDate()) {
-            queryHandler.condition("bean.publishDate > :startPublishDate").setParameter("startPublishDate", queryEntitry.getStartPublishDate());
+            queryHandler.condition("bean.publishDate > :startPublishDate").setParameter("startPublishDate",
+                    queryEntitry.getStartPublishDate());
         }
         if (null != queryEntitry.getEndPublishDate()) {
-            queryHandler.condition("bean.publishDate <= :endPublishDate").setParameter("endPublishDate", queryEntitry.getEndPublishDate());
+            queryHandler.condition("bean.publishDate <= :endPublishDate").setParameter("endPublishDate",
+                    queryEntitry.getEndPublishDate());
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;

@@ -32,7 +32,7 @@ public class WechatOauthComponent extends AbstractOauth {
      * resource/res_list&verify=1&id=open1419316505&token=&lang=zh_CN
      * 
      */
-    public String getAuthorizeUrl(int siteId, String state, boolean mobile) {
+    public String getAuthorizeUrl(short siteId, String state, boolean mobile) {
         OauthConfig config = getConfig(siteId);
         if (null != config) {
             StringBuilder sb = new StringBuilder("https://open.weixin.qq.com/connect/qrconnect?appid=");
@@ -47,7 +47,7 @@ public class WechatOauthComponent extends AbstractOauth {
      * 
      */
     @Override
-    public OauthAccess getAccessToken(int siteId, String code) throws ClientProtocolException, IOException {
+    public OauthAccess getAccessToken(short siteId, String code) throws ClientProtocolException, IOException {
         OauthConfig config = getConfig(siteId);
         if (null != config) {
             StringBuilder sb = new StringBuilder("https://api.weixin.qq.com/sns/oauth2/access_token?appid=");
@@ -68,7 +68,7 @@ public class WechatOauthComponent extends AbstractOauth {
      * resource/res_list&verify=1&id=open1419316518&token=&lang=zh_CN
      */
     @Override
-    public OauthUser getUserInfo(int siteId, OauthAccess oauthInfo) throws ClientProtocolException, IOException {
+    public OauthUser getUserInfo(short siteId, OauthAccess oauthInfo) throws ClientProtocolException, IOException {
         if (null != oauthInfo) {
             StringBuilder sb = new StringBuilder("https://api.weixin.qq.com/sns/userinfo?access_token=");
             sb.append(oauthInfo.getAccessToken()).append("&openid=").append(oauthInfo.getOpenId());

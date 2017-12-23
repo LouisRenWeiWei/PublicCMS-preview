@@ -29,7 +29,7 @@ public class CmsCategory implements java.io.Serializable {
     private Integer id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "名称")
     private String name;
     @GeneratorColumn(title = "父分类", condition = true)
@@ -74,7 +74,7 @@ public class CmsCategory implements java.io.Serializable {
     public CmsCategory() {
     }
 
-    public CmsCategory(int siteId, String name, String path, boolean onlyUrl, boolean hasStatic, boolean containChild,
+    public CmsCategory(short siteId, String name, String path, boolean onlyUrl, boolean hasStatic, boolean containChild,
             boolean allowContribute, int sort, boolean hidden, boolean disabled, int contents) {
         this.siteId = siteId;
         this.name = name;
@@ -89,7 +89,7 @@ public class CmsCategory implements java.io.Serializable {
         this.contents = contents;
     }
 
-    public CmsCategory(int siteId, String name, Integer parentId, Integer typeId, String childIds, String tagTypeIds, String code,
+    public CmsCategory(short siteId, String name, Integer parentId, Integer typeId, String childIds, String tagTypeIds, String code,
             String templatePath, String path, boolean onlyUrl, boolean hasStatic, String url, String contentPath,
             boolean containChild, Integer pageSize, boolean allowContribute, int sort, boolean hidden, boolean disabled,
             int contents, Integer extendId) {
@@ -129,11 +129,11 @@ public class CmsCategory implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

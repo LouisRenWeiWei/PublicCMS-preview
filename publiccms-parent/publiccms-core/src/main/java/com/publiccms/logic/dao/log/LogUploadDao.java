@@ -30,7 +30,7 @@ public class LogUploadDao extends BaseDao<LogUpload> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, Long userId, String channel, Boolean image, String filePath, String orderField,
+    public PageHandler getPage(Short siteId, Long userId, String channel, Boolean image, String filePath, String orderField,
             String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from LogUpload bean");
         if (CommonUtils.notEmpty(siteId)) {
@@ -72,7 +72,7 @@ public class LogUploadDao extends BaseDao<LogUpload> {
      * @param createDate
      * @return number of data deleted
      */
-    public int delete(Integer siteId, Date createDate) {
+    public int delete(Short siteId, Date createDate) {
         if (CommonUtils.notEmpty(siteId) || null != createDate) {
             QueryHandler queryHandler = getDeleteQueryHandler("from LogUpload bean");
             if (CommonUtils.notEmpty(siteId)) {

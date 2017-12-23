@@ -32,7 +32,7 @@ public class LogLoginDao extends BaseDao<LogLogin> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, Long userId, Date startCreateDate, Date endCreateDate, String channel,
+    public PageHandler getPage(Short siteId, Long userId, Date startCreateDate, Date endCreateDate, String channel,
             Boolean result, String name, String ip, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from LogLogin bean");
         if (CommonUtils.notEmpty(siteId)) {
@@ -71,7 +71,7 @@ public class LogLoginDao extends BaseDao<LogLogin> {
      * @param createDate
      * @return number of data deleted
      */
-    public int delete(Integer siteId, Date createDate) {
+    public int delete(Short siteId, Date createDate) {
         if (CommonUtils.notEmpty(siteId) || null != createDate) {
             QueryHandler queryHandler = getDeleteQueryHandler("from LogLogin bean");
             if (CommonUtils.notEmpty(siteId)) {

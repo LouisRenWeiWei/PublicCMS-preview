@@ -110,21 +110,21 @@ public class IndexController extends AbstractController {
         SysSite site = getSite(request);
         String fullRequestPath = siteComponent.getViewNamePrefix(site, domain) + requestPath;
         String templatePath = siteComponent.getWebTemplateFilePath() + fullRequestPath;
-        CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(templatePath, true);
-        if (null != metadata) {
-            if (metadata.isUseDynamic()) {
-                if (metadata.isNeedLogin() && null == getUserFromSession(request.getSession())) {
-                    Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-                    String loginPath = config.get(LoginConfigComponent.CONFIG_LOGIN_PATH);
-                    StringBuilder sb = new StringBuilder(REDIRECT);
-                    if (CommonUtils.notEmpty(loginPath)) {
-                        return sb.append(loginPath).append("?returnUrl=")
-                                .append(RequestUtils.getEncodePath(requestPath, request.getQueryString())).toString();
-                    } else {
-                        return sb.append(site.getDynamicPath()).toString();
-                    }
+        CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(templatePath);
+        if (metadata.isUseDynamic()) {
+            if (metadata.isNeedLogin() && null == getUserFromSession(request.getSession())) {
+                Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+                String loginPath = config.get(LoginConfigComponent.CONFIG_LOGIN_PATH);
+                StringBuilder sb = new StringBuilder(REDIRECT);
+                if (CommonUtils.notEmpty(loginPath)) {
+                    return sb.append(loginPath).append("?returnUrl=")
+                            .append(RequestUtils.getEncodePath(requestPath, request.getQueryString())).toString();
+                } else {
+                    return sb.append(site.getDynamicPath()).toString();
                 }
-                String[] acceptParamters = StringUtils.split(metadata.getAcceptParamters(), COMMA_DELIMITED);
+            }
+            String[] acceptParamters = StringUtils.split(metadata.getAcceptParamters(), COMMA_DELIMITED);
+            if (CommonUtils.notEmpty(acceptParamters)) {
                 billingRequestParamtersToModel(request, acceptParamters, model);
                 if (null != id && ArrayUtils.contains(acceptParamters, "id")) {
                     model.addAttribute("id", id.toString());
@@ -132,29 +132,29 @@ public class IndexController extends AbstractController {
                         model.addAttribute("pageIndex", pageIndex.toString());
                     }
                 }
-                model.addAttribute("metadata", metadata);
-                if (metadata.isNeedBody()) {
-                    model.addAttribute("body", body);
+            }
+            model.addAttribute("metadata", metadata);
+            if (metadata.isNeedBody()) {
+                model.addAttribute("body", body);
+            }
+            if (CommonUtils.notEmpty(metadata.getContentType())) {
+                response.setContentType(metadata.getContentType());
+            }
+            if (CommonUtils.notEmpty(metadata.getCacheTime()) && 0 < metadata.getCacheTime()) {
+                int cacheMillisTime = metadata.getCacheTime() * 1000;
+                String cacheControl = request.getHeader("Cache-Control");
+                String pragma = request.getHeader("Pragma");
+                if (CommonUtils.notEmpty(cacheControl) && "no-cache".equalsIgnoreCase(cacheControl)
+                        || CommonUtils.notEmpty(pragma) && "no-cache".equalsIgnoreCase(pragma)) {
+                    cacheMillisTime = 0;
                 }
-                if (CommonUtils.notEmpty(metadata.getContentType())) {
-                    response.setContentType(metadata.getContentType());
-                }
-                if (CommonUtils.notEmpty(metadata.getCacheTime()) && 0 < metadata.getCacheTime()) {
-                    int cacheMillisTime = metadata.getCacheTime() * 1000;
-                    String cacheControl = request.getHeader("Cache-Control");
-                    String pragma = request.getHeader("Pragma");
-                    if (CommonUtils.notEmpty(cacheControl) && "no-cache".equalsIgnoreCase(cacheControl)
-                            || CommonUtils.notEmpty(pragma) && "no-cache".equalsIgnoreCase(pragma)) {
-                        cacheMillisTime = 0;
-                    }
-                    return templateCacheComponent.getCachedPath(requestPath, fullRequestPath, cacheMillisTime, acceptParamters,
-                            request, model);
-                }
-            } else {
-                try {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                } catch (IOException e) {
-                }
+                return templateCacheComponent.getCachedPath(requestPath, fullRequestPath, cacheMillisTime, acceptParamters,
+                        request, model);
+            }
+        } else {
+            try {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            } catch (IOException e) {
             }
         }
         return requestPath;

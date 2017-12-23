@@ -34,7 +34,7 @@ public class SysTask implements java.io.Serializable {
     private Integer id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "任务名称")
     private String name;
     @GeneratorColumn(title = "状态", condition = true)
@@ -51,14 +51,14 @@ public class SysTask implements java.io.Serializable {
     public SysTask() {
     }
 
-    public SysTask(int siteId, String name, int status, String cronExpression) {
+    public SysTask(short siteId, String name, int status, String cronExpression) {
         this.siteId = siteId;
         this.name = name;
         this.status = status;
         this.cronExpression = cronExpression;
     }
 
-    public SysTask(int siteId, String name, int status, String cronExpression, String description, String filePath,
+    public SysTask(short siteId, String name, int status, String cronExpression, String description, String filePath,
             Date updateDate) {
         this.siteId = siteId;
         this.name = name;
@@ -82,11 +82,11 @@ public class SysTask implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

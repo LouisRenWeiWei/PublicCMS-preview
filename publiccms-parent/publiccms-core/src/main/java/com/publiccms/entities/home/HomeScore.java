@@ -33,7 +33,7 @@ public class HomeScore implements java.io.Serializable {
     private Long id;
     @GeneratorColumn(title = "站点ID", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "用户ID", condition = true)
     private long userId;
     @GeneratorColumn(title = "项目类型", condition = true)
@@ -50,7 +50,7 @@ public class HomeScore implements java.io.Serializable {
     public HomeScore() {
     }
 
-    public HomeScore(int siteId, long userId, String itemType, long itemId, int score, String ip, Date createDate) {
+    public HomeScore(short siteId, long userId, String itemType, long itemId, int score, String ip, Date createDate) {
         this.siteId = siteId;
         this.userId = userId;
         this.itemType = itemType;
@@ -73,11 +73,11 @@ public class HomeScore implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

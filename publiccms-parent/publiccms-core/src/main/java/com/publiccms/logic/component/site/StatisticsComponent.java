@@ -94,7 +94,7 @@ public class StatisticsComponent implements Cache {
      * @param word
      * @return word statistics
      */
-    public CmsWordStatistics search(int siteId, String word) {
+    public CmsWordStatistics search(short siteId, String word) {
         if (CommonUtils.notEmpty(word)) {
             CmsWord entity = wordService.getEntity(siteId, word);
             if (null == entity) {

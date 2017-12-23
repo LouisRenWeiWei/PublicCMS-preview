@@ -34,7 +34,7 @@ public class SysAppClientDao extends BaseDao<SysAppClient> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, String channel, Long userId, Boolean allowPush, Date startLastLoginDate,
+    public PageHandler getPage(Short siteId, String channel, Long userId, Boolean allowPush, Date startLastLoginDate,
             Date endLastLoginDate, Date startCreateDate, Date endCreateDate, Boolean disabled, String orderField,
             String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysAppClient bean");

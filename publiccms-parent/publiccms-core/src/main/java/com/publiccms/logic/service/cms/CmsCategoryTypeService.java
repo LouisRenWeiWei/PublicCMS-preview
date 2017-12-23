@@ -28,7 +28,7 @@ public class CmsCategoryTypeService extends BaseService<CmsCategoryType> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, pageIndex, pageSize);
     }
 

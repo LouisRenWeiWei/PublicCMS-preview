@@ -34,7 +34,7 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, Long userId, String path, String itemType, Integer itemId,
+    public PageHandler getPage(Short siteId, Long userId, String path, String itemType, Long itemId,
             Date startPublishDate, Date endPublishDate, Integer status, Boolean disabled, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsPlace bean");
@@ -89,7 +89,7 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
      * @param path
      * @return number of data deleted
      */
-    public int delete(int siteId, String path) {
+    public int delete(short siteId, String path) {
         if (CommonUtils.notEmpty(path)) {
             QueryHandler queryHandler = getDeleteQueryHandler("from CmsPlace bean");
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);

@@ -27,7 +27,7 @@ public class HomeArticleDao extends BaseDao<HomeArticle> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, Long directoryId, Long userId, Boolean disabled, String orderField,
+    public PageHandler getPage(Short siteId, Long directoryId, Long userId, Boolean disabled, String orderField,
             String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from HomeArticle bean");
         if (CommonUtils.notEmpty(siteId)) {

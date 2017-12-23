@@ -33,7 +33,7 @@ public class HomeFile implements java.io.Serializable {
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
     @GeneratorColumn(title = "目录", condition = true)
@@ -58,7 +58,7 @@ public class HomeFile implements java.io.Serializable {
     public HomeFile() {
     }
 
-    public HomeFile(int siteId, long userId, String title, String filePath, boolean image, int fileSize, int scores, int comments,
+    public HomeFile(short siteId, long userId, String title, String filePath, boolean image, int fileSize, int scores, int comments,
             Date createDate, boolean disabled) {
         this.siteId = siteId;
         this.userId = userId;
@@ -72,7 +72,7 @@ public class HomeFile implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    public HomeFile(int siteId, long userId, Long directoryId, String title, String filePath, boolean image, int fileSize,
+    public HomeFile(short siteId, long userId, Long directoryId, String title, String filePath, boolean image, int fileSize,
             int scores, int comments, Date createDate, boolean disabled) {
         this.siteId = siteId;
         this.userId = userId;
@@ -100,11 +100,11 @@ public class HomeFile implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

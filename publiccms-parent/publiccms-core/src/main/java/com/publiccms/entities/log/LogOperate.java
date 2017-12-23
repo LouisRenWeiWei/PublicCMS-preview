@@ -33,7 +33,7 @@ public class LogOperate implements java.io.Serializable {
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "用户", condition = true)
     private Long userId;
     @GeneratorColumn(title = "渠道", condition = true)
@@ -50,7 +50,7 @@ public class LogOperate implements java.io.Serializable {
     public LogOperate() {
     }
 
-    public LogOperate(int siteId, String channel, String operate, Date createDate, String content) {
+    public LogOperate(short siteId, String channel, String operate, Date createDate, String content) {
         this.siteId = siteId;
         this.channel = channel;
         this.operate = operate;
@@ -58,7 +58,7 @@ public class LogOperate implements java.io.Serializable {
         this.content = content;
     }
 
-    public LogOperate(int siteId, Long userId, String channel, String operate, String ip, Date createDate, String content) {
+    public LogOperate(short siteId, Long userId, String channel, String operate, String ip, Date createDate, String content) {
         this.siteId = siteId;
         this.userId = userId;
         this.channel = channel;
@@ -81,11 +81,11 @@ public class LogOperate implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

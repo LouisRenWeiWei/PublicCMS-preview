@@ -23,7 +23,7 @@ public class SysDomainDao extends BaseDao<SysDomain> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, Boolean wild, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, Boolean wild, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysDomain bean");
         if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);

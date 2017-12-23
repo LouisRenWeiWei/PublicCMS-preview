@@ -5,7 +5,7 @@ public class CmsCategoryQuery implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
-    private Integer siteId;
+    private Short siteId;
     private Integer parentId;
     private Boolean queryAll;
     private Integer typeId;
@@ -16,7 +16,7 @@ public class CmsCategoryQuery implements java.io.Serializable {
     public CmsCategoryQuery(){
     }
 
-    public CmsCategoryQuery(Integer siteId, Integer parentId, Boolean queryAll, Integer typeId, Boolean allowContribute,
+    public CmsCategoryQuery(Short siteId, Integer parentId, Boolean queryAll, Integer typeId, Boolean allowContribute,
             Boolean hidden, Boolean disabled) {
         this.siteId = siteId;
         this.parentId = parentId;
@@ -30,14 +30,14 @@ public class CmsCategoryQuery implements java.io.Serializable {
     /**
      * @return the siteId
      */
-    public Integer getSiteId() {
+    public Short getSiteId() {
         return siteId;
     }
 
     /**
      * @param siteId the siteId to set
      */
-    public void setSiteId(Integer siteId) {
+    public void setSiteId(Short siteId) {
         this.siteId = siteId;
     }
 

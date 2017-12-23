@@ -28,7 +28,7 @@ public class SysRole implements java.io.Serializable {
     private Integer id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "名称")
     private String name;
     @GeneratorColumn(title = "拥有全部权限")
@@ -39,7 +39,7 @@ public class SysRole implements java.io.Serializable {
     public SysRole() {
     }
 
-    public SysRole(int siteId, String name, boolean ownsAllRight, boolean showAllMoudle) {
+    public SysRole(short siteId, String name, boolean ownsAllRight, boolean showAllMoudle) {
         this.siteId = siteId;
         this.name = name;
         this.ownsAllRight = ownsAllRight;
@@ -59,11 +59,11 @@ public class SysRole implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

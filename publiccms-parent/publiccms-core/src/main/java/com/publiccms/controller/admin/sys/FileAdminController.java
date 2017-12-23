@@ -24,7 +24,7 @@ import com.publiccms.logic.service.log.LogUploadService;
 /**
  *
  * FileAdminController
- * 
+ *
  */
 @Controller
 @RequestMapping("file")
@@ -37,6 +37,7 @@ public class FileAdminController extends AbstractController {
     /**
      * @param file
      * @param field
+     * @param originalField
      * @param onlyImage
      * @param request
      * @param session
@@ -44,15 +45,21 @@ public class FileAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping(value = "doUpload", method = RequestMethod.POST)
-    public String upload(MultipartFile file, String field, Boolean onlyImage, HttpServletRequest request, HttpSession session,
+    public String upload(MultipartFile file, String field, String originalField, Boolean onlyImage, HttpServletRequest request, HttpSession session,
             ModelMap model) {
         SysSite site = getSite(request);
         if (null != file && !file.isEmpty()) {
-            String fileName = fileComponent.getUploadFileName(fileComponent.getSuffix(file.getOriginalFilename()));
+			String originalName = file.getOriginalFilename();
+			String suffix = fileComponent.getSuffix(originalName);
+            String fileName = fileComponent.getUploadFileName(suffix);
             try {
                 fileComponent.upload(file, siteComponent.getWebFilePath(site, fileName));
                 model.put("field", field);
                 model.put(field, fileName);
+				if(CommonUtils.notEmpty(originalField)){
+					model.put("originalField", originalField);
+					model.put(originalField, originalName);
+				}
                 logUploadService.save(
                         new LogUpload(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                 onlyImage, file.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));

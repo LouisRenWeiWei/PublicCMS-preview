@@ -36,7 +36,7 @@ public class LogTaskService extends BaseService<LogTask> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Integer taskId, Date startBegintime, Date endBegintime, Boolean success,
+    public PageHandler getPage(Short siteId, Integer taskId, Date startBegintime, Date endBegintime, Boolean success,
             String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, taskId, startBegintime, endBegintime, success, orderType, pageIndex, pageSize);
     }
@@ -46,7 +46,7 @@ public class LogTaskService extends BaseService<LogTask> {
      * @param begintime
      * @return
      */
-    public int delete(Integer siteId, Date begintime) {
+    public int delete(Short siteId, Date begintime) {
         return dao.delete(siteId, begintime);
     }
 
@@ -54,7 +54,7 @@ public class LogTaskService extends BaseService<LogTask> {
      * @param siteId
      * @param ids
      */
-    public void delete(int siteId, Serializable[] ids) {
+    public void delete(short siteId, Serializable[] ids) {
         for (LogTask entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId()) {
                 delete(entity.getId());

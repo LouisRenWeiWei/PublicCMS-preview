@@ -29,7 +29,7 @@ public class LogTaskDao extends BaseDao<LogTask> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, Integer taskId, Date startBegintime, Date endBegintime, Boolean success,
+    public PageHandler getPage(Short siteId, Integer taskId, Date startBegintime, Date endBegintime, Boolean success,
             String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new LogTask(id, siteId, taskId, begintime, endtime, success) from LogTask bean");
@@ -60,7 +60,7 @@ public class LogTaskDao extends BaseDao<LogTask> {
      * @param begintime
      * @return number of data deleted
      */
-    public int delete(Integer siteId, Date begintime) {
+    public int delete(Short siteId, Date begintime) {
         if (CommonUtils.notEmpty(siteId) || null != begintime) {
             QueryHandler queryHandler = getDeleteQueryHandler("from LogTask bean");
             if (CommonUtils.notEmpty(siteId)) {

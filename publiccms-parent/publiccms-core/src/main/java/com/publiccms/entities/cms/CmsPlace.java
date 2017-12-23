@@ -34,7 +34,7 @@ public class CmsPlace implements java.io.Serializable {
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "路径", condition = true)
     private String path;
     @GeneratorColumn(title = "推荐用户", condition = true)
@@ -42,7 +42,7 @@ public class CmsPlace implements java.io.Serializable {
     @GeneratorColumn(title = "项目类型", condition = true)
     private String itemType;
     @GeneratorColumn(title = "项目ID", condition = true)
-    private Integer itemId;
+    private Long itemId;
     @GeneratorColumn(title = "标题")
     private String title;
     @GeneratorColumn(title = "地址")
@@ -64,7 +64,7 @@ public class CmsPlace implements java.io.Serializable {
     public CmsPlace() {
     }
 
-    public CmsPlace(int siteId, String path, long userId, String title, Date createDate, Date publishDate, int status, int clicks,
+    public CmsPlace(short siteId, String path, long userId, String title, Date createDate, Date publishDate, int status, int clicks,
             boolean disabled) {
         this.siteId = siteId;
         this.path = path;
@@ -77,7 +77,7 @@ public class CmsPlace implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    public CmsPlace(int siteId, String path, long userId, String itemType, Integer itemId, String title, String url, String cover,
+    public CmsPlace(short siteId, String path, long userId, String itemType, Long itemId, String title, String url, String cover,
             Date createDate, Date publishDate, int status, int clicks, boolean disabled) {
         this.siteId = siteId;
         this.path = path;
@@ -107,11 +107,11 @@ public class CmsPlace implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 
@@ -143,11 +143,11 @@ public class CmsPlace implements java.io.Serializable {
     }
 
     @Column(name = "item_id")
-    public Integer getItemId() {
+    public Long getItemId() {
         return this.itemId;
     }
 
-    public void setItemId(Integer itemId) {
+    public void setItemId(Long itemId) {
         this.itemId = itemId;
     }
 

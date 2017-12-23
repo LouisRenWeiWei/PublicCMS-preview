@@ -27,7 +27,7 @@ public class CmsTagTypeDao extends BaseDao<CmsTagType> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, String name, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, String name, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsTagType bean");
         if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);

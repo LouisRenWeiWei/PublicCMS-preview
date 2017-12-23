@@ -37,7 +37,7 @@ public class LogUploadService extends BaseService<LogUpload> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Long userId, String channel, Boolean image, String filePath, String orderField,
+    public PageHandler getPage(Short siteId, Long userId, String channel, Boolean image, String filePath, String orderField,
             String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, userId, channel, image, filePath, orderField, orderType, pageIndex, pageSize);
     }
@@ -47,7 +47,7 @@ public class LogUploadService extends BaseService<LogUpload> {
      * @param createDate
      * @return
      */
-    public int delete(Integer siteId, Date createDate) {
+    public int delete(Short siteId, Date createDate) {
         return dao.delete(siteId, createDate);
     }
 
@@ -55,7 +55,7 @@ public class LogUploadService extends BaseService<LogUpload> {
      * @param siteId
      * @param ids
      */
-    public void delete(int siteId, Serializable[] ids) {
+    public void delete(short siteId, Serializable[] ids) {
         for (LogUpload entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId()) {
                 delete(entity.getId());

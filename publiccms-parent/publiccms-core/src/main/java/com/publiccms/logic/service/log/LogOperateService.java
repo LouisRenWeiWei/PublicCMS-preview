@@ -36,7 +36,7 @@ public class LogOperateService extends BaseService<LogOperate> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, String channel, String operate, Long userId, Date startCreateDate,
+    public PageHandler getPage(Short siteId, String channel, String operate, Long userId, Date startCreateDate,
             Date endCreateDate, String content, String ip, String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, channel, operate, userId, startCreateDate, endCreateDate, content, ip, orderType, pageIndex,
                 pageSize);
@@ -47,7 +47,7 @@ public class LogOperateService extends BaseService<LogOperate> {
      * @param createDate
      * @return
      */
-    public int delete(Integer siteId, Date createDate) {
+    public int delete(Short siteId, Date createDate) {
         return dao.delete(siteId, createDate);
     }
 
@@ -55,7 +55,7 @@ public class LogOperateService extends BaseService<LogOperate> {
      * @param siteId
      * @param ids
      */
-    public void delete(int siteId, Serializable[] ids) {
+    public void delete(short siteId, Serializable[] ids) {
         for (LogOperate entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId()) {
                 delete(entity.getId());

@@ -34,7 +34,7 @@ public class HomeComment implements java.io.Serializable {
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
     @GeneratorColumn(title = "项目类型", condition = true)
@@ -51,7 +51,7 @@ public class HomeComment implements java.io.Serializable {
     public HomeComment() {
     }
 
-    public HomeComment(int siteId, long userId, String itemType, long itemId, int scores, Date createDate, boolean disabled) {
+    public HomeComment(short siteId, long userId, String itemType, long itemId, int scores, Date createDate, boolean disabled) {
         this.siteId = siteId;
         this.userId = userId;
         this.itemType = itemType;
@@ -74,11 +74,11 @@ public class HomeComment implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

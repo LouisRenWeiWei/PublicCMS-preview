@@ -199,7 +199,7 @@ public class ApplicationConfig implements Base {
         SiteComponent bean = new SiteComponent();
         bean.setRootPath(getDirPath(""));
         bean.setMasterSiteIds(env.getProperty("cms.masterSiteIds"));
-        bean.setDefaultSiteId(Integer.parseInt(env.getProperty("cms.defaultSiteId")));
+        bean.setDefaultSiteId(Short.parseShort(env.getProperty("cms.defaultSiteId")));
         return bean;
     }
 

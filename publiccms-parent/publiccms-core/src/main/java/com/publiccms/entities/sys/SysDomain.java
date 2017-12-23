@@ -24,7 +24,7 @@ public class SysDomain implements java.io.Serializable {
     @GeneratorColumn(title = "域名")
     private String name;
     @GeneratorColumn(title = "站点", condition = true)
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "通配", condition = true)
     private boolean wild;
     @GeneratorColumn(title = "路径")
@@ -33,13 +33,13 @@ public class SysDomain implements java.io.Serializable {
     public SysDomain() {
     }
 
-    public SysDomain(String name, int siteId, boolean wild) {
+    public SysDomain(String name, short siteId, boolean wild) {
         this.name = name;
         this.siteId = siteId;
         this.wild = wild;
     }
 
-    public SysDomain(String name, int siteId, boolean wild, String path) {
+    public SysDomain(String name, short siteId, boolean wild, String path) {
         this.name = name;
         this.siteId = siteId;
         this.wild = wild;
@@ -57,11 +57,11 @@ public class SysDomain implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

@@ -35,7 +35,7 @@ public class HomeArticleService extends BaseService<HomeArticle> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Long directoryId, Long userId, Boolean disabled, String orderField,
+    public PageHandler getPage(Short siteId, Long directoryId, Long userId, Boolean disabled, String orderField,
             String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, directoryId, userId, disabled, orderField, orderType, pageIndex, pageSize);
     }

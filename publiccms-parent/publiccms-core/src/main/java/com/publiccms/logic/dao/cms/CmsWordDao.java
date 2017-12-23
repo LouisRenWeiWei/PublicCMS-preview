@@ -30,7 +30,7 @@ public class CmsWordDao extends BaseDao<CmsWord> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, Boolean hidden, Date startCreateDate, Date endCreateDate, String name,
+    public PageHandler getPage(Short siteId, Boolean hidden, Date startCreateDate, Date endCreateDate, String name,
             String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsWord bean");
         if (CommonUtils.notEmpty(siteId)) {
@@ -72,7 +72,7 @@ public class CmsWordDao extends BaseDao<CmsWord> {
      * @param name
      * @return entity
      */
-    public CmsWord getEntity(int siteId, String name) {
+    public CmsWord getEntity(short siteId, String name) {
         if (CommonUtils.notEmpty(name)) {
             QueryHandler queryHandler = getQueryHandler("from CmsWord bean");
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);

@@ -23,7 +23,7 @@ public class SysAppDao extends BaseDao<SysApp> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, String channel, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, String channel, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysApp bean");
         if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);

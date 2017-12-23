@@ -37,10 +37,58 @@ ALTER TABLE `cms_content`
 UPDATE `cms_content` SET `check_date` = `publish_date`;
 -- 20170905 --
 UPDATE `sys_moudle` SET `url` = 'cmsPlace/publish_place' WHERE  `sys_moudle`.`id` = 53;
+-- 20170922 --
 UPDATE `sys_moudle` SET `parent_id` = 5 WHERE  `sys_moudle`.`id` = 63;
 UPDATE `sys_moudle` SET `authorized_url` = 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload' WHERE  `sys_moudle`.`id` = 102;
+-- 20170922 --
 INSERT INTO `sys_moudle` VALUES ('127', '推荐位数据', 'cmsPlace/dataList', null, null , '107', '1', '1');
 INSERT INTO `sys_moudle` VALUES ('128', '用户数据监控', 'report/user', NULL, '<i class=\"icon-male icon-large\"></i>', '46', '1', '0');
 ALTER TABLE `sys_moudle` ORDER BY  `id`;
 DELETE FROM `sys_moudle` WHERE id = 130;
+-- 20171103 --
 UPDATE `sys_user` SET roles = '2' where id = 2 and site_id = 2;
+-- 20171216 --
+ALTER TABLE `cms_place` MODIFY COLUMN `item_id` bigint(20) default NULL COMMENT '推荐项目ID' AFTER `item_type`;
+ALTER TABLE `cms_category` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `cms_category_type` CHANGE COLUMN `siteId` `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`, DROP INDEX `siteId`,ADD INDEX `site_id`(`site_id`) USING BTREE;
+ALTER TABLE `cms_content` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `cms_lottery` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `cms_tag` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `cms_tag_type` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `cms_vote` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `cms_word` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `home_article` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `home_broadcast` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `home_comment` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `home_directory` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `home_file` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `home_group` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `home_group_post` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `home_score` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `home_user` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `user_id`;
+ALTER TABLE `log_login` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `log_operate` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `log_task` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `log_upload` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `sys_app` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `sys_app_client` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' FIRST;
+ALTER TABLE `sys_config_data` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' FIRST;
+ALTER TABLE `sys_dept` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `sys_domain` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `name`;
+ALTER TABLE `sys_role` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `sys_task` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `sys_user` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
+ALTER TABLE `sys_user_token` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `auth_token`;
+ALTER TABLE `cms_category_type` COMMENT = '分类类型';
+ALTER TABLE `cms_lottery` COMMENT = '抽奖';
+ALTER TABLE `cms_lottery_user` COMMENT = '抽奖用户';
+ALTER TABLE `cms_lottery_user_attribute` COMMENT = '抽奖用户扩展数据';
+ALTER TABLE `cms_vote` COMMENT = '投票';
+ALTER TABLE `cms_vote_item` COMMENT = '投票选项';
+ALTER TABLE `cms_vote_user` COMMENT = '投票用户';
+ALTER TABLE `cms_word` COMMENT = '搜索词';
+ALTER TABLE `sys_app` COMMENT = '应用';
+ALTER TABLE `sys_app_client` COMMENT = '应用客户端';
+ALTER TABLE `sys_app_token` COMMENT = '应用授权';
+ALTER TABLE `sys_extend` COMMENT = '扩展';
+ALTER TABLE `sys_extend_field` COMMENT = '扩展字段';

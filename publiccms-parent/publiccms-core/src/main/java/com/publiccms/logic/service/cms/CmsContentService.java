@@ -1,5 +1,7 @@
 package com.publiccms.logic.service.cms;
 
+import static org.springframework.util.StringUtils.arrayToDelimitedString;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,9 +60,10 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler query(Integer siteId, String text, String tagId, Date startPublishDate, Date endPublishDate,
-            Integer pageIndex, Integer pageSize) {
-        return dao.query(siteId, text, tagId, startPublishDate, endPublishDate, pageIndex, pageSize);
+    public PageHandler query(Short siteId, String text, Long[] tagIds, Integer categoryId, String modelId, Date startPublishDate,
+            Date endPublishDate, Integer pageIndex, Integer pageSize) {
+        return dao.query(siteId, text, arrayToDelimitedString(tagIds, BLANK_SPACE), categoryId, modelId, startPublishDate,
+                endPublishDate, pageIndex, pageSize);
     }
 
     /**
@@ -77,17 +80,17 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return
      */
     @Transactional(readOnly = true)
-    public FacetPageHandler facetQuery(Integer siteId, String[] categoryIds, String[] modelIds, String[] userIds, String text,
-            String tagId, Date startPublishDate, Date endPublishDate, Integer pageIndex, Integer pageSize) {
-        return dao.facetQuery(siteId, categoryIds, modelIds, userIds, text, tagId, startPublishDate, endPublishDate, pageIndex,
-                pageSize);
+    public FacetPageHandler facetQuery(Short siteId, String[] categoryIds, String[] modelIds, String[] userIds, String text,
+            Long[] tagIds, Date startPublishDate, Date endPublishDate, Integer pageIndex, Integer pageSize) {
+        return dao.facetQuery(siteId, categoryIds, modelIds, userIds, text, arrayToDelimitedString(tagIds, BLANK_SPACE),
+                startPublishDate, endPublishDate, pageIndex, pageSize);
     }
 
     /**
      * @param siteId
      * @param ids
      */
-    public void index(int siteId, Serializable[] ids) {
+    public void index(short siteId, Serializable[] ids) {
         dao.index(siteId, ids);
     }
 
@@ -118,7 +121,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param siteId
      * @param ids
      */
-    public void refresh(int siteId, Serializable[] ids) {
+    public void refresh(short siteId, Serializable[] ids) {
         List<CmsContent> list = getEntitys(ids);
         Collections.reverse(list);
         for (CmsContent entity : list) {
@@ -138,7 +141,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param refresh
      * @return
      */
-    public List<CmsContent> check(int siteId, Long userId, Serializable[] ids, Boolean refresh) {
+    public List<CmsContent> check(short siteId, Long userId, Serializable[] ids, Boolean refresh) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
             if (null != entity && siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus()) {
@@ -163,7 +166,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param ids
      * @return
      */
-    public List<CmsContent> uncheck(int siteId, Long userId, Serializable[] ids) {
+    public List<CmsContent> uncheck(short siteId, Long userId, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
             if (null != entity && siteId == entity.getSiteId() && STATUS_NORMAL == entity.getStatus()) {
@@ -207,7 +210,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param categoryId
      * @return
      */
-    public CmsContent updateCategoryId(int siteId, Serializable id, int categoryId) {
+    public CmsContent updateCategoryId(short siteId, Serializable id, int categoryId) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setCategoryId(categoryId);
@@ -234,7 +237,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param sort
      * @return
      */
-    public CmsContent sort(Integer siteId, Long id, int sort) {
+    public CmsContent sort(Short siteId, Long id, int sort) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setSort(sort);
@@ -262,7 +265,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param categoryIds
      * @return
      */
-    public int deleteByCategoryIds(int siteId, Integer[] categoryIds) {
+    public int deleteByCategoryIds(short siteId, Integer[] categoryIds) {
         return dao.deleteByCategoryIds(siteId, categoryIds);
     }
 
@@ -272,7 +275,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public List<CmsContent> delete(int siteId, Serializable[] ids) {
+    public List<CmsContent> delete(short siteId, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && !entity.isDisabled()) {
@@ -315,7 +318,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public List<CmsContent> recycle(int siteId, Serializable[] ids) {
+    public List<CmsContent> recycle(short siteId, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && entity.isDisabled()) {
@@ -340,7 +343,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public List<CmsContent> realDelete(Integer siteId, Long[] ids) {
+    public List<CmsContent> realDelete(Short siteId, Long[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && entity.isDisabled()) {

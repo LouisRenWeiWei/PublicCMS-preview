@@ -32,7 +32,7 @@ public class LogOperateDao extends BaseDao<LogOperate> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, String channel, String operate, Long userId, Date startCreateDate,
+    public PageHandler getPage(Short siteId, String channel, String operate, Long userId, Date startCreateDate,
             Date endCreateDate, String content, String ip, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from LogOperate bean");
         if (CommonUtils.notEmpty(siteId)) {
@@ -71,7 +71,7 @@ public class LogOperateDao extends BaseDao<LogOperate> {
      * @param createDate
      * @return number of data deleted
      */
-    public int delete(Integer siteId, Date createDate) {
+    public int delete(Short siteId, Date createDate) {
         if (CommonUtils.notEmpty(siteId) || null != createDate) {
             QueryHandler queryHandler = getDeleteQueryHandler("from LogOperate bean");
             if (CommonUtils.notEmpty(siteId)) {

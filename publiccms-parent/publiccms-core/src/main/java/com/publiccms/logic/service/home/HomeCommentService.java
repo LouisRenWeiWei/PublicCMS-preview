@@ -33,7 +33,7 @@ public class HomeCommentService extends BaseService<HomeComment> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Long userId, String itemType, Long itemId, Boolean disabled, String orderType,
+    public PageHandler getPage(Short siteId, Long userId, String itemType, Long itemId, Boolean disabled, String orderType,
             Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, userId, itemType, itemId, disabled, orderType, pageIndex, pageSize);
     }

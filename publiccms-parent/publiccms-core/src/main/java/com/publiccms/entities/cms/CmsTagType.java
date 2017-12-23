@@ -29,7 +29,7 @@ public class CmsTagType implements java.io.Serializable {
     private Integer id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "名称", condition = true, like = true)
     private String name;
     @GeneratorColumn(title = "标签个数")
@@ -38,7 +38,7 @@ public class CmsTagType implements java.io.Serializable {
     public CmsTagType() {
     }
 
-    public CmsTagType(int siteId, String name, int count) {
+    public CmsTagType(short siteId, String name, int count) {
         this.siteId = siteId;
         this.name = name;
         this.count = count;
@@ -57,11 +57,11 @@ public class CmsTagType implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

@@ -44,9 +44,9 @@ public class ResourceInitializer implements WebApplicationInitializer, Base {
             String[] servletNames) {
         String filterName = Conventions.getVariableName(filter);
         FilterRegistration.Dynamic registration = servletContext.addFilter(filterName, filter);
-        if (registration == null) {
+        if (null == registration) {
             int counter = -1;
-            while (counter == -1 || registration == null) {
+            while (-1 == counter || null == registration) {
                 counter++;
                 registration = servletContext.addFilter(filterName + "#" + counter, filter);
                 Assert.isTrue(counter < 100, "Failed to register filter '" + filter + "'."

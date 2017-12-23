@@ -27,7 +27,7 @@ public class SysUserTokenDao extends BaseDao<SysUserToken> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, Long userId, String channel, String orderType, Integer pageIndex,
+    public PageHandler getPage(Short siteId, Long userId, String channel, String orderType, Integer pageIndex,
             Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysUserToken bean");
         if (CommonUtils.notEmpty(siteId)) {

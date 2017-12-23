@@ -65,7 +65,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
         }
     }
 
-    private String getChildIds(int siteId, Integer parentId) {
+    private String getChildIds(short siteId, Integer parentId) {
         StringBuilder childIds = new StringBuilder();
         @SuppressWarnings("unchecked")
         List<CmsCategory> list = (List<CmsCategory>) getPage(
@@ -95,7 +95,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
      * @param siteId
      * @param parentId
      */
-    public void generateChildIds(int siteId, Integer parentId) {
+    public void generateChildIds(short siteId, Integer parentId) {
         if (null != parentId) {
             updateChildIds(parentId, getChildIds(siteId, parentId));
             CmsCategory parent = getEntity(parentId);
@@ -109,7 +109,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
      * @param siteId
      * @param ids
      */
-    public void delete(int siteId, Integer[] ids) {
+    public void delete(short siteId, Integer[] ids) {
         for (CmsCategory entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && !entity.isDisabled()) {
                 @SuppressWarnings("unchecked")
@@ -164,7 +164,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
      * @param id
      * @param parentId
      */
-    public void updateParentId(int siteId, Serializable id, Integer parentId) {
+    public void updateParentId(short siteId, Serializable id, Integer parentId) {
         CmsCategory entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setParentId(parentId);

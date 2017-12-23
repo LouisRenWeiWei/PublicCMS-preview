@@ -24,14 +24,14 @@ public class SysSiteDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Integer id = handler.getInteger("id");
+        Short id = handler.getShort("id");
         if (CommonUtils.notEmpty(id)) {
             SysSite entity = service.getEntity(id);
             if (null != entity) {
                 handler.put("object", entity).render();
             }
         } else {
-            Integer[] ids = handler.getIntegerArray("ids");
+            Short[] ids = handler.getShortArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<SysSite> entityList = service.getEntitys(ids);
                 Map<String, SysSite> map = new LinkedHashMap<>();

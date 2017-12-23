@@ -33,7 +33,7 @@ public class HomeUserService extends BaseService<HomeUser> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Boolean disabled, String orderField, String orderType, Integer pageIndex,
+    public PageHandler getPage(Short siteId, Boolean disabled, String orderField, String orderType, Integer pageIndex,
             Integer pageSize) {
         return dao.getPage(siteId, disabled, orderField, orderType, pageIndex, pageSize);
     }

@@ -33,7 +33,7 @@ public class HomeGroup implements java.io.Serializable {
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
     @GeneratorColumn(title = "名称")
@@ -48,7 +48,7 @@ public class HomeGroup implements java.io.Serializable {
     public HomeGroup() {
     }
 
-    public HomeGroup(int siteId, long userId, String name, int users, Date createDate) {
+    public HomeGroup(short siteId, long userId, String name, int users, Date createDate) {
         this.siteId = siteId;
         this.userId = userId;
         this.name = name;
@@ -56,7 +56,7 @@ public class HomeGroup implements java.io.Serializable {
         this.createDate = createDate;
     }
 
-    public HomeGroup(int siteId, long userId, String name, String description, int users, Date createDate) {
+    public HomeGroup(short siteId, long userId, String name, String description, int users, Date createDate) {
         this.siteId = siteId;
         this.userId = userId;
         this.name = name;
@@ -78,11 +78,11 @@ public class HomeGroup implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

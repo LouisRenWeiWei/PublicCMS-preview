@@ -26,7 +26,7 @@ public class SysTaskDao extends BaseDao<SysTask> {
 	 * @param pageSize
 	 * @return results page
 	 */
-	public PageHandler getPage(Integer siteId, Integer status, Date beginUpdateDate, Integer pageIndex, Integer pageSize) {
+	public PageHandler getPage(Short siteId, Integer status, Date beginUpdateDate, Integer pageIndex, Integer pageSize) {
 		QueryHandler queryHandler = getQueryHandler("from SysTask bean");
 		if (CommonUtils.notEmpty(siteId)) {
 			queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);

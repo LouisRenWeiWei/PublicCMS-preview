@@ -7,7 +7,7 @@ public class CmsContentQuery implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
-    private Integer siteId;
+    private Short siteId;
     private Integer[] status;
     private Integer categoryId;
     private Integer[] categoryIds;
@@ -27,7 +27,7 @@ public class CmsContentQuery implements java.io.Serializable {
 
     }
 
-    public CmsContentQuery(Integer siteId, Integer[] status, Integer categoryId, Integer[] categoryIds, Boolean disabled,
+    public CmsContentQuery(Short siteId, Integer[] status, Integer categoryId, Integer[] categoryIds, Boolean disabled,
             String[] modelIds, Long parentId, Boolean emptyParent, Boolean onlyUrl, Boolean hasImages, Boolean hasFiles,
             String title, Long userId, Date startPublishDate, Date endPublishDate) {
         super();
@@ -51,7 +51,7 @@ public class CmsContentQuery implements java.io.Serializable {
     /**
      * @return the siteId
      */
-    public Integer getSiteId() {
+    public Short getSiteId() {
         return siteId;
     }
 
@@ -59,7 +59,7 @@ public class CmsContentQuery implements java.io.Serializable {
      * @param siteId
      *            the siteId to set
      */
-    public void setSiteId(Integer siteId) {
+    public void setSiteId(Short siteId) {
         this.siteId = siteId;
     }
 

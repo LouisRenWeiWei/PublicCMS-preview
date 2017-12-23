@@ -25,7 +25,7 @@ public class HomeDirectoryDao extends BaseDao<HomeDirectory> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, Long userId, Boolean disabled, String orderType, Integer pageIndex,
+    public PageHandler getPage(Short siteId, Long userId, Boolean disabled, String orderType, Integer pageIndex,
             Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from HomeDirectory bean");
         if (CommonUtils.notEmpty(siteId)) {

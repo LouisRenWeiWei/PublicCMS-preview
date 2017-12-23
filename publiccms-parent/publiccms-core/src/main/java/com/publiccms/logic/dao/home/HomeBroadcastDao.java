@@ -28,7 +28,7 @@ public class HomeBroadcastDao extends BaseDao<HomeBroadcast> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, Long userId, Boolean reposted, Long repostId, Boolean disabled, String orderField,
+    public PageHandler getPage(Short siteId, Long userId, Boolean reposted, Long repostId, Boolean disabled, String orderField,
             String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from HomeBroadcast bean");
         if (CommonUtils.notEmpty(siteId)) {

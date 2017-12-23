@@ -125,6 +125,13 @@ public interface RenderHandler {
      * @throws Exception
      */
     public Long[] getLongArray(String name) throws Exception;
+    /**
+     * @param name
+     * 
+     * @return long array value
+     * @throws Exception
+     */
+    public Short[] getShortArray(String name) throws Exception;
 
     /**
      * @param name

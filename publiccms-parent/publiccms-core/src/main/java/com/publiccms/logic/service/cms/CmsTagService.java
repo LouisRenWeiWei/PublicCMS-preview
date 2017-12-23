@@ -37,7 +37,7 @@ public class CmsTagService extends BaseService<CmsTag> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Integer typeId, String name, String orderField, String orderType,
+    public PageHandler getPage(Short siteId, Integer typeId, String name, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, typeId, name, orderField, orderType, pageIndex, pageSize);
     }
@@ -46,7 +46,7 @@ public class CmsTagService extends BaseService<CmsTag> {
      * @param siteId
      * @param ids
      */
-    public void delete(int siteId, Serializable[] ids) {
+    public void delete(short siteId, Serializable[] ids) {
         for (CmsTag entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId()) {
                 delete(entity.getId());
@@ -71,7 +71,7 @@ public class CmsTagService extends BaseService<CmsTag> {
      * @param entitys
      * @return
      */
-    public Long[] update(int siteId, List<CmsTag> entitys) {
+    public Long[] update(short siteId, List<CmsTag> entitys) {
         Set<Long> idList = new HashSet<>();
         if (CommonUtils.notEmpty(entitys)) {
             for (CmsTag entity : entitys) {

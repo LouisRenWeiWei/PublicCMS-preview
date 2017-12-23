@@ -14,25 +14,25 @@ public class SysAppClientId implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
-    private int siteId;
+    private short siteId;
     private String channel;
     private String uuid;
 
     public SysAppClientId() {
     }
 
-    public SysAppClientId(int siteId, String channel, String uuid) {
+    public SysAppClientId(short siteId, String channel, String uuid) {
         this.siteId = siteId;
         this.channel = channel;
         this.uuid = uuid;
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

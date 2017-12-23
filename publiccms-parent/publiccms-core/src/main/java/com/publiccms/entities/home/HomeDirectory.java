@@ -33,7 +33,7 @@ public class HomeDirectory implements java.io.Serializable {
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
     @GeneratorColumn(title = "标题")
@@ -52,7 +52,7 @@ public class HomeDirectory implements java.io.Serializable {
     public HomeDirectory() {
     }
 
-    public HomeDirectory(int siteId, long userId, String title, int files, boolean secret, Date createDate, boolean disabled) {
+    public HomeDirectory(short siteId, long userId, String title, int files, boolean secret, Date createDate, boolean disabled) {
         this.siteId = siteId;
         this.userId = userId;
         this.title = title;
@@ -62,7 +62,7 @@ public class HomeDirectory implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    public HomeDirectory(int siteId, long userId, String title, String cover, int files, boolean secret, Date createDate,
+    public HomeDirectory(short siteId, long userId, String title, String cover, int files, boolean secret, Date createDate,
             boolean disabled) {
         this.siteId = siteId;
         this.userId = userId;
@@ -87,11 +87,11 @@ public class HomeDirectory implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

@@ -51,16 +51,6 @@ public class MetadataComponent implements Cache, Base {
         return new CmsPlaceMetadata();
     }
 
-    /***
-     * 获取模板元数据**
-     *
-     * @param filePath
-     * @return template metadata
-     */
-    public CmsPageMetadata getTemplateMetadata(String filePath) {
-        return getTemplateMetadata(filePath, false);
-    }
-
     /**
      * 获取模板元数据
      *
@@ -68,17 +58,16 @@ public class MetadataComponent implements Cache, Base {
      * @param allowNullValue
      * @return template metadata
      */
-    public CmsPageMetadata getTemplateMetadata(String filePath, boolean allowNullValue) {
+    public CmsPageMetadata getTemplateMetadata(String filePath) {
         File file = new File(filePath);
         CmsPageMetadata pageMetadata = getTemplateMetadataMap(file.getParent()).get(file.getName());
-        if (null != pageMetadata) {
-            return pageMetadata;
+        if (null == pageMetadata) {
+            pageMetadata = new CmsPageMetadata();
+            if (!file.exists()) {
+                pageMetadata.setUseDynamic(true);
+            }
         }
-        if (allowNullValue) {
-            return null;
-        } else {
-            return new CmsPageMetadata();
-        }
+        return pageMetadata;
     }
 
     /**

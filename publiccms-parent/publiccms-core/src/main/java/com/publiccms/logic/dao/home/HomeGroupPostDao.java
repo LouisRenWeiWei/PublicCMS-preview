@@ -27,7 +27,7 @@ public class HomeGroupPostDao extends BaseDao<HomeGroupPost> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, Long groupId, Long userId, Boolean disabled, String orderField, String orderType,
+    public PageHandler getPage(Short siteId, Long groupId, Long userId, Boolean disabled, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from HomeGroupPost bean");
         if (CommonUtils.notEmpty(siteId)) {

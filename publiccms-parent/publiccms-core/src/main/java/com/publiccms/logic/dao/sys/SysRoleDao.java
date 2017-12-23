@@ -22,7 +22,7 @@ public class SysRoleDao extends BaseDao<SysRole> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysRole bean");
         if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);

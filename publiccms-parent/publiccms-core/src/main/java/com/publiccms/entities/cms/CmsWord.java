@@ -36,7 +36,7 @@ public class CmsWord implements java.io.Serializable {
     private String name;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "搜索次数", order = true)
     private int searchCount;
     @GeneratorColumn(title = "隐藏", condition = true)
@@ -47,7 +47,7 @@ public class CmsWord implements java.io.Serializable {
     public CmsWord() {
     }
 
-    public CmsWord(String name, int siteId, int searchCount, boolean hidden, Date createDate) {
+    public CmsWord(String name, short siteId, int searchCount, boolean hidden, Date createDate) {
         this.name = name;
         this.siteId = siteId;
         this.searchCount = searchCount;
@@ -77,11 +77,11 @@ public class CmsWord implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

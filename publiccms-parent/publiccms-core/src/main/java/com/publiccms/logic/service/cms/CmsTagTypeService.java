@@ -32,7 +32,7 @@ public class CmsTagTypeService extends BaseService<CmsTagType> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, String name, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, String name, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, name, pageIndex, pageSize);
     }
 
@@ -40,7 +40,7 @@ public class CmsTagTypeService extends BaseService<CmsTagType> {
      * @param siteId
      * @param ids
      */
-    public void delete(int siteId, Serializable[] ids) {
+    public void delete(short siteId, Serializable[] ids) {
         for (CmsTagType entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId()) {
                 delete(entity.getId());
@@ -53,7 +53,7 @@ public class CmsTagTypeService extends BaseService<CmsTagType> {
      * @param entitys
      * @return
      */
-    public Integer[] update(int siteId, List<CmsTagType> entitys) {
+    public Integer[] update(short siteId, List<CmsTagType> entitys) {
         Set<Integer> idList = new HashSet<>();
         if (CommonUtils.notEmpty(entitys)) {
             for (CmsTagType entity : entitys) {

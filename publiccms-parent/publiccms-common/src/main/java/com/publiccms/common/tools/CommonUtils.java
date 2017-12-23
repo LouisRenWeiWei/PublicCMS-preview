@@ -80,6 +80,22 @@ public class CommonUtils {
      * @param var
      * @return 是否非空
      */
+    public static boolean notEmpty(Short var) {
+        return null != var && 0 != var;
+    }
+
+    /**
+     * @param var
+     * @return 是否为空
+     */
+    public static boolean empty(Short var) {
+        return null == var || 0 == var;
+    }
+
+    /**
+     * @param var
+     * @return 是否非空
+     */
     public static boolean notEmpty(List<?> var) {
         return null != var && !var.isEmpty();
     }

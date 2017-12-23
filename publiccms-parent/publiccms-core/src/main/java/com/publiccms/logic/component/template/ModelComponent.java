@@ -29,7 +29,7 @@ import com.publiccms.views.pojo.entities.CmsModel;
 @Component
 public class ModelComponent implements SiteCache, Base {
 
-    private CacheEntity<Integer, Map<String, CmsModel>> modelCache;
+    private CacheEntity<Short, Map<String, CmsModel>> modelCache;
     /**
      *
      */
@@ -113,7 +113,7 @@ public class ModelComponent implements SiteCache, Base {
     }
 
     @Override
-    public void clear(int siteId) {
+    public void clear(short siteId) {
         modelCache.remove(siteId);
     }
 

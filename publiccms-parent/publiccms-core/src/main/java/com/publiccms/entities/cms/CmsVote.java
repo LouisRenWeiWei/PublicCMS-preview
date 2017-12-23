@@ -34,7 +34,7 @@ public class CmsVote implements java.io.Serializable {
     private Integer id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "开始日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startDate;
@@ -63,7 +63,7 @@ public class CmsVote implements java.io.Serializable {
     public CmsVote() {
     }
 
-    public CmsVote(int siteId, Date startDate, Date endDate, int intervalHour, int maxVote, boolean anonymous, int userCounts,
+    public CmsVote(short siteId, Date startDate, Date endDate, int intervalHour, int maxVote, boolean anonymous, int userCounts,
             String url, String title, boolean disabled, int itemExtendId) {
         this.siteId = siteId;
         this.startDate = startDate;
@@ -78,7 +78,7 @@ public class CmsVote implements java.io.Serializable {
         this.itemExtendId = itemExtendId;
     }
 
-    public CmsVote(int siteId, Date startDate, Date endDate, int intervalHour, int maxVote, boolean anonymous, int userCounts,
+    public CmsVote(short siteId, Date startDate, Date endDate, int intervalHour, int maxVote, boolean anonymous, int userCounts,
             String url, String title, String description, boolean disabled, int itemExtendId) {
         this.siteId = siteId;
         this.startDate = startDate;
@@ -107,11 +107,11 @@ public class CmsVote implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

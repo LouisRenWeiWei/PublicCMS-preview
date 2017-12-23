@@ -32,7 +32,7 @@ public class SysDeptService extends BaseService<SysDept> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Integer parentId, Long userId, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, Integer parentId, Long userId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, parentId, userId, pageIndex, pageSize);
     }
 
@@ -41,7 +41,7 @@ public class SysDeptService extends BaseService<SysDept> {
      * @param id
      * @return
      */
-    public List<Integer> delete(int siteId, Integer id) {
+    public List<Integer> delete(short siteId, Integer id) {
         SysDept entity = getEntity(id);
         List<Integer> idList = new ArrayList<>();
         if (null != entity && siteId == entity.getSiteId()) {

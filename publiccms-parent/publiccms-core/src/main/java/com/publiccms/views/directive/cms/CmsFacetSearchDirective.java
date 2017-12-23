@@ -27,19 +27,15 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         String word = handler.getString("word");
-        String tagId = handler.getString("tagId");
-        if (CommonUtils.notEmpty(word) || CommonUtils.notEmpty(tagId)) {
+        Long[] tagIds = handler.getLongArray("tagId");
+        if (CommonUtils.notEmpty(word) || CommonUtils.notEmpty(tagIds)) {
             SysSite site = getSite(handler);
             if (CommonUtils.notEmpty(word)) {
                 statisticsComponent.search(site.getId(), word);
             }
-            String[] tagIds = handler.getStringArray("tagId");
             if (CommonUtils.notEmpty(tagIds)) {
-                for (String id : tagIds) {
-                    try {
-                        statisticsComponent.searchTag(Long.parseLong(id));
-                    } catch (NumberFormatException e) {
-                    }
+                for (Long tagId : tagIds) {
+                    statisticsComponent.searchTag(tagId);
                 }
             }
             PageHandler page;
@@ -47,7 +43,7 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
             Integer count = handler.getInteger("count", 30);
             try {
                 page = service.facetQuery(site.getId(), handler.getStringArray("categoryId"), handler.getStringArray("modelId"),
-                        handler.getStringArray("userId"), word, tagId, handler.getDate("startPublishDate"),
+                        handler.getStringArray("userId"), word, tagIds, handler.getDate("startPublishDate"),
                         handler.getDate("endPublishDate", CommonUtils.getDate()), pageIndex, count);
             } catch (Exception e) {
                 page = new FacetPageHandler(pageIndex, count, 0, null);

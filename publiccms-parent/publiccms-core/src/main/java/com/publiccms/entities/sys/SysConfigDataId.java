@@ -19,24 +19,24 @@ public class SysConfigDataId implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "编码", condition = true)
     private String code;
 
     public SysConfigDataId() {
     }
 
-    public SysConfigDataId(int siteId, String code) {
+    public SysConfigDataId(short siteId, String code) {
         this.siteId = siteId;
         this.code = code;
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

@@ -35,7 +35,7 @@ public class SysUserDao extends BaseDao<SysUser> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, Integer deptId, Date startRegisteredDate, Date endRegisteredDate,
+    public PageHandler getPage(Short siteId, Integer deptId, Date startRegisteredDate, Date endRegisteredDate,
             Date startLastLoginDate, Date endLastLoginDate, Boolean superuserAccess, Boolean emailChecked, Boolean disabled,
             String name, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysUser bean");
@@ -100,7 +100,7 @@ public class SysUserDao extends BaseDao<SysUser> {
      * @param name
      * @return entity
      */
-    public SysUser findByName(int siteId, String name) {
+    public SysUser findByName(short siteId, String name) {
         QueryHandler queryHandler = getQueryHandler("from SysUser bean");
         queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         queryHandler.condition("bean.name = :name").setParameter("name", name);
@@ -112,7 +112,7 @@ public class SysUserDao extends BaseDao<SysUser> {
      * @param nickname
      * @return entity
      */
-    public SysUser findByNickName(int siteId, String nickname) {
+    public SysUser findByNickName(short siteId, String nickname) {
         QueryHandler queryHandler = getQueryHandler("from SysUser bean");
         queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         queryHandler.condition("bean.nickName = :nickname").setParameter("nickname", nickname);
@@ -124,7 +124,7 @@ public class SysUserDao extends BaseDao<SysUser> {
      * @param email
      * @return entity
      */
-    public SysUser findByEmail(int siteId, String email) {
+    public SysUser findByEmail(short siteId, String email) {
         QueryHandler queryHandler = getQueryHandler("from SysUser bean");
         queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         queryHandler.condition("bean.email = :email and bean.emailChecked = :emailChecked").setParameter("email", email)

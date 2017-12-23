@@ -30,7 +30,7 @@ public class QQOauthComponent extends AbstractOauth {
      * E5%8F%96access_token
      */
     @Override
-    public String getAuthorizeUrl(int siteId, String state, boolean mobile) {
+    public String getAuthorizeUrl(short siteId, String state, boolean mobile) {
         OauthConfig config = getConfig(siteId);
         if (null != config) {
             StringBuilder sb = new StringBuilder("https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=");
@@ -45,7 +45,7 @@ public class QQOauthComponent extends AbstractOauth {
     }
 
     @Override
-    public OauthAccess getAccessToken(int siteId, String code) throws ClientProtocolException, IOException {
+    public OauthAccess getAccessToken(short siteId, String code) throws ClientProtocolException, IOException {
         OauthConfig config = getConfig(siteId);
         if (CommonUtils.notEmpty(code) && null != config) {
             StringBuilder sb = new StringBuilder("https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&code=");
@@ -69,7 +69,7 @@ public class QQOauthComponent extends AbstractOauth {
      * side
      */
     @Override
-    public OauthAccess getOpenId(int siteId, OauthAccess oauthInfo) throws ClientProtocolException, IOException {
+    public OauthAccess getOpenId(short siteId, OauthAccess oauthInfo) throws ClientProtocolException, IOException {
         if (null != oauthInfo) {
             StringBuilder sb = new StringBuilder("https://graph.qq.com/oauth2.0/me?");
             sb.append("access_token=" + oauthInfo.getAccessToken());
@@ -89,7 +89,7 @@ public class QQOauthComponent extends AbstractOauth {
      * http://wiki.connect.qq.com/get_user_info
      */
     @Override
-    public OauthUser getUserInfo(int siteId, OauthAccess oauthAccess) throws ClientProtocolException, IOException {
+    public OauthUser getUserInfo(short siteId, OauthAccess oauthAccess) throws ClientProtocolException, IOException {
         OauthConfig config = getConfig(siteId);
         if (null != oauthAccess && null != config) {
             StringBuilder sb = new StringBuilder("https://graph.qq.com/user/get_user_info?access_token=");

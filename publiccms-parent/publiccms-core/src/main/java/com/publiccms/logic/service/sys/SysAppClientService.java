@@ -41,7 +41,7 @@ public class SysAppClientService extends BaseService<SysAppClient> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, String channel, Long userId, Boolean allowPush, Date startLastLoginDate,
+    public PageHandler getPage(Short siteId, String channel, Long userId, Boolean allowPush, Date startLastLoginDate,
             Date endLastLoginDate, Date startCreateDate, Date endCreateDate, Boolean disabled, String orderField,
             String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, channel, userId, allowPush, startLastLoginDate, endLastLoginDate, startCreateDate,

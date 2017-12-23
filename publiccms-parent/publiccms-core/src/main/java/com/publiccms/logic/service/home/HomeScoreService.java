@@ -31,7 +31,7 @@ public class HomeScoreService extends BaseService<HomeScore> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Long userId, String itemType, Long itemId, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, Long userId, String itemType, Long itemId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, userId, itemType, itemId, pageIndex, pageSize);
     }
 

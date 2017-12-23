@@ -32,7 +32,7 @@ public class LogLogin implements java.io.Serializable {
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "用户名", condition = true, like = true)
     private String name;
     @GeneratorColumn(title = "用户", condition = true)
@@ -51,7 +51,7 @@ public class LogLogin implements java.io.Serializable {
     public LogLogin() {
     }
 
-    public LogLogin(int siteId, String name, String ip, String channel, boolean result, Date createDate) {
+    public LogLogin(short siteId, String name, String ip, String channel, boolean result, Date createDate) {
         this.siteId = siteId;
         this.name = name;
         this.ip = ip;
@@ -60,7 +60,7 @@ public class LogLogin implements java.io.Serializable {
         this.createDate = createDate;
     }
 
-    public LogLogin(int siteId, String name, Long userId, String ip, String channel, boolean result, Date createDate,
+    public LogLogin(short siteId, String name, Long userId, String ip, String channel, boolean result, Date createDate,
             String errorPassword) {
         this.siteId = siteId;
         this.name = name;
@@ -85,11 +85,11 @@ public class LogLogin implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

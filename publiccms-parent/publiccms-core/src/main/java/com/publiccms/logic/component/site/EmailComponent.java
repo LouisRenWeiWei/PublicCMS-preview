@@ -83,7 +83,7 @@ public class EmailComponent implements SiteCache, Config, Base {
     @Autowired
     private ConfigComponent configComponent;
 
-    private CacheEntity<Integer, JavaMailSenderImpl> cache;
+    private CacheEntity<Short, JavaMailSenderImpl> cache;
 
     private static ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
@@ -92,7 +92,7 @@ public class EmailComponent implements SiteCache, Config, Base {
      * @param config
      * @return mail sender
      */
-    public JavaMailSender getMailSender(int siteId, Map<String, String> config) {
+    public synchronized JavaMailSender getMailSender(short siteId, Map<String, String> config) {
         JavaMailSenderImpl javaMailSender = cache.get(siteId);
         if (null == javaMailSender) {
             javaMailSender = new JavaMailSenderImpl();
@@ -118,7 +118,7 @@ public class EmailComponent implements SiteCache, Config, Base {
      * @return whether to send successfully
      * @throws MessagingException
      */
-    public boolean send(int siteId, String toAddress, String title, String content) throws MessagingException {
+    public boolean send(short siteId, String toAddress, String title, String content) throws MessagingException {
         return send(siteId, toAddress, title, content, false);
     }
 
@@ -130,7 +130,7 @@ public class EmailComponent implements SiteCache, Config, Base {
      * @return
      * @throws MessagingException
      */
-    public boolean sendHtml(int siteId, String toAddress, String title, String html) throws MessagingException {
+    public boolean sendHtml(short siteId, String toAddress, String title, String html) throws MessagingException {
         return send(siteId, toAddress, title, html, true);
     }
 
@@ -143,7 +143,7 @@ public class EmailComponent implements SiteCache, Config, Base {
      * @return whether to send successfully
      * @throws MessagingException
      */
-    private boolean send(int siteId, String toAddress, String title, String content, boolean isHtml) throws MessagingException {
+    private boolean send(short siteId, String toAddress, String title, String content, boolean isHtml) throws MessagingException {
         Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
         if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_FROMADDRESS))) {
             JavaMailSender mailSender = getMailSender(siteId, config);
@@ -194,7 +194,7 @@ public class EmailComponent implements SiteCache, Config, Base {
     }
 
     @Override
-    public void clear(int siteId) {
+    public void clear(short siteId) {
         cache.remove(siteId);
     }
 

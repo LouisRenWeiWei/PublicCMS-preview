@@ -31,7 +31,7 @@ public class CmsVoteDao extends BaseDao<CmsVote> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer siteId, Date startStartDate, Date endStartDate, 
+    public PageHandler getPage(Short siteId, Date startStartDate, Date endStartDate, 
                 Date startEndDate, Date endEndDate, Boolean disabled, 
                 String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsVote bean");

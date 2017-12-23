@@ -40,7 +40,7 @@ public class CmsWordService extends BaseService<CmsWord> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Boolean hidden, Date startCreateDate, Date endCreateDate, String name,
+    public PageHandler getPage(Short siteId, Boolean hidden, Date startCreateDate, Date endCreateDate, String name,
             String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, hidden, startCreateDate, endCreateDate, name, orderField, orderType, pageIndex, pageSize);
     }
@@ -62,7 +62,7 @@ public class CmsWordService extends BaseService<CmsWord> {
      * @param name
      * @return
      */
-    public CmsWord getEntity(int siteId, String name) {
+    public CmsWord getEntity(short siteId, String name) {
         return dao.getEntity(siteId, name);
     }
 

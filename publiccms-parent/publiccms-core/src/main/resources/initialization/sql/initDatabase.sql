@@ -6,7 +6,7 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `cms_category`;
 CREATE TABLE `cms_category` (
   `id` int(11) NOT NULL auto_increment,
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `parent_id` int(11) default NULL COMMENT '父分类ID',
   `type_id` int(11) default NULL COMMENT '分类类型',
@@ -67,13 +67,13 @@ CREATE TABLE `cms_category_model` (
 DROP TABLE IF EXISTS `cms_category_type`;
 CREATE TABLE `cms_category_type` (
   `id` int(11) NOT NULL auto_increment,
-  `siteId` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `sort` int(11) NOT NULL COMMENT '排序',
   `extend_id` int(11) default NULL COMMENT '扩展ID',
   PRIMARY KEY  (`id`),
-  KEY `siteId` (`siteId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  KEY `site_id` (`site_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='分类类型';
 
 -- ----------------------------
 -- Table structure for cms_content
@@ -81,7 +81,7 @@ CREATE TABLE `cms_category_type` (
 DROP TABLE IF EXISTS `cms_content`;
 CREATE TABLE `cms_content` (
   `id` bigint(20) NOT NULL auto_increment,
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `title` varchar(255) NOT NULL COMMENT '标题',
   `user_id` bigint(20) NOT NULL COMMENT '发表用户',
   `check_user_id` bigint(20) default NULL COMMENT '审核用户',
@@ -201,7 +201,7 @@ CREATE TABLE `cms_dictionary_data` (
 DROP TABLE IF EXISTS `cms_lottery`;
 CREATE TABLE `cms_lottery` (
   `id` int(11) NOT NULL auto_increment,
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `start_date` datetime NOT NULL COMMENT '开始日期',
   `end_date` datetime NOT NULL COMMENT '结束日期',
   `interval_hour` int(11) NOT NULL COMMENT '抽奖间隔小时',
@@ -218,7 +218,7 @@ CREATE TABLE `cms_lottery` (
   `extend_id` int(11) default NULL COMMENT '扩展ID',
   PRIMARY KEY  (`id`),
   KEY `start_date` (`site_id`,`start_date`,`end_date`,`disabled`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='抽奖';
 
 -- ----------------------------
 -- Table structure for cms_lottery_user
@@ -235,7 +235,7 @@ CREATE TABLE `cms_lottery_user` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY  (`id`),
   KEY `lottery_id` (`lottery_id`,`user_id`,`winning`,`confirmed`,`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='抽奖用户';
 
 -- ----------------------------
 -- Table structure for cms_lottery_user_attribute
@@ -245,7 +245,7 @@ CREATE TABLE `cms_lottery_user_attribute` (
   `lottery_user_id` bigint(20) NOT NULL COMMENT '抽奖用户ID',
   `data` longtext COMMENT '数据JSON',
   PRIMARY KEY  (`lottery_user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='抽奖用户扩展';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='抽奖用户扩展数据';
 
 -- ----------------------------
 -- Table structure for cms_place
@@ -253,11 +253,11 @@ CREATE TABLE `cms_lottery_user_attribute` (
 DROP TABLE IF EXISTS `cms_place`;
 CREATE TABLE `cms_place` (
   `id` bigint(20) NOT NULL auto_increment,
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id`site_id` smallint(6)L COMMENT '站点ID',
   `path` varchar(255) NOT NULL COMMENT '模板路径',
   `user_id` bigint(20) default NULL COMMENT '提交用户',
   `item_type` varchar(50) default NULL COMMENT '推荐项目类型',
-  `item_id` int(11) default NULL COMMENT '推荐项目ID',
+  `item_id` bigint(20) default NULL COMMENT '推荐项目ID',
   `title` varchar(255) NOT NULL COMMENT '标题',
   `url` varchar(2048) default NULL COMMENT '超链接',
   `cover` varchar(255) default NULL COMMENT '封面图',
@@ -295,7 +295,7 @@ CREATE TABLE `cms_place_attribute` (
 DROP TABLE IF EXISTS `cms_tag`;
 CREATE TABLE `cms_tag` (
   `id` bigint(20) NOT NULL auto_increment,
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `type_id` int(11) default NULL COMMENT '分类ID',
   `search_count` int(11) NOT NULL COMMENT '搜索次数',
@@ -309,7 +309,7 @@ CREATE TABLE `cms_tag` (
 DROP TABLE IF EXISTS `cms_tag_type`;
 CREATE TABLE `cms_tag_type` (
   `id` int(11) NOT NULL auto_increment,
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `count` int(11) NOT NULL COMMENT '标签数',
   PRIMARY KEY  (`id`),
@@ -322,7 +322,7 @@ CREATE TABLE `cms_tag_type` (
 DROP TABLE IF EXISTS `cms_vote`;
 CREATE TABLE `cms_vote` (
   `id` int(11) NOT NULL auto_increment,
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `start_date` datetime NOT NULL COMMENT '开始日期',
   `end_date` datetime NOT NULL COMMENT '结束日期',
   `interval_hour` int(11) NOT NULL COMMENT '投票间隔小时',
@@ -336,7 +336,7 @@ CREATE TABLE `cms_vote` (
   `item_extend_id` int(11) NOT NULL COMMENT '扩展ID',
   PRIMARY KEY  (`id`),
   KEY `disabled` (`site_id`,`start_date`,`end_date`,`disabled`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='投票';
 
 -- ----------------------------
 -- Table structure for cms_vote_item
@@ -351,7 +351,7 @@ CREATE TABLE `cms_vote_item` (
   `sort` int(11) NOT NULL COMMENT '顺序',
   PRIMARY KEY  (`id`),
   KEY `vote_id` (`vote_id`,`scores`,`sort`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='投票选项';
 
 -- ----------------------------
 -- Table structure for cms_vote_item_attribute
@@ -376,7 +376,7 @@ CREATE TABLE `cms_vote_user` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY  (`id`),
   KEY `vote_id` (`vote_id`,`user_id`,`ip`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='投票用户';
 
 -- ----------------------------
 -- Table structure for cms_word
@@ -385,7 +385,7 @@ DROP TABLE IF EXISTS `cms_word`;
 CREATE TABLE `cms_word` (
   `id` bigint(20) NOT NULL auto_increment,
   `name` varchar(255) NOT NULL COMMENT '名称',
-  `site_id` int(11) NOT NULL COMMENT '站点',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `search_count` int(11) NOT NULL COMMENT '搜索次数',
   `hidden` tinyint(1) NOT NULL COMMENT '隐藏',
   `create_date` datetime NOT NULL COMMENT '创建日期',
@@ -394,7 +394,7 @@ CREATE TABLE `cms_word` (
   KEY `hidden` (`hidden`),
   KEY `create_date` (`create_date`),
   KEY `search_count` (`search_count`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='搜索词';
 
 -- ----------------------------
 -- Table structure for home_active
@@ -416,7 +416,7 @@ CREATE TABLE `home_active` (
 DROP TABLE IF EXISTS `home_article`;
 CREATE TABLE `home_article` (
   `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `directory_id` bigint(20) default NULL COMMENT '目录ID',
   `title` varchar(255) NOT NULL COMMENT '标题',
   `user_id` bigint(20) NOT NULL COMMENT '发布用户',
@@ -460,7 +460,7 @@ CREATE TABLE `home_attention` (
 DROP TABLE IF EXISTS `home_broadcast`;
 CREATE TABLE `home_broadcast` (
   `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `scores` int(11) NOT NULL COMMENT '分数',
   `reposts` int(11) NOT NULL COMMENT '转发数',
@@ -481,7 +481,7 @@ CREATE TABLE `home_broadcast` (
 DROP TABLE IF EXISTS `home_comment`;
 CREATE TABLE `home_comment` (
   `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `item_type` varchar(20) NOT NULL COMMENT '项目类型',
   `item_id` bigint(20) NOT NULL COMMENT '项目ID',
@@ -508,7 +508,7 @@ CREATE TABLE `home_comment_content` (
 DROP TABLE IF EXISTS `home_directory`;
 CREATE TABLE `home_directory` (
   `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `user_id` bigint(20) NOT NULL COMMENT '发布用户',
   `title` varchar(255) NOT NULL COMMENT '标题',
   `cover` varchar(255) default NULL COMMENT '封面图',
@@ -526,7 +526,7 @@ CREATE TABLE `home_directory` (
 DROP TABLE IF EXISTS `home_file`;
 CREATE TABLE `home_file` (
   `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `user_id` bigint(20) NOT NULL COMMENT '发布用户',
   `directory_id` bigint(20) default NULL COMMENT '目录',
   `title` varchar(255) NOT NULL COMMENT '标题',
@@ -574,7 +574,7 @@ CREATE TABLE `home_friend_apply` (
 DROP TABLE IF EXISTS `home_group`;
 CREATE TABLE `home_group` (
   `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `name` varchar(255) NOT NULL,
   `description` varchar(300) default NULL,
@@ -604,7 +604,7 @@ CREATE TABLE `home_group_apply` (
 DROP TABLE IF EXISTS `home_group_post`;
 CREATE TABLE `home_group_post` (
   `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `group_id` bigint(20) default NULL COMMENT '群组ID',
   `title` varchar(255) NOT NULL COMMENT '标题',
   `user_id` bigint(20) NOT NULL COMMENT '发布用户',
@@ -647,7 +647,7 @@ CREATE TABLE `home_group_user` (
 DROP TABLE IF EXISTS `home_score`;
 CREATE TABLE `home_score` (
   `id` bigint(20) NOT NULL auto_increment,
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `item_type` varchar(20) NOT NULL COMMENT '项目类型',
   `item_id` bigint(20) NOT NULL COMMENT '项目ID',
@@ -664,7 +664,7 @@ CREATE TABLE `home_score` (
 DROP TABLE IF EXISTS `home_user`;
 CREATE TABLE `home_user` (
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `title` varchar(255) default NULL COMMENT '标题',
   `signature` varchar(300) default NULL,
   `friends` int(11) NOT NULL COMMENT '好友数',
@@ -691,7 +691,7 @@ CREATE TABLE `home_user` (
 DROP TABLE IF EXISTS `log_login`;
 CREATE TABLE `log_login` (
   `id` bigint(20) NOT NULL auto_increment,
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `name` varchar(50) NOT NULL COMMENT '用户名',
   `user_id` bigint(20) default NULL COMMENT '用户ID',
   `ip` varchar(64) NOT NULL COMMENT 'IP',
@@ -714,7 +714,7 @@ CREATE TABLE `log_login` (
 DROP TABLE IF EXISTS `log_operate`;
 CREATE TABLE `log_operate` (
   `id` bigint(20) NOT NULL auto_increment,
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `user_id` bigint(20) default NULL COMMENT '用户ID',
   `channel` varchar(50) NOT NULL COMMENT '操作渠道',
   `operate` varchar(40) NOT NULL COMMENT '操作',
@@ -736,7 +736,7 @@ CREATE TABLE `log_operate` (
 DROP TABLE IF EXISTS `log_task`;
 CREATE TABLE `log_task` (
   `id` bigint(20) NOT NULL auto_increment,
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `task_id` int(11) NOT NULL COMMENT '任务',
   `begintime` datetime NOT NULL COMMENT '开始时间',
   `endtime` datetime default NULL COMMENT '结束时间',
@@ -755,7 +755,7 @@ CREATE TABLE `log_task` (
 DROP TABLE IF EXISTS `log_upload`;
 CREATE TABLE `log_upload` (
   `id` bigint(20) NOT NULL auto_increment,
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `channel` varchar(50) NOT NULL COMMENT '操作渠道',
   `image` tinyint(1) NOT NULL COMMENT '图片',
@@ -779,7 +779,7 @@ CREATE TABLE `log_upload` (
 DROP TABLE IF EXISTS `sys_app`;
 CREATE TABLE `sys_app` (
   `id` int(11) NOT NULL auto_increment,
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `channel` varchar(50) NOT NULL COMMENT '渠道',
   `app_key` varchar(50) NOT NULL COMMENT 'APP key',
   `app_secret` varchar(50) NOT NULL COMMENT 'APP secret',
@@ -787,14 +787,14 @@ CREATE TABLE `sys_app` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `key` (`app_key`),
   KEY `site_id` (`site_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='应用';
 
 -- ----------------------------
 -- Table structure for sys_app_client
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_app_client`;
 CREATE TABLE `sys_app_client` (
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `channel` varchar(20) NOT NULL COMMENT '渠道',
   `uuid` varchar(50) NOT NULL COMMENT '唯一标识',
   `user_id` bigint(20) default NULL COMMENT '绑定用户',
@@ -805,7 +805,7 @@ CREATE TABLE `sys_app_client` (
   `disabled` tinyint(1) NOT NULL COMMENT '是否禁用',
   PRIMARY KEY  (`site_id`,`channel`,`uuid`),
   KEY `user_id` (`user_id`,`disabled`,`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='应用客户端';
 
 -- ----------------------------
 -- Table structure for sys_app_token
@@ -818,7 +818,7 @@ CREATE TABLE `sys_app_token` (
   PRIMARY KEY  (`auth_token`),
   KEY `app_id` (`app_id`),
   KEY `create_date` (`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='应用授权';
 
 -- ----------------------------
 -- Table structure for sys_cluster
@@ -839,7 +839,7 @@ CREATE TABLE `sys_cluster` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_config_data`;
 CREATE TABLE `sys_config_data` (
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `code` varchar(50) NOT NULL COMMENT '配置项编码',
   `data` longtext NOT NULL COMMENT '值',
   PRIMARY KEY  (`site_id`,`code`)
@@ -851,7 +851,7 @@ CREATE TABLE `sys_config_data` (
 DROP TABLE IF EXISTS `sys_dept`;
 CREATE TABLE `sys_dept` (
   `id` int(11) NOT NULL auto_increment,
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `parent_id` int(11) default NULL COMMENT '父部门ID',
   `description` varchar(300) default NULL COMMENT '描述',
@@ -895,7 +895,7 @@ CREATE TABLE `sys_dept_page` (
 DROP TABLE IF EXISTS `sys_domain`;
 CREATE TABLE `sys_domain` (
   `name` varchar(255) NOT NULL COMMENT '域名',
-  `site_id` int(11) NOT NULL COMMENT '站点',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `wild` tinyint(1) NOT NULL COMMENT '通配域名',
   `path` varchar(255) default NULL COMMENT '路径',
   PRIMARY KEY  (`name`),
@@ -933,7 +933,7 @@ CREATE TABLE `sys_extend` (
   `item_type` varchar(20) NOT NULL COMMENT '扩展类型',
   `item_id` int(11) NOT NULL COMMENT '扩展项目ID',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='扩展';
 
 -- ----------------------------
 -- Table structure for sys_extend_field
@@ -953,7 +953,7 @@ CREATE TABLE `sys_extend_field` (
   `sort` int(11) NOT NULL default '0' COMMENT '顺序',
   PRIMARY KEY  (`extend_id`,`code`),
   KEY `sort` (`sort`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='扩展';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='扩展字段';
 
 -- ----------------------------
 -- Table structure for sys_moudle
@@ -1134,7 +1134,7 @@ INSERT INTO `sys_moudle` VALUES ('154', '投票用户', 'cmsVoteUser/list', 'sys
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
   `id` int(11) NOT NULL auto_increment,
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `owns_all_right` tinyint(1) NOT NULL COMMENT '拥有全部权限',
   `show_all_moudle` tinyint(1) NOT NULL COMMENT '显示全部模块',
@@ -1220,7 +1220,7 @@ INSERT INTO `sys_site` VALUES ('2', '演示站点1', '0', '//site2.dev.publiccms
 DROP TABLE IF EXISTS `sys_task`;
 CREATE TABLE `sys_task` (
   `id` int(11) NOT NULL auto_increment,
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `status` int(11) NOT NULL COMMENT '状态',
   `cron_expression` varchar(50) NOT NULL COMMENT '表达式',
@@ -1249,7 +1249,7 @@ INSERT INTO `sys_task` VALUES ('7', '1', '重新生成全站', '0', '0 0 1 1 ? 2
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
   `id` bigint(20) NOT NULL auto_increment,
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `name` varchar(50) NOT NULL COMMENT '用户名',
   `password` varchar(32) NOT NULL COMMENT '密码',
   `nick_name` varchar(45) NOT NULL COMMENT '昵称',
@@ -1286,7 +1286,7 @@ INSERT INTO `sys_user` VALUES ('2', '2', 'admin', '21232f297a57a5a743894a0e4a801
 DROP TABLE IF EXISTS `sys_user_token`;
 CREATE TABLE `sys_user_token` (
   `auth_token` varchar(40) NOT NULL COMMENT '登录授权',
-  `site_id` int(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `channel` varchar(50) NOT NULL COMMENT '渠道',
   `create_date` datetime NOT NULL COMMENT '创建日期',

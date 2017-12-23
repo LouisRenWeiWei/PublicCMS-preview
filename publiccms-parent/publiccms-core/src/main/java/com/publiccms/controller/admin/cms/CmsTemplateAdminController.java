@@ -116,6 +116,11 @@ public class CmsTemplateAdminController extends AbstractController {
                 SysSite site = getSite(request);
                 path = path + SEPARATOR + file.getOriginalFilename();
                 fileComponent.upload(file, siteComponent.getWebTemplateFilePath(site, path));
+                CmsPageMetadata metadata = new CmsPageMetadata();
+                metadata.setUseDynamic(true);
+                metadataComponent.updateTemplateMetadata(path, metadata);
+                templateComponent.clearTemplateCache();
+                cacheComponent.clearViewCache();
                 logOperateService.save(
                         new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                 "upload.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));

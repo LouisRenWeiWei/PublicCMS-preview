@@ -33,7 +33,7 @@ public class SysUserTokenService extends BaseService<SysUserToken> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Long userId, String channel, String orderType, Integer pageIndex,
+    public PageHandler getPage(Short siteId, Long userId, String channel, String orderType, Integer pageIndex,
             Integer pageSize) {
         return dao.getPage(siteId, userId, channel, orderType, pageIndex, pageSize);
     }

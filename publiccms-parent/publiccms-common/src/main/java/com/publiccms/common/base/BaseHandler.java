@@ -1,6 +1,5 @@
 package com.publiccms.common.base;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -107,6 +106,13 @@ public abstract class BaseHandler implements RenderHandler {
      * 
      */
     public static final String PARAMETER_TYPE_INTEGERARRAY = "integerArray";
+    /**
+     * Short数组类型参数
+     * 
+     * Short array type parameter
+     * 
+     */
+    public static final String PARAMETER_TYPE_SHORTARRAY = "shortArray";
     /**
      * String数组类型参数
      * 
@@ -259,6 +265,28 @@ public abstract class BaseHandler implements RenderHandler {
         return null;
     }
 
+    @Override
+    public Short[] getShortArray(String name) throws Exception {
+        regristerParamter(PARAMETER_TYPE_SHORTARRAY, name);
+        String[] arr = getStringArrayWithoutRegrister(name);
+        if (CommonUtils.notEmpty(arr)) {
+            Set<Short> set = new TreeSet<>();
+            for (String s : arr) {
+                try {
+                    set.add(Short.valueOf(s));
+                } catch (NumberFormatException e) {
+                }
+            }
+            int i = 0;
+            Short[] ids = new Short[set.size()];
+            for (Short number : set) {
+                ids[i++] = number;
+            }
+            return ids;
+        }
+        return null;
+    }
+
     protected boolean getBooleanWithoutRegrister(String name, boolean defaultValue) {
         try {
             Boolean result = getBooleanWithoutRegrister(name);
@@ -282,13 +310,13 @@ public abstract class BaseHandler implements RenderHandler {
 
     @Override
     public Date getDate(String name) throws Exception {
-        regristerParamter(PARAMETER_TYPE_BOOLEAN, name);
+        regristerParamter(PARAMETER_TYPE_DATE, name);
         return getDateWithoutRegrister(name);
     }
 
     @Override
     public Date getDate(String name, Date defaultValue) throws Exception {
-        regristerParamter(PARAMETER_TYPE_BOOLEAN, name, defaultValue);
+        regristerParamter(PARAMETER_TYPE_DATE, name, defaultValue);
         try {
             Date result = getDateWithoutRegrister(name);
             return null != result ? result : defaultValue;

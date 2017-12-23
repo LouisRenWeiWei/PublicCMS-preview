@@ -30,7 +30,7 @@ public class SysApp implements java.io.Serializable {
     private Integer id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "渠道", condition = true)
     private String channel;
     @GeneratorColumn(title = "授权KEY")
@@ -43,14 +43,14 @@ public class SysApp implements java.io.Serializable {
     public SysApp() {
     }
 
-    public SysApp(int siteId, String channel, String appKey, String appSecret) {
+    public SysApp(short siteId, String channel, String appKey, String appSecret) {
         this.siteId = siteId;
         this.channel = channel;
         this.appKey = appKey;
         this.appSecret = appSecret;
     }
 
-    public SysApp(int siteId, String channel, String appKey, String appSecret, String authorizedApis) {
+    public SysApp(short siteId, String channel, String appKey, String appSecret, String authorizedApis) {
         this.siteId = siteId;
         this.channel = channel;
         this.appKey = appKey;
@@ -71,11 +71,11 @@ public class SysApp implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

@@ -38,7 +38,7 @@ public class HomeFileService extends BaseService<HomeFile> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Long userId, Long directoryId, String title, String filePath, Boolean image,
+    public PageHandler getPage(Short siteId, Long userId, Long directoryId, String title, String filePath, Boolean image,
             Boolean disabled, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, userId, directoryId, title, filePath, image, disabled, orderField, orderType, pageIndex,
                 pageSize);

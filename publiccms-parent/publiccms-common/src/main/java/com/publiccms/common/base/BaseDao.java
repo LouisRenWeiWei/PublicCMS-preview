@@ -281,7 +281,7 @@ public abstract class BaseDao<E> implements Base {
      * @return page
      */
     protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize) {
-        return getPage(queryHandler, pageIndex, pageSize, null);
+        return getPage(queryHandler, pageIndex, pageSize, 100);
     }
 
     /**
@@ -289,11 +289,16 @@ public abstract class BaseDao<E> implements Base {
      * @return number of results
      */
     protected long countResult(QueryHandler queryHandler) {
-        Number result = (Number) getCountQuery(queryHandler).list().iterator().next();
-        if (null == result) {
+        List<?> list = getCountQuery(queryHandler).list();
+        if (list.isEmpty()) {
             return 0;
         } else {
-            return result.longValue();
+            Number result = (Number) list.iterator().next();
+            if (null == result) {
+                return 0;
+            } else {
+                return result.longValue();
+            }
         }
     }
 
@@ -302,11 +307,16 @@ public abstract class BaseDao<E> implements Base {
      * @return number of data
      */
     protected long count(QueryHandler queryHandler) {
-        Number result = (Number) getQuery(queryHandler).list().iterator().next();
-        if (null == result) {
+        List<?> list = getQuery(queryHandler).list();
+        if (list.isEmpty()) {
             return 0;
         } else {
-            return result.longValue();
+            Number result = (Number) list.iterator().next();
+            if (null == result) {
+                return 0;
+            } else {
+                return result.longValue();
+            }
         }
     }
 
@@ -338,8 +348,9 @@ public abstract class BaseDao<E> implements Base {
      * @param text
      * @return full text query
      */
-    protected FullTextQuery getQuery(String[] fields, String text) {
-        return getFacetQuery(fields, null, text, 0);
+    protected QueryBuilder getFullTextQueryBuilder() {
+        FullTextSession fullTextSession = getFullTextSession();
+        return fullTextSession.getSearchFactory().buildQueryBuilder().forEntity(getEntityClass()).get();
     }
 
     /**
@@ -349,21 +360,9 @@ public abstract class BaseDao<E> implements Base {
      * @param facetCount
      * @return full text query
      */
-    protected FullTextQuery getFacetQuery(String[] fields, String[] facetFields, String text, int facetCount) {
+    protected FullTextQuery getFullTextQuery(org.apache.lucene.search.Query query) {
         FullTextSession fullTextSession = getFullTextSession();
-        QueryBuilder queryBuilder = fullTextSession.getSearchFactory().buildQueryBuilder().forEntity(getEntityClass()).get();
-        org.apache.lucene.search.Query query = queryBuilder.keyword().onFields(fields).matching(text).createQuery();
-        FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(query, getEntityClass());
-        if (CommonUtils.notEmpty(facetFields)) {
-            FacetManager facetManager = fullTextQuery.getFacetManager();
-            for (String facetField : facetFields) {
-                FacetingRequest facetingRequest = queryBuilder.facet().name(facetField + FACET_NAME_SUFFIX).onField(facetField)
-                        .discrete().orderedBy(FacetSortOrder.COUNT_DESC).includeZeroCounts(false).maxFacetCount(facetCount)
-                        .createFacetingRequest();
-                facetManager.enableFaceting(facetingRequest);
-            }
-        }
-        return fullTextQuery;
+        return fullTextSession.createFullTextQuery(query, getEntityClass());
     }
 
     /**
@@ -400,9 +399,9 @@ public abstract class BaseDao<E> implements Base {
      * @param pageSize
      * @return facet results page
      */
-    protected FacetPageHandler getFacetPage(FullTextQuery fullTextQuery, String[] facetFields, Map<String, List<String>> valueMap,
-            Integer pageIndex, Integer pageSize) {
-        return getFacetPage(fullTextQuery, facetFields, valueMap, pageIndex, pageSize, null);
+    protected FacetPageHandler getFacetPage(QueryBuilder queryBuilder, FullTextQuery fullTextQuery, String[] facetFields,
+            Map<String, List<String>> valueMap, int facetCount, Integer pageIndex, Integer pageSize) {
+        return getFacetPage(queryBuilder, fullTextQuery, facetFields, valueMap, facetCount, pageIndex, pageSize, 100);
     }
 
     /**
@@ -414,14 +413,20 @@ public abstract class BaseDao<E> implements Base {
      * @param maxResults
      * @return facet results page
      */
-    protected FacetPageHandler getFacetPage(FullTextQuery fullTextQuery, String[] facetFields, Map<String, List<String>> valueMap,
-            Integer pageIndex, Integer pageSize, Integer maxResults) {
+    protected FacetPageHandler getFacetPage(QueryBuilder queryBuilder, FullTextQuery fullTextQuery, String[] facetFields,
+            Map<String, List<String>> valueMap, int facetCount, Integer pageIndex, Integer pageSize, Integer maxResults) {
+        FacetManager facetManager = fullTextQuery.getFacetManager();
+        for (String facetField : facetFields) {
+            FacetingRequest facetingRequest = queryBuilder.facet().name(facetField + FACET_NAME_SUFFIX).onField(facetField)
+                    .discrete().orderedBy(FacetSortOrder.COUNT_DESC).includeZeroCounts(false).maxFacetCount(facetCount)
+                    .createFacetingRequest();
+            facetManager.enableFaceting(facetingRequest);
+        }
         FacetPageHandler page = new FacetPageHandler(pageIndex, pageSize, fullTextQuery.getResultSize(), maxResults);
         if (CommonUtils.notEmpty(pageSize)) {
             fullTextQuery.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
         }
         if (0 < page.getTotalCount() && CommonUtils.notEmpty(facetFields) && CommonUtils.notEmpty(valueMap)) {
-            FacetManager facetManager = fullTextQuery.getFacetManager();
             for (String facetField : facetFields) {
                 List<Facet> facets = facetManager.getFacets(facetField + FACET_NAME_SUFFIX);
                 Map<String, Integer> facetMap = new LinkedHashMap<>();

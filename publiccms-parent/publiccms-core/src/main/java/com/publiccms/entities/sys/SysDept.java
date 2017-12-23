@@ -28,7 +28,7 @@ public class SysDept implements java.io.Serializable {
     private Integer id;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
-    private int siteId;
+    private short siteId;
     @GeneratorColumn(title = "名称", condition = true, like = true)
     private String name;
     @GeneratorColumn(title = "父部门", condition = true)
@@ -47,7 +47,7 @@ public class SysDept implements java.io.Serializable {
     public SysDept() {
     }
 
-    public SysDept(int siteId, String name, int maxSort, boolean ownsAllCategory, boolean ownsAllPage) {
+    public SysDept(short siteId, String name, int maxSort, boolean ownsAllCategory, boolean ownsAllPage) {
         this.siteId = siteId;
         this.name = name;
         this.maxSort = maxSort;
@@ -55,7 +55,7 @@ public class SysDept implements java.io.Serializable {
         this.ownsAllPage = ownsAllPage;
     }
 
-    public SysDept(int siteId, String name, Integer parentId, String description, Long userId, int maxSort,
+    public SysDept(short siteId, String name, Integer parentId, String description, Long userId, int maxSort,
             boolean ownsAllCategory, boolean ownsAllPage) {
         this.siteId = siteId;
         this.name = name;
@@ -80,11 +80,11 @@ public class SysDept implements java.io.Serializable {
     }
 
     @Column(name = "site_id", nullable = false)
-    public int getSiteId() {
+    public short getSiteId() {
         return this.siteId;
     }
 
-    public void setSiteId(int siteId) {
+    public void setSiteId(short siteId) {
         this.siteId = siteId;
     }
 

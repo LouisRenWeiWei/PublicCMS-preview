@@ -40,7 +40,7 @@ public class ConfigComponent implements SiteCache, Base {
     private SysConfigDataService service;
     @Autowired(required = false)
     private List<Config> configPluginList;
-    private CacheEntity<Integer, Map<String, Map<String, String>>> cache;
+    private CacheEntity<Short, Map<String, Map<String, String>>> cache;
 
     /**
      * @param site
@@ -124,7 +124,7 @@ public class ConfigComponent implements SiteCache, Base {
      * @param code
      * @return config data
      */
-    public Map<String, String> getConfigData(int siteId, String code) {
+    public Map<String, String> getConfigData(short siteId, String code) {
         Map<String, Map<String, String>> siteMap = cache.get(siteId);
         if (CommonUtils.empty(siteMap)) {
             siteMap = new HashMap<>();
@@ -190,7 +190,7 @@ public class ConfigComponent implements SiteCache, Base {
      * @param siteId
      * @param code
      */
-    public void removeCache(int siteId, String code) {
+    public void removeCache(short siteId, String code) {
         Map<String, Map<String, String>> map = cache.get(siteId);
         if (CommonUtils.notEmpty(map)) {
             map.remove(code);
@@ -198,7 +198,7 @@ public class ConfigComponent implements SiteCache, Base {
     }
 
     @Override
-    public void clear(int siteId) {
+    public void clear(short siteId) {
         cache.remove(siteId);
     }
 

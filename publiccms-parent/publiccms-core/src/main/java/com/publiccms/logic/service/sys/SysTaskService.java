@@ -32,7 +32,7 @@ public class SysTaskService extends BaseService<SysTask> {
 	 * @return
 	 */
 	@Transactional(readOnly = true)
-	public PageHandler getPage(Integer siteId, Integer status, Date beginUpdateDate, Integer pageIndex, Integer pageSize) {
+	public PageHandler getPage(Short siteId, Integer status, Date beginUpdateDate, Integer pageIndex, Integer pageSize) {
 		return dao.getPage(siteId, status, beginUpdateDate, pageIndex, pageSize);
 	}
 
