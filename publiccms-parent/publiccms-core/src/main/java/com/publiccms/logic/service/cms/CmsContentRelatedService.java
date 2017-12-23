@@ -35,7 +35,7 @@ public class CmsContentRelatedService extends BaseService<CmsContentRelated> {
      * @param orderType
      * @param pageIndex
      * @param pageSize
-     * @return
+     * @return results page
      */
     @Transactional(readOnly = true)
     public PageHandler getPage(Long contentId, Long relatedContentId, Long userId, String orderField, String orderType,

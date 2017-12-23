@@ -6,7 +6,7 @@ import java.util.Arrays;
 // Generated 2015-5-8 16:50:23 by com.publiccms.common.source.SourceGenerator
 
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,12 +34,14 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
 public class CmsContentDao extends BaseDao<CmsContent> {
     private static final String[] textFields = new String[] { "title", "author", "editor", "description" };
     private static final String[] tagFields = new String[] { "tagIds" };
-    private static final String[] facetFields = new String[] { "categoryId", "modelId", "userId" };
+    private static final String[] facetFields = new String[] { "categoryId", "modelId" };
 
     /**
      * @param siteId
      * @param text
      * @param tagId
+     * @param categoryId
+     * @param modelId
      * @param startPublishDate
      * @param endPublishDate
      * @param pageIndex
@@ -73,7 +75,6 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param siteId
      * @param categoryIds
      * @param modelIds
-     * @param userIds
      * @param text
      * @param tagId
      * @param startPublishDate
@@ -82,8 +83,8 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param pageSize
      * @return results page
      */
-    public FacetPageHandler facetQuery(Short siteId, String[] categoryIds, String[] modelIds, String[] userIds, String text,
-            String tagId, Date startPublishDate, Date endPublishDate, Integer pageIndex, Integer pageSize) {
+    public FacetPageHandler facetQuery(Short siteId, String[] categoryIds, String[] modelIds, String text, String tagId,
+            Date startPublishDate, Date endPublishDate, Integer pageIndex, Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
         MustJunction termination = queryBuilder.bool()
                 .must(queryBuilder.keyword().onFields(CommonUtils.empty(tagId) ? textFields : tagFields)
@@ -95,15 +96,12 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (null != endPublishDate) {
             termination.must(queryBuilder.range().onField("publishDate").below(endPublishDate).createQuery());
         }
-        Map<String, List<String>> valueMap = new HashMap<>();
+        Map<String, List<String>> valueMap = new LinkedHashMap<>();
         if (CommonUtils.notEmpty(categoryIds)) {
             valueMap.put("categoryId", Arrays.asList(categoryIds));
         }
         if (CommonUtils.notEmpty(modelIds)) {
             valueMap.put("modelId", Arrays.asList(modelIds));
-        }
-        if (CommonUtils.notEmpty(userIds)) {
-            valueMap.put("userId", Arrays.asList(userIds));
         }
         FullTextQuery query = getFullTextQuery(termination.createQuery());
         return getFacetPage(queryBuilder, query, facetFields, valueMap, 10, pageIndex, pageSize);

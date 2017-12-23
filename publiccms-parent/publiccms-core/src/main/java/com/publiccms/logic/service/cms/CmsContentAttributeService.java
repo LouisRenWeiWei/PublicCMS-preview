@@ -22,7 +22,7 @@ public class CmsContentAttributeService extends BaseService<CmsContentAttribute>
 
     /**
      * @param ids
-     * @return
+     * @return results page
      */
     public List<CmsContentAttribute> getEntitysWithoutText(Serializable[] ids) {
         return dao.getEntitys(ids);

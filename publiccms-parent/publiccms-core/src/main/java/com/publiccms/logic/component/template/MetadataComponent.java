@@ -55,7 +55,6 @@ public class MetadataComponent implements Cache, Base {
      * 获取模板元数据
      *
      * @param filePath
-     * @param allowNullValue
      * @return template metadata
      */
     public CmsPageMetadata getTemplateMetadata(String filePath) {

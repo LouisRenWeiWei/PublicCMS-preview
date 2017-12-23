@@ -67,7 +67,7 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
 
     /**
      * @param dictionaryId
-     * @return
+     * @return data list
      */
     @Transactional(readOnly = true)
     public List<CmsDictionaryData> getList(long dictionaryId) {

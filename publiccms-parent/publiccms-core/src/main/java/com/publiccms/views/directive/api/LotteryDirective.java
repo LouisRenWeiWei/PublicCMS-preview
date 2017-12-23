@@ -32,6 +32,7 @@ public class LotteryDirective extends AbstractAppDirective {
         Long lotteryId = handler.getLong("lotteryId");
         CmsLottery lottery = lotteryService.getEntity(lotteryId);
         SysSite site = getSite(handler);
+        handler.put("result", "failure");
         if (null != lottery && site.getId() == lottery.getSiteId() && !lottery.isDisabled()) {
             if (lotteryUserService.getPage(lotteryId, user.getId(), true, null, null, null, null, null).getTotalCount() == 0) {
                 if (lottery.getLotteryCount() - lotteryUserService
@@ -39,8 +40,8 @@ public class LotteryDirective extends AbstractAppDirective {
                     CmsLotteryUser entity = new CmsLotteryUser(lotteryId, user.getId(), false, false,
                             RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate());
                     entity.setUserId(user.getId());
-                    if (lottery.getFractions() > random.nextInt(lottery.getNumerator()) && lottery.getLastGift() > 0
-                            && lottery.getLotteryCount() > lotteryUserService
+                    if (lottery.getFractions() > random.nextInt(lottery.getNumerator())
+                            && lotteryService.updateLastGift(lotteryId) && lottery.getLotteryCount() > lotteryUserService
                                     .getPage(lotteryId, null, true, null, null, null, null, null).getTotalCount()) {
                         entity.setWinning(true);
                     }

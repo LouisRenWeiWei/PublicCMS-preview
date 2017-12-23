@@ -204,8 +204,6 @@ CREATE TABLE `cms_lottery` (
   `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `start_date` datetime NOT NULL COMMENT '开始日期',
   `end_date` datetime NOT NULL COMMENT '结束日期',
-  `interval_hour` int(11) NOT NULL COMMENT '抽奖间隔小时',
-  `gift` int(11) NOT NULL COMMENT '每次可抽奖数量',
   `total_gift` int(11) NOT NULL COMMENT '奖品总数',
   `last_gift` int(11) NOT NULL COMMENT '剩余数量',
   `lottery_count` int(11) NOT NULL COMMENT '可抽奖次数',
@@ -215,7 +213,6 @@ CREATE TABLE `cms_lottery` (
   `title` varchar(100) NOT NULL COMMENT '标题',
   `description` varchar(300) default NULL COMMENT '描述',
   `disabled` tinyint(1) NOT NULL COMMENT '是否禁用',
-  `extend_id` int(11) default NULL COMMENT '扩展ID',
   PRIMARY KEY  (`id`),
   KEY `start_date` (`site_id`,`start_date`,`end_date`,`disabled`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='抽奖';
@@ -236,16 +233,6 @@ CREATE TABLE `cms_lottery_user` (
   PRIMARY KEY  (`id`),
   KEY `lottery_id` (`lottery_id`,`user_id`,`winning`,`confirmed`,`create_date`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='抽奖用户';
-
--- ----------------------------
--- Table structure for cms_lottery_user_attribute
--- ----------------------------
-DROP TABLE IF EXISTS `cms_lottery_user_attribute`;
-CREATE TABLE `cms_lottery_user_attribute` (
-  `lottery_user_id` bigint(20) NOT NULL COMMENT '抽奖用户ID',
-  `data` longtext COMMENT '数据JSON',
-  PRIMARY KEY  (`lottery_user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='抽奖用户扩展数据';
 
 -- ----------------------------
 -- Table structure for cms_place
@@ -323,19 +310,15 @@ DROP TABLE IF EXISTS `cms_vote`;
 CREATE TABLE `cms_vote` (
   `id` int(11) NOT NULL auto_increment,
   `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `start_date` datetime NOT NULL COMMENT '开始日期',
   `end_date` datetime NOT NULL COMMENT '结束日期',
-  `interval_hour` int(11) NOT NULL COMMENT '投票间隔小时',
   `max_vote` int(11) NOT NULL COMMENT '最大投票数',
-  `anonymous` tinyint(1) NOT NULL COMMENT '匿名投票',
   `user_counts` int(11) NOT NULL COMMENT '参与用户数',
   `url` varchar(2048) NOT NULL COMMENT '地址',
   `title` varchar(100) NOT NULL COMMENT '标题',
   `description` varchar(300) default NULL COMMENT '描述',
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
-  `item_extend_id` int(11) NOT NULL COMMENT '扩展ID',
   PRIMARY KEY  (`id`),
-  KEY `disabled` (`site_id`,`start_date`,`end_date`,`disabled`)
+  KEY `disabled` (`site_id`,`end_date`,`disabled`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='投票';
 
 -- ----------------------------
@@ -352,16 +335,6 @@ CREATE TABLE `cms_vote_item` (
   PRIMARY KEY  (`id`),
   KEY `vote_id` (`vote_id`,`scores`,`sort`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='投票选项';
-
--- ----------------------------
--- Table structure for cms_vote_item_attribute
--- ----------------------------
-DROP TABLE IF EXISTS `cms_vote_item_attribute`;
-CREATE TABLE `cms_vote_item_attribute` (
-  `vote_item_id` bigint(20) NOT NULL COMMENT '选项ID',
-  `data` longtext COMMENT '数据JSON',
-  PRIMARY KEY  (`vote_item_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='投票选项扩展';
 
 -- ----------------------------
 -- Table structure for cms_vote_user

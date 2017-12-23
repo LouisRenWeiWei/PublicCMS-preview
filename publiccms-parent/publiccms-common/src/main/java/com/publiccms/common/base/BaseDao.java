@@ -3,9 +3,12 @@ package com.publiccms.common.base;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Future;
 
 import org.apache.commons.logging.Log;
@@ -423,26 +426,25 @@ public abstract class BaseDao<E> implements Base {
             facetManager.enableFaceting(facetingRequest);
         }
         FacetPageHandler page = new FacetPageHandler(pageIndex, pageSize, fullTextQuery.getResultSize(), maxResults);
-        if (CommonUtils.notEmpty(pageSize)) {
-            fullTextQuery.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
-        }
-        if (0 < page.getTotalCount() && CommonUtils.notEmpty(facetFields) && CommonUtils.notEmpty(valueMap)) {
-            for (String facetField : facetFields) {
-                List<Facet> facets = facetManager.getFacets(facetField + FACET_NAME_SUFFIX);
+        if (0 < page.getTotalCount()) {
+            Set<String> facetSet = new LinkedHashSet<>();
+            facetSet.addAll(valueMap.keySet());
+            facetSet.addAll(Arrays.asList(facetFields));
+            for (String facetField : facetSet) {
+                String facetingName = facetField + FACET_NAME_SUFFIX;
+                List<Facet> facets = facetManager.getFacets(facetingName);
                 Map<String, Integer> facetMap = new LinkedHashMap<>();
-                if (CommonUtils.notEmpty(valueMap.get(facetField))) {
+                List<String> valueList = valueMap.get(facetField);
+                if (null != valueList) {
                     List<Facet> facetList = new ArrayList<>();
                     for (Facet facet : facets) {
                         facetMap.put(facet.getValue(), facet.getCount());
-                        if (valueMap.get(facetField).contains(facet.getValue())) {
+                        if (valueList.contains(facet.getValue())) {
                             facetList.add(facet);
                         }
                     }
-                    if (0 < facetList.size()) {
-                        facetManager.getFacetGroup(facetField + FACET_NAME_SUFFIX)
-                                .selectFacets(facetList.toArray(new Facet[] {}));
-                    } else {
-                        page.setFacetResult(false);
+                    if (!facetList.isEmpty()) {
+                        facetManager.getFacetGroup(facetingName).selectFacets(facetList.toArray(new Facet[facetList.size()]));
                     }
                 } else {
                     for (Facet facet : facets) {
@@ -453,9 +455,9 @@ public abstract class BaseDao<E> implements Base {
             }
             page.setTotalCount(fullTextQuery.getResultSize(), maxResults);
             page.init();
-            if (CommonUtils.notEmpty(pageSize)) {
-                fullTextQuery.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
-            }
+        }
+        if (CommonUtils.notEmpty(pageSize)) {
+            fullTextQuery.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
         }
         page.setList(fullTextQuery.list());
         return page;

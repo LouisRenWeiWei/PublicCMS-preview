@@ -144,11 +144,11 @@ public abstract class BaseHandler implements RenderHandler {
 
     protected void regristerParamter(String type, String name, Object defaultValue) {
         if (regristerParamters) {
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("name", name);
-            map.put("type", type);
-            map.put("defaultValue", defaultValue);
-            parameterList.add(map);
+            HashMap<String, Object> paramter = new HashMap<>();
+            paramter.put("name", name);
+            paramter.put("type", type);
+            paramter.put("defaultValue", defaultValue);
+            parameterList.add(paramter);
         }
     }
 

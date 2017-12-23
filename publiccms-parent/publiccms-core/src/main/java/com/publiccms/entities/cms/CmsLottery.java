@@ -41,10 +41,6 @@ public class CmsLottery implements java.io.Serializable {
     @GeneratorColumn(title = "结束日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endDate;
-    @GeneratorColumn(title = "时间间隔")
-    private int intervalHour;
-    @GeneratorColumn(title = "每段时间发放数量")
-    private int gift;
     @GeneratorColumn(title = "奖品总数")
     private int totalGift;
     @GeneratorColumn(title = "剩余数量")
@@ -69,13 +65,11 @@ public class CmsLottery implements java.io.Serializable {
     public CmsLottery() {
     }
 
-    public CmsLottery(short siteId, Date startDate, Date endDate, int intervalHour, int gift, int totalGift, int lastGift,
-            int lotteryCount, int fractions, int numerator, String title, boolean disabled) {
+    public CmsLottery(short siteId, Date startDate, Date endDate, int totalGift, int lastGift, int lotteryCount, int fractions,
+            int numerator, String title, boolean disabled) {
         this.siteId = siteId;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.intervalHour = intervalHour;
-        this.gift = gift;
         this.totalGift = totalGift;
         this.lastGift = lastGift;
         this.lotteryCount = lotteryCount;
@@ -85,14 +79,11 @@ public class CmsLottery implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    public CmsLottery(short siteId, Date startDate, Date endDate, int intervalHour, int gift, int totalGift, int lastGift,
-            int lotteryCount, int fractions, int numerator, String url, String title, String description, boolean disabled,
-            Integer extendId) {
+    public CmsLottery(short siteId, Date startDate, Date endDate, int totalGift, int lastGift, int lotteryCount, int fractions,
+            int numerator, String url, String title, String description, boolean disabled, Integer extendId) {
         this.siteId = siteId;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.intervalHour = intervalHour;
-        this.gift = gift;
         this.totalGift = totalGift;
         this.lastGift = lastGift;
         this.lotteryCount = lotteryCount;
@@ -144,24 +135,6 @@ public class CmsLottery implements java.io.Serializable {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
-    }
-
-    @Column(name = "interval_hour", nullable = false)
-    public int getIntervalHour() {
-        return this.intervalHour;
-    }
-
-    public void setIntervalHour(int intervalHour) {
-        this.intervalHour = intervalHour;
-    }
-
-    @Column(name = "gift", nullable = false)
-    public int getGift() {
-        return this.gift;
-    }
-
-    public void setGift(int gift) {
-        this.gift = gift;
     }
 
     @Column(name = "total_gift", nullable = false)

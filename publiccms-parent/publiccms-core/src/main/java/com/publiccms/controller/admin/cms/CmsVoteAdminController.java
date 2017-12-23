@@ -30,7 +30,7 @@ public class CmsVoteAdminController extends AbstractController {
     @Autowired
     private CmsVoteService service;
 
-    private String[] ignoreProperties = new String[] { "id", "siteId", "itemExtendId", "userCounts" };
+    private String[] ignoreProperties = new String[] { "id", "siteId",  "userCounts" };
 
     /**
      * @param entity

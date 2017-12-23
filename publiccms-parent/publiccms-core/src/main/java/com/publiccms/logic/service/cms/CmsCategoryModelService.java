@@ -25,7 +25,7 @@ public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
      * @param categoryId
      * @param pageIndex
      * @param pageSize
-     * @return
+     * @return results page
      */
     @Transactional(readOnly = true)
     public PageHandler getPage(String modelId, Integer categoryId, Integer pageIndex, Integer pageSize) {

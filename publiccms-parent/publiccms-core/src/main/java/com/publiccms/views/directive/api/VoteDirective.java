@@ -16,6 +16,7 @@ import com.publiccms.entities.cms.CmsVote;
 import com.publiccms.entities.cms.CmsVoteUser;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.service.cms.CmsVoteItemService;
 import com.publiccms.logic.service.cms.CmsVoteService;
 import com.publiccms.logic.service.cms.CmsVoteUserService;
 
@@ -30,17 +31,22 @@ public class VoteDirective extends AbstractAppDirective {
     @Override
     public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
         Integer voteId = handler.getInteger("voteId");
-        String[] itemIds = handler.getStringArray("itemIds");
+        Long[] itemIds = handler.getLongArray("itemIds");
         CmsVote vote = voteService.getEntity(voteId);
-        if (null != vote && CommonUtils.notEmpty(itemIds) && !vote.isDisabled()) {
+        if (null != vote && CommonUtils.notEmpty(itemIds) && !vote.isDisabled()
+                && 0 == voteUserService.getPage(voteId, user.getId(), null, null, null, null, null, null).getTotalCount()) {
             CmsVoteUser entity = new CmsVoteUser(voteId, user.getId(), StringUtils.arrayToCommaDelimitedString(itemIds),
                     RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate());
             voteUserService.save(entity);
+            voteService.updateUserCounts(voteId);
+            voteItemService.updateScores(itemIds);
         }
     }
 
     @Autowired
     private CmsVoteService voteService;
+    @Autowired
+    private CmsVoteItemService voteItemService;
     @Autowired
     private CmsVoteUserService voteUserService;
 

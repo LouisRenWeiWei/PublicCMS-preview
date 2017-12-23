@@ -38,7 +38,7 @@ public class HqlDao extends BaseDao<Object> {
 
     /**
      * @param hql
-     * @return
+     * @return number of data updated
      */
     public int update(String hql) {
         QueryHandler queryHandler = getQueryHandler(hql);

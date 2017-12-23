@@ -24,7 +24,7 @@ import com.publiccms.common.base.Base;
 
 /**
  * 安全验证工具类
- * 
+ *
  * VerificationUtils
  *
  */
@@ -59,7 +59,7 @@ public class VerificationUtils implements Base {
 
     /**
      * 生成公钥私钥对
-     * 
+     *
      * @param keySize
      * @param secrand
      * @return key pair
@@ -80,7 +80,7 @@ public class VerificationUtils implements Base {
 
     /**
      * 获取公钥对象
-     * 
+     *
      * @param publicKey
      * @return public key
      * @throws NoSuchAlgorithmException
@@ -94,7 +94,7 @@ public class VerificationUtils implements Base {
 
     /**
      * 获取私钥对象
-     * 
+     *
      * @param privateKey
      * @return private key
      * @throws NoSuchAlgorithmException
@@ -108,7 +108,7 @@ public class VerificationUtils implements Base {
 
     /**
      * 公钥验证签名
-     * 
+     *
      * @param publicKey
      * @param data
      * @param sign
@@ -127,7 +127,7 @@ public class VerificationUtils implements Base {
 
     /**
      * 私钥签名
-     * 
+     *
      * @param privateKey
      * @param data
      * @return private key sign
@@ -145,7 +145,7 @@ public class VerificationUtils implements Base {
 
     /**
      * 公钥加密
-     * 
+     *
      * @param publicKey
      * @param input
      * @return public key encode result
@@ -162,7 +162,7 @@ public class VerificationUtils implements Base {
 
     /**
      * 公钥解密
-     * 
+     *
      * @param publicKey
      * @param input
      * @return public key decode result
@@ -179,7 +179,7 @@ public class VerificationUtils implements Base {
 
     /**
      * 私钥加密
-     * 
+     *
      * @param privateKey
      * @param input
      * @return private key decode result
@@ -196,7 +196,7 @@ public class VerificationUtils implements Base {
 
     /**
      * 私钥解密
-     * 
+     *
      * @param privateKey
      * @param input
      * @return private key encode result
@@ -213,7 +213,7 @@ public class VerificationUtils implements Base {
 
     /**
      * md5加密
-     * 
+     *
      * @param input
      * @return md5 encode result
      */
@@ -223,7 +223,7 @@ public class VerificationUtils implements Base {
 
     /**
      * sha1加密
-     * 
+     *
      * @param input
      * @return sha1 encode result
      */
@@ -233,7 +233,7 @@ public class VerificationUtils implements Base {
 
     /**
      * base64加密
-     * 
+     *
      * @param input
      * @return base64 encode result
      */
@@ -245,7 +245,7 @@ public class VerificationUtils implements Base {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(type);
             messageDigest.update(input.getBytes());
-            return typeToHex(messageDigest.digest());
+            return bypeToHex(messageDigest.digest());
         } catch (NoSuchAlgorithmException e) {
             return input;
         }
@@ -253,7 +253,7 @@ public class VerificationUtils implements Base {
 
     /**
      * base64解密
-     * 
+     *
      * @param input
      * @return base64 decode result
      */
@@ -263,7 +263,7 @@ public class VerificationUtils implements Base {
 
     /**
      * sha512加密
-     * 
+     *
      * @param input
      * @return sha2 encode result
      */
@@ -273,7 +273,7 @@ public class VerificationUtils implements Base {
 
     /**
      * 3-DES加密
-     * 
+     *
      * @param input
      * @param key
      * @return 3-DES encode result
@@ -293,9 +293,9 @@ public class VerificationUtils implements Base {
     }
 
     /**
-     * 
+     *
      * 3-DES解密
-     * 
+     *
      * @param input
      * @param key
      * @return 3-DES decode result
@@ -319,7 +319,7 @@ public class VerificationUtils implements Base {
      * @param buffer
      * @return hex
      */
-    public static String typeToHex(byte buffer[]) {
+    public static String bypeToHex(byte buffer[]) {
         StringBuilder sb = new StringBuilder(buffer.length * 2);
         for (int i = 0; i < buffer.length; i++) {
             sb.append(Character.forDigit((buffer[i] & 240) >> 4, 16));

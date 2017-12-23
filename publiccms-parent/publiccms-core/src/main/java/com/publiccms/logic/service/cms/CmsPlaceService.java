@@ -59,7 +59,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param orderType
      * @param pageIndex
      * @param pageSize
-     * @return
+     * @return results page
      */
     @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Long userId, String path, String itemType, Long itemId, Date startPublishDate,
@@ -148,7 +148,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
     /**
      * @param siteId
      * @param path
-     * @return
+     * @return number of data deleted
      */
     public int delete(short siteId, String path) {
         return dao.delete(siteId, path);

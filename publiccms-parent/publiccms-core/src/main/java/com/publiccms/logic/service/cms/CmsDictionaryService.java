@@ -25,7 +25,7 @@ public class CmsDictionaryService extends BaseService<CmsDictionary> {
      * @param multiple
      * @param pageIndex
      * @param pageSize
-     * @return
+     * @return  results page
      */
     @Transactional(readOnly = true)
     public PageHandler getPage(Boolean multiple, Integer pageIndex, Integer pageSize) {

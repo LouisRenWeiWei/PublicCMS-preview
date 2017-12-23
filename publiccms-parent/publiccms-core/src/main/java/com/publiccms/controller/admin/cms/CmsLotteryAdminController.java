@@ -30,7 +30,7 @@ public class CmsLotteryAdminController extends AbstractController {
     @Autowired
     private CmsLotteryService service;
 
-    private String[] ignoreProperties = new String[] { "id", "siteId", "extendId" };
+    private String[] ignoreProperties = new String[] { "id", "siteId" };
 
     /**
      * @param entity
@@ -40,7 +40,8 @@ public class CmsLotteryAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping("save")
-    public String save(CmsLottery entity, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String save(CmsLottery entity, HttpServletRequest request, HttpSession session,
+            ModelMap model) {
         SysSite site = getSite(request);
         if (null != entity.getId()) {
             CmsLottery oldEntity = service.getEntity(entity.getId());
@@ -49,16 +50,16 @@ public class CmsLotteryAdminController extends AbstractController {
             }
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {
-                logOperateService.save(
-                        new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                "update.lottery", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "update.lottery", RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
             entity.setSiteId(site.getId());
             service.save(entity);
-            logOperateService
-                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "save.lottery", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.lottery", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -79,9 +80,9 @@ public class CmsLotteryAdminController extends AbstractController {
                 return TEMPLATE_ERROR;
             }
             service.delete(id);
-            logOperateService
-                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "delete.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.lottery", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return TEMPLATE_DONE;
     }

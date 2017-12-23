@@ -19,7 +19,7 @@ import com.publiccms.entities.cms.CmsVoteUser;
 public class CmsVoteUserDao extends BaseDao<CmsVoteUser> {
 
     /**
-     * @param lotteryId
+     * @param voteId
      * @param userId
      * @param ip
      * @param startCreateDate
@@ -29,11 +29,11 @@ public class CmsVoteUserDao extends BaseDao<CmsVoteUser> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer lotteryId, Long userId, String ip, Date startCreateDate, Date endCreateDate,
+    public PageHandler getPage(Integer voteId, Long userId, String ip, Date startCreateDate, Date endCreateDate,
             String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsVoteUser bean");
-        if (CommonUtils.notEmpty(lotteryId)) {
-            queryHandler.condition("bean.lotteryId = :lotteryId").setParameter("lotteryId", lotteryId);
+        if (CommonUtils.notEmpty(voteId)) {
+            queryHandler.condition("bean.voteId = :voteId").setParameter("voteId", voteId);
         }
         if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);

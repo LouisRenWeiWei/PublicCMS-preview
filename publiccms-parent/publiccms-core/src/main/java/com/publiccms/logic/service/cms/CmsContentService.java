@@ -52,12 +52,14 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param siteId
      * @param text
-     * @param tagId
+     * @param tagIds
+     * @param categoryId
+     * @param modelId
      * @param startPublishDate
      * @param endPublishDate
      * @param pageIndex
      * @param pageSize
-     * @return
+     * @return results page
      */
     @Transactional(readOnly = true)
     public PageHandler query(Short siteId, String text, Long[] tagIds, Integer categoryId, String modelId, Date startPublishDate,
@@ -70,19 +72,18 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param siteId
      * @param categoryIds
      * @param modelIds
-     * @param userIds
      * @param text
-     * @param tagId
+     * @param tagIds
      * @param startPublishDate
      * @param endPublishDate
      * @param pageIndex
      * @param pageSize
-     * @return
+     * @return results page
      */
     @Transactional(readOnly = true)
-    public FacetPageHandler facetQuery(Short siteId, String[] categoryIds, String[] modelIds, String[] userIds, String text,
+    public FacetPageHandler facetQuery(Short siteId, String[] categoryIds, String[] modelIds, String text,
             Long[] tagIds, Date startPublishDate, Date endPublishDate, Integer pageIndex, Integer pageSize) {
-        return dao.facetQuery(siteId, categoryIds, modelIds, userIds, text, arrayToDelimitedString(tagIds, BLANK_SPACE),
+        return dao.facetQuery(siteId, categoryIds, modelIds, text, arrayToDelimitedString(tagIds, BLANK_SPACE),
                 startPublishDate, endPublishDate, pageIndex, pageSize);
     }
 
@@ -95,7 +96,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     /**
-     * @return
+     * @return results page
      */
     public Future<?> reCreateIndex() {
         return dao.reCreateIndex();
@@ -108,7 +109,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param orderType
      * @param pageIndex
      * @param pageSize
-     * @return
+     * @return results page
      */
     @Transactional(readOnly = true)
     public PageHandler getPage(CmsContentQuery queryEntity, Boolean containChild, String orderField, String orderType,
@@ -139,7 +140,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param userId
      * @param ids
      * @param refresh
-     * @return
+     * @return results list
      */
     public List<CmsContent> check(short siteId, Long userId, Serializable[] ids, Boolean refresh) {
         List<CmsContent> entityList = new ArrayList<>();
@@ -164,7 +165,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param siteId
      * @param userId
      * @param ids
-     * @return
+     * @return  results list
      */
     public List<CmsContent> uncheck(short siteId, Long userId, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
@@ -180,7 +181,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param id
      * @param tagIds
-     * @return
+     * @return result
      */
     public CmsContent updateTagIds(Serializable id, String tagIds) {
         CmsContent entity = getEntity(id);
@@ -208,7 +209,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param siteId
      * @param id
      * @param categoryId
-     * @return
+     * @return result
      */
     public CmsContent updateCategoryId(short siteId, Serializable id, int categoryId) {
         CmsContent entity = getEntity(id);
@@ -221,7 +222,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param id
      * @param num
-     * @return
+     * @return result
      */
     public CmsContent updateChilds(Serializable id, int num) {
         CmsContent entity = getEntity(id);
@@ -235,7 +236,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param siteId
      * @param id
      * @param sort
-     * @return
+     * @return result
      */
     public CmsContent sort(Short siteId, Long id, int sort) {
         CmsContent entity = getEntity(id);
@@ -249,7 +250,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param id
      * @param url
      * @param hasStatic
-     * @return
+     * @return result
      */
     public CmsContent updateUrl(Serializable id, String url, boolean hasStatic) {
         CmsContent entity = getEntity(id);
@@ -263,7 +264,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param siteId
      * @param categoryIds
-     * @return
+     * @return number of data deleted
      */
     public int deleteByCategoryIds(short siteId, Integer[] categoryIds) {
         return dao.deleteByCategoryIds(siteId, categoryIds);
@@ -272,7 +273,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param siteId
      * @param ids
-     * @return
+     * @return list of data deleted
      */
     @SuppressWarnings("unchecked")
     public List<CmsContent> delete(short siteId, Serializable[] ids) {
@@ -315,7 +316,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param siteId
      * @param ids
-     * @return
+     * @return list of data deleted
      */
     @SuppressWarnings("unchecked")
     public List<CmsContent> recycle(short siteId, Serializable[] ids) {
@@ -340,7 +341,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param siteId
      * @param ids
-     * @return
+     * @return list of data deleted
      */
     @SuppressWarnings("unchecked")
     public List<CmsContent> realDelete(Short siteId, Long[] ids) {

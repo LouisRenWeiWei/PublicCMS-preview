@@ -1,4 +1,4 @@
-<@_lotteryUserList lotteryId=lotteryId userId=userId
+<@_lotteryUserList lotteryId=lotteryId!queryLotteryId userId=userId
             winning=winning startCreateDate=startCreateDate endCreateDate=endCreateDate
             orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
@@ -8,7 +8,7 @@
 			<ul class="searchContent">
 				<li>
 					<label>抽奖:</label>
-					<input type="text" name="lotteryId" value="${lotteryId!}" />
+					<input type="text" name="lotteryId" value="${lotteryId!queryLotteryId!}" />
 				</li>
 				<li>
 					<label>用户:</label>

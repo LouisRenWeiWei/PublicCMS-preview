@@ -21,7 +21,7 @@ import com.publiccms.logic.dao.sys.SysExtendFieldDao;
 @Service
 @Transactional
 public class SysExtendFieldService extends BaseService<SysExtendField> {
-    
+
     private String[] ignoreProperties = new String[] { "id" };
 
     /**
@@ -43,7 +43,11 @@ public class SysExtendFieldService extends BaseService<SysExtendField> {
             if (CommonUtils.notEmpty(entitys)) {
                 for (SysExtendField entity : entitys) {
                     if (CommonUtils.notEmpty(entity.getId().getExtendId())) {
-                        update(entity.getId(), entity, ignoreProperties);
+                        if (null == getEntity(entity.getId())) {
+                            save(entity);
+                        } else {
+                            update(entity.getId(), entity, ignoreProperties);
+                        }
                     } else {
                         entity.getId().setExtendId(extendId);
                         save(entity);
@@ -61,5 +65,5 @@ public class SysExtendFieldService extends BaseService<SysExtendField> {
 
     @Autowired
     private SysExtendFieldDao dao;
-    
+
 }

@@ -34,7 +34,7 @@ public class CmsTagService extends BaseService<CmsTag> {
      * @param orderType
      * @param pageIndex
      * @param pageSize
-     * @return
+     * @return results page
      */
     @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Integer typeId, String name, String orderField, String orderType,
@@ -69,7 +69,7 @@ public class CmsTagService extends BaseService<CmsTag> {
     /**
      * @param siteId
      * @param entitys
-     * @return
+     * @return 
      */
     public Long[] update(short siteId, List<CmsTag> entitys) {
         Set<Long> idList = new HashSet<>();

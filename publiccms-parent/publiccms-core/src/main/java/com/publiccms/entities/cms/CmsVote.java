@@ -35,18 +35,11 @@ public class CmsVote implements java.io.Serializable {
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
-    @GeneratorColumn(title = "开始日期", condition = true, order = true)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date startDate;
     @GeneratorColumn(title = "结束日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endDate;
-    @GeneratorColumn(title = "时间间隔")
-    private int intervalHour;
     @GeneratorColumn(title = "最大投票数")
     private int maxVote;
-    @GeneratorColumn(title = "允许匿名")
-    private boolean anonymous;
     @GeneratorColumn(title = "参与人数", order = true)
     private int userCounts;
     @GeneratorColumn(title = "地址")
@@ -57,41 +50,30 @@ public class CmsVote implements java.io.Serializable {
     private String description;
     @GeneratorColumn(title = "已禁用", condition = true)
     private boolean disabled;
-    @GeneratorColumn(title = "选项扩展ID")
-    private int itemExtendId;
 
     public CmsVote() {
     }
 
-    public CmsVote(short siteId, Date startDate, Date endDate, int intervalHour, int maxVote, boolean anonymous, int userCounts,
-            String url, String title, boolean disabled, int itemExtendId) {
+    public CmsVote(short siteId, Date endDate, int maxVote, int userCounts, String url, String title, boolean disabled) {
         this.siteId = siteId;
-        this.startDate = startDate;
         this.endDate = endDate;
-        this.intervalHour = intervalHour;
         this.maxVote = maxVote;
-        this.anonymous = anonymous;
         this.userCounts = userCounts;
         this.url = url;
         this.title = title;
         this.disabled = disabled;
-        this.itemExtendId = itemExtendId;
     }
 
-    public CmsVote(short siteId, Date startDate, Date endDate, int intervalHour, int maxVote, boolean anonymous, int userCounts,
-            String url, String title, String description, boolean disabled, int itemExtendId) {
+    public CmsVote(short siteId, Date endDate, int maxVote, int userCounts, String url, String title, String description,
+            boolean disabled) {
         this.siteId = siteId;
-        this.startDate = startDate;
         this.endDate = endDate;
-        this.intervalHour = intervalHour;
         this.maxVote = maxVote;
-        this.anonymous = anonymous;
         this.userCounts = userCounts;
         this.url = url;
         this.title = title;
         this.description = description;
         this.disabled = disabled;
-        this.itemExtendId = itemExtendId;
     }
 
     @Id
@@ -116,16 +98,6 @@ public class CmsVote implements java.io.Serializable {
     }
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "start_date", nullable = false, length = 19)
-    public Date getStartDate() {
-        return this.startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "end_date", nullable = false, length = 19)
     public Date getEndDate() {
         return this.endDate;
@@ -135,15 +107,6 @@ public class CmsVote implements java.io.Serializable {
         this.endDate = endDate;
     }
 
-    @Column(name = "interval_hour", nullable = false)
-    public int getIntervalHour() {
-        return this.intervalHour;
-    }
-
-    public void setIntervalHour(int intervalHour) {
-        this.intervalHour = intervalHour;
-    }
-
     @Column(name = "max_vote", nullable = false)
     public int getMaxVote() {
         return this.maxVote;
@@ -151,15 +114,6 @@ public class CmsVote implements java.io.Serializable {
 
     public void setMaxVote(int maxVote) {
         this.maxVote = maxVote;
-    }
-
-    @Column(name = "anonymous", nullable = false)
-    public boolean isAnonymous() {
-        return this.anonymous;
-    }
-
-    public void setAnonymous(boolean anonymous) {
-        this.anonymous = anonymous;
     }
 
     @Column(name = "user_counts", nullable = false)
@@ -205,15 +159,6 @@ public class CmsVote implements java.io.Serializable {
 
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
-    }
-
-    @Column(name = "item_extend_id", nullable = false)
-    public int getItemExtendId() {
-        return this.itemExtendId;
-    }
-
-    public void setItemExtendId(int itemExtendId) {
-        this.itemExtendId = itemExtendId;
     }
 
 }

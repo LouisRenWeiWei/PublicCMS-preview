@@ -33,7 +33,7 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
      * @param orderType
      * @param pageIndex
      * @param pageSize
-     * @return
+     * @return results page
      */
     @Transactional(readOnly = true)
     public PageHandler getPage(Long contentId, Long userId, Boolean image, String orderField, String orderType,

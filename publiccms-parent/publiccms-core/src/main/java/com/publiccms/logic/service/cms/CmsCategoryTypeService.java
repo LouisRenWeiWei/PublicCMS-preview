@@ -25,7 +25,7 @@ public class CmsCategoryTypeService extends BaseService<CmsCategoryType> {
      * @param siteId
      * @param pageIndex
      * @param pageSize
-     * @return
+     * @return results page
      */
     @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Integer pageIndex, Integer pageSize) {
@@ -35,7 +35,7 @@ public class CmsCategoryTypeService extends BaseService<CmsCategoryType> {
     /**
      * @param id
      * @param extendId
-     * @return
+     * @return result
      */
     public CmsCategoryType updateExtendId(Integer id, Integer extendId) {
         CmsCategoryType entity = getEntity(id);

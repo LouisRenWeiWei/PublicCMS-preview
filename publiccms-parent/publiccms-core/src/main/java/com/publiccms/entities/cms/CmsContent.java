@@ -20,9 +20,11 @@ import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.Facet;
 import org.hibernate.search.annotations.FacetEncodingType;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.TokenizerDef;
+import org.hibernate.search.bridge.builtin.IntegerBridge;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,14 +60,13 @@ public class CmsContent implements java.io.Serializable {
     @Field
     private String title;
     @GeneratorColumn(title = "发布用户", condition = true)
-    @Field(analyze = Analyze.NO)
-    @Facet(encoding = FacetEncodingType.STRING)
     private long userId;
     @GeneratorColumn(title = "审核用户", condition = true)
     private Long checkUserId;
     @GeneratorColumn(title = "分类", condition = true)
     @Field(analyze = Analyze.NO)
     @Facet(encoding = FacetEncodingType.STRING)
+    @FieldBridge(impl = IntegerBridge.class)
     private int categoryId;
     @GeneratorColumn(title = "模型", condition = true)
     @Field(analyze = Analyze.NO)
@@ -128,7 +129,7 @@ public class CmsContent implements java.io.Serializable {
     public CmsContent() {
     }
 
-    public CmsContent(short siteId, String title,long userId, int categoryId, String modelId, boolean copied, boolean onlyUrl,
+    public CmsContent(short siteId, String title, long userId, int categoryId, String modelId, boolean copied, boolean onlyUrl,
             boolean hasImages, boolean hasFiles, boolean hasStatic, int childs, int scores, int comments, int clicks,
             Date publishDate, Date createDate, int sort, int status, boolean disabled) {
         this.siteId = siteId;
@@ -155,7 +156,7 @@ public class CmsContent implements java.io.Serializable {
     public CmsContent(short siteId, String title, long userId, Long checkUserId, int categoryId, String modelId, Long parentId,
             boolean copied, String author, String editor, boolean onlyUrl, boolean hasImages, boolean hasFiles, boolean hasStatic,
             String url, String description, String tagIds, String cover, int childs, int scores, int comments, int clicks,
-            Date publishDate, Date checkDate, Date updateDate, Date createDate,int sort, int status, boolean disabled) {
+            Date publishDate, Date checkDate, Date updateDate, Date createDate, int sort, int status, boolean disabled) {
         this.siteId = siteId;
         this.title = title;
         this.userId = userId;
@@ -406,7 +407,7 @@ public class CmsContent implements java.io.Serializable {
     public void setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
     }
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "update_date", length = 19)
     public Date getUpdateDate() {
@@ -416,7 +417,7 @@ public class CmsContent implements java.io.Serializable {
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "check_date", nullable = false, length = 19)
     public Date getCheckDate() {
@@ -445,12 +446,12 @@ public class CmsContent implements java.io.Serializable {
     public void setSort(int sort) {
         this.sort = sort;
     }
-    
+
     @Column(name = "status", nullable = false)
     public int getStatus() {
         return this.status;
     }
-    
+
     public void setStatus(int status) {
         this.status = status;
     }

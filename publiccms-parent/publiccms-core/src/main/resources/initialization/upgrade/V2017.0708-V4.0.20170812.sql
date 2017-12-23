@@ -92,3 +92,8 @@ ALTER TABLE `sys_app_client` COMMENT = '应用客户端';
 ALTER TABLE `sys_app_token` COMMENT = '应用授权';
 ALTER TABLE `sys_extend` COMMENT = '扩展';
 ALTER TABLE `sys_extend_field` COMMENT = '扩展字段';
+-- 2017-12-24 --
+ALTER TABLE `cms_lottery` DROP COLUMN `interval_hour`,DROP COLUMN `gift`,DROP COLUMN `extend_id`;
+ALTER TABLE `cms_vote` DROP COLUMN `anonymous`,DROP COLUMN `interval_hour`,DROP COLUMN `item_extend_id` , DROP INDEX `disabled`, ADD INDEX  `disabled` (`site_id`,`end_date`,`disabled`);
+DROP TABLE IF EXISTS `cms_vote_item_attribute`;
+DROP TABLE IF EXISTS `cms_lottery_user_attribute`;

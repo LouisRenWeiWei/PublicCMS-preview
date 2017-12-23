@@ -151,6 +151,14 @@ public class CmsContentAdminController extends AbstractController {
         if (null == entity.getPublishDate()) {
             entity.setPublishDate(now);
         }
+
+		if (null != attribute.getText()) {
+			String text = HtmlUtils.removeHtmlTag(attribute.getText());
+            attribute.setWordCount(text.length());
+			if(CommonUtils.empty(entity.getDescription())){
+				entity.setDescription(StringUtils.substring(text,0,300));
+			}
+        }
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
@@ -179,9 +187,6 @@ public class CmsContentAdminController extends AbstractController {
         if (entity.isHasImages() || entity.isHasFiles()) {
             contentFileService.update(entity.getId(), user.getId(), entity.isHasFiles() ? contentParamters.getFiles() : null,
                     entity.isHasImages() ? contentParamters.getImages() : null);// 更新保存图集，附件
-        }
-        if (null != attribute.getText()) {
-            attribute.setWordCount(HtmlUtils.removeHtmlTag(attribute.getText()).length());
         }
 
         List<ExtendField> modelExtendList = cmsModel.getExtendList();

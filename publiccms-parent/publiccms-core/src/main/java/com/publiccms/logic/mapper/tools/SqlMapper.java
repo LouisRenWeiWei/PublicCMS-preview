@@ -14,13 +14,13 @@ public interface SqlMapper {
     
     /**
      * @param sql
-     * @return
+     * @return result list
      */
     List<Map<String, Object>> select(@Param("sql") String sql);
     
     /**
      * @param sql
-     * @return
+     * @return result
      */
     Map<String, Object> query(@Param("sql") String sql);
 
@@ -32,7 +32,7 @@ public interface SqlMapper {
 
     /**
      * @param sql
-     * @return
+     * @return number of data updated
      */
     int update(@Param("sql") String sql);
 

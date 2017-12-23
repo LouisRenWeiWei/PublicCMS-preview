@@ -23,7 +23,7 @@ import com.publiccms.common.handler.PageHandler;
 public class CmsVoteUserService extends BaseService<CmsVoteUser> {
 
     /**
-     * @param lotteryId
+     * @param voteId
      * @param userId
      * @param ip
      * @param startCreateDate
@@ -34,9 +34,9 @@ public class CmsVoteUserService extends BaseService<CmsVoteUser> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer lotteryId, Long userId, String ip, Date startCreateDate, Date endCreateDate,
+    public PageHandler getPage(Integer voteId, Long userId, String ip, Date startCreateDate, Date endCreateDate,
             String orderType, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(lotteryId, userId, ip, startCreateDate, endCreateDate, orderType, pageIndex, pageSize);
+        return dao.getPage(voteId, userId, ip, startCreateDate, endCreateDate, orderType, pageIndex, pageSize);
     }
 
     @Autowired
