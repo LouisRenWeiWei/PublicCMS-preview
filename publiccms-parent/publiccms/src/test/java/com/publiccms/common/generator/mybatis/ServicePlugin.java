@@ -132,22 +132,6 @@ public class ServicePlugin extends PluginAdapter {
                 }
                 topLevelClazz.addMethod(m);
             }
-            {
-                Method m = new Method();
-                m.setVisibility(JavaVisibility.PUBLIC);
-                m.setName("setDataSourceName");
-                m.addParameter(new Parameter(new FullyQualifiedJavaType("String"), "dataSourceName"));
-                m.addBodyLine("MultiDataSource.setDataSourceName(dataSourceName);");
-                topLevelClazz.addMethod(m);
-            }
-            {
-                Method m = new Method();
-                m.setVisibility(JavaVisibility.PUBLIC);
-                m.setName("setDefaultDataSource");
-                m.addBodyLine("MultiDataSource.resetDataSourceName();");
-                topLevelClazz.addMethod(m);
-            }
-            topLevelClazz.addImportedType("com.publiccms.common.datasource.MultiDataSource");
 
             services.add(topLevelClazz);
         }

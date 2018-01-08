@@ -3,12 +3,11 @@ package com.publiccms.logic.service.tools;
 import java.util.List;
 import java.util.Map;
 
-import com.publiccms.logic.mapper.tools.SqlMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.publiccms.common.datasource.MultiDataSource;
+import com.publiccms.logic.mapper.tools.SqlMapper;
 
 /**
  *
@@ -50,20 +49,6 @@ public class SqlService {
     @Transactional(readOnly = true)
     public List<Map<String, Object>> select(String sql) {
         return mapper.select(sql);
-    }
-    
-    /**
-     * @param dataSourceName
-     */
-    public void setDataSourceName(String dataSourceName){
-        MultiDataSource.setDataSourceName(dataSourceName);
-    }
-
-    /**
-     * 
-     */
-    public void resetDataSourceName() {
-        MultiDataSource.resetDataSourceName();
     }
 
     @Autowired

@@ -9,7 +9,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.publiccms.common.datasource.MultiDataSource;
 import com.publiccms.common.tools.CommonUtils;
 
 /**
@@ -119,20 +118,5 @@ public abstract class BaseService<E> implements Base {
                 save(entity);
             }
         }
-    }
-
-    /**
-     * @param dataSourceName
-     *            database source name
-     */
-    public void setDataSourceName(String dataSourceName) {
-        MultiDataSource.setDataSourceName(dataSourceName);
-    }
-
-    /**
-     * reset database source name
-     */
-    public void resetDataSourceName() {
-        MultiDataSource.resetDataSourceName();
     }
 }
