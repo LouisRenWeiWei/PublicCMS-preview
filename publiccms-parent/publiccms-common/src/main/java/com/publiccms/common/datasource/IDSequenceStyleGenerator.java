@@ -1,4 +1,4 @@
-package com.publiccms.common.database;
+package com.publiccms.common.datasource;
 
 import java.util.Properties;
 
