@@ -75,7 +75,7 @@ public class SysDomainAdminController extends AbstractController {
                     JsonUtils.getString(entity)));
         }
         siteComponent.clear();
-        return TEMPLATE_DONE;
+        return TEMPLATE_DONEANDREFRESH;
     }
 
     /**

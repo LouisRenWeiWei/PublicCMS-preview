@@ -54,7 +54,9 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param text
      * @param tagIds
      * @param categoryId
-     * @param modelId
+     * @param containChild
+     * @param categoryIds
+     * @param modelIds
      * @param startPublishDate
      * @param endPublishDate
      * @param pageIndex
@@ -62,10 +64,12 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler query(Short siteId, String text, Long[] tagIds, Integer categoryId, String modelId, Date startPublishDate,
-            Date endPublishDate, Integer pageIndex, Integer pageSize) {
-        return dao.query(siteId, text, arrayToDelimitedString(tagIds, BLANK_SPACE), categoryId, modelId, startPublishDate,
-                endPublishDate, pageIndex, pageSize);
+    public PageHandler query(Short siteId, String text, Long[] tagIds, Integer categoryId, Boolean containChild,
+            Integer[] categoryIds, String[] modelIds, Date startPublishDate, Date endPublishDate, Integer pageIndex,
+            Integer pageSize) {
+        return dao.query(siteId, text, arrayToDelimitedString(tagIds, BLANK_SPACE),
+                getCategoryIds(containChild, categoryId, categoryIds), modelIds, startPublishDate, endPublishDate, pageIndex,
+                pageSize);
     }
 
     /**
@@ -81,10 +85,10 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public FacetPageHandler facetQuery(Short siteId, String[] categoryIds, String[] modelIds, String text,
-            Long[] tagIds, Date startPublishDate, Date endPublishDate, Integer pageIndex, Integer pageSize) {
-        return dao.facetQuery(siteId, categoryIds, modelIds, text, arrayToDelimitedString(tagIds, BLANK_SPACE),
-                startPublishDate, endPublishDate, pageIndex, pageSize);
+    public FacetPageHandler facetQuery(Short siteId, String[] categoryIds, String[] modelIds, String text, Long[] tagIds,
+            Date startPublishDate, Date endPublishDate, Integer pageIndex, Integer pageSize) {
+        return dao.facetQuery(siteId, categoryIds, modelIds, text, arrayToDelimitedString(tagIds, BLANK_SPACE), startPublishDate,
+                endPublishDate, pageIndex, pageSize);
     }
 
     /**
@@ -165,7 +169,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param siteId
      * @param userId
      * @param ids
-     * @return  results list
+     * @return results list
      */
     public List<CmsContent> uncheck(short siteId, Long userId, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
@@ -308,6 +312,8 @@ public class CmsContentService extends BaseService<CmsContent> {
                     categoryIds[i] = Integer.parseInt(categoryStringIds[i]);
                 }
                 categoryIds[categoryStringIds.length] = categoryId;
+            } else {
+                categoryIds = new Integer[] { categoryId };
             }
         }
         return categoryIds;

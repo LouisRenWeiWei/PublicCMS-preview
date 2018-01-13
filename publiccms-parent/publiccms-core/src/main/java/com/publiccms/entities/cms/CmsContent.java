@@ -25,6 +25,7 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.TokenizerDef;
 import org.hibernate.search.bridge.builtin.IntegerBridge;
+import org.hibernate.search.bridge.builtin.ShortBridge;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -53,6 +54,7 @@ public class CmsContent implements java.io.Serializable {
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点", condition = true)
+    @FieldBridge(impl = ShortBridge.class)
     @Field(analyze = Analyze.NO)
     @JsonIgnore
     private short siteId;

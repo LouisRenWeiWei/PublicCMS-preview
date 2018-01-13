@@ -23,14 +23,13 @@ public class CmsCopyright implements Copyright, Base {
 
     @Override
     public boolean verify(String licenseFilePath) {
-        License license = getLicense(licenseFilePath);
-        return LicenseUtils.verifyLicense(CommonConstants.PUBLIC_KEY, license);
+        return LicenseUtils.verifyLicense(CommonConstants.PUBLIC_KEY, getLicense(licenseFilePath));
     }
 
     @Override
     public boolean verify(String licenseFilePath, String domain) {
-        License license = getLicense(licenseFilePath);
-        return LicenseUtils.verifyLicense(CommonConstants.PUBLIC_KEY, license) && verifyDomain(domain, license.getDomain());
+        License l = getLicense(licenseFilePath);
+        return LicenseUtils.verifyLicense(CommonConstants.PUBLIC_KEY, l) && verifyDomain(domain, l.getDomain());
     }
 
     @Override

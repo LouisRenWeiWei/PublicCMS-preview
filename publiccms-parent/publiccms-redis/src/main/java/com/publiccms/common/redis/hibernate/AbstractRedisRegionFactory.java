@@ -53,7 +53,7 @@ public abstract class AbstractRedisRegionFactory implements RegionFactory, Confi
     }
 
     @Override
-    public CacheTimestamper createCacheTimestamper(DatabaseRedisClient redisClient, String cacheKey) {
+    public CacheTimestamper createCacheTimestamper(DatabaseRedisClient client, String cacheKey) {
         return new Timestamper();
     }
 

@@ -177,8 +177,8 @@ public class InstallServlet extends HttpServlet implements Base {
             String database = request.getParameter("database");
             cmsUpgrader.setDataBaseUrl(dbconfig, host, port, database);
             dbconfig.setProperty("jdbc.username", request.getParameter("username"));
-            dbconfig.setProperty("jdbc.encryptPassword",
-                    VerificationUtils.base64Encode(VerificationUtils.encrypt(request.getParameter("password"), CommonConstants.ENCRYPT_KEY)));
+            dbconfig.setProperty("jdbc.encryptPassword", VerificationUtils
+                    .base64Encode(VerificationUtils.encrypt(request.getParameter("password"), CommonConstants.ENCRYPT_KEY)));
             String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
             File file = new File(databaseConfiFile);
             try (FileOutputStream outputStream = new FileOutputStream(file);) {
@@ -248,12 +248,12 @@ public class InstallServlet extends HttpServlet implements Base {
     /**
      * 升级数据库
      */
-    private void upgradeDatabase(String fromVersion, Map<String, Object> map) throws Exception {
-        if (cmsUpgrader.getVersionList().contains(fromVersion)) {
+    private void upgradeDatabase(String version, Map<String, Object> map) throws Exception {
+        if (cmsUpgrader.getVersionList().contains(version)) {
             String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
             try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile);) {
                 try {
-                    cmsUpgrader.update(connection, fromVersion);
+                    cmsUpgrader.update(connection, version);
                     map.put("message", "success");
                 } catch (Exception e) {
                     fromVersion = cmsUpgrader.getVersion();

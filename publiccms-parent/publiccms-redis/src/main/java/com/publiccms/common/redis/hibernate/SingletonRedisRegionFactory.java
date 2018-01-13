@@ -32,9 +32,9 @@ public class SingletonRedisRegionFactory extends AbstractRedisRegionFactory {
     }
 
     @Override
-    public void start(SessionFactoryOptions options, Properties properties) throws CacheException {
+    public void start(SessionFactoryOptions option, Properties properties) throws CacheException {
         log.debug("SingletonRedisRegionFactory is starting...");
-        this.options = options;
+        this.options = option;
         try {
             if (redisClient == null) {
                 String configurationResourceName = (String) properties

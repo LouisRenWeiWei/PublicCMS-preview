@@ -1,9 +1,13 @@
 package com.publiccms.controller.admin;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.base.AbstractController;
@@ -36,5 +40,24 @@ public class IndexAdminController extends AbstractController {
             path = path.substring(path.indexOf(SEPARATOR) > 0 ? 0 : 1, index > -1 ? index : path.length());
         }
         return path;
+    }
+
+    /**
+     * 修改语言
+     * 
+     * @param lang
+     * @param request
+     * @param response
+     * @return view name
+     */
+    @RequestMapping("changeLocale")
+    public String changeLocale(String lang, HttpServletRequest request, HttpServletResponse response) {
+        if (lang != null) {
+            LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+            if (null != localeResolver) {
+                localeResolver.setLocale(request, response, StringUtils.parseLocaleString(lang));
+            }
+        }
+        return TEMPLATE_DONEANDREFRESH;
     }
 }

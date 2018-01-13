@@ -98,9 +98,9 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     @Override
     public long getDataSize() {
         Jedis jedis = jedisPool.getResource();
-        long size = jedis.zrevrange(byteName, 0, -1).size();
+        long dataSize = jedis.zrevrange(byteName, 0, -1).size();
         jedis.close();
-        return size;
+        return dataSize;
     }
 
     private List<V> clearCache(Jedis jedis) {
@@ -165,17 +165,17 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     }
 
     @Override
-    public void init(String name, Integer size, Properties properties) {
+    public void init(String entityName, Integer cacheSize, Properties properties) {
         init(name, size, RedisUtils.createJedisPool(properties));
     }
 
-    public void init(String name, Integer size, JedisPool jedisPool) {
-        this.name = name;
+    public void init(String entityName, Integer cacheSize, JedisPool pool) {
+        this.name = entityName;
         this.byteName = stringSerializer.serialize(name);
-        if (null != size) {
-            this.size = size;
+        if (null != cacheSize) {
+            this.size = cacheSize;
         }
-        this.jedisPool = jedisPool;
+        this.jedisPool = pool;
     }
 
 }

@@ -13,6 +13,7 @@ import java.util.Map;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.TermQuery;
 import org.hibernate.search.FullTextQuery;
+import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.MustJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Repository;
@@ -39,21 +40,21 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     /**
      * @param siteId
      * @param text
-     * @param tagId
-     * @param categoryId
-     * @param modelId
+     * @param tagIds
+     * @param categoryIds
+     * @param modelIds
      * @param startPublishDate
      * @param endPublishDate
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler query(Short siteId, String text, String tagId, Integer categoryId, String modelId, Date startPublishDate,
-            Date endPublishDate, Integer pageIndex, Integer pageSize) {
+    public PageHandler query(Short siteId, String text, String tagIds, Integer[] categoryIds, String[] modelIds,
+            Date startPublishDate, Date endPublishDate, Integer pageIndex, Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
         MustJunction termination = queryBuilder.bool()
-                .must(queryBuilder.keyword().onFields(CommonUtils.empty(tagId) ? textFields : tagFields)
-                        .matching(CommonUtils.empty(tagId) ? text : tagId).createQuery())
+                .must(queryBuilder.keyword().onFields(CommonUtils.empty(tagIds) ? textFields : tagFields)
+                        .matching(CommonUtils.empty(tagIds) ? text : tagIds).createQuery())
                 .must(new TermQuery(new Term("siteId", siteId.toString())));
         if (null != startPublishDate) {
             termination.must(queryBuilder.range().onField("publishDate").above(startPublishDate).createQuery());
@@ -61,11 +62,21 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (null != endPublishDate) {
             termination.must(queryBuilder.range().onField("publishDate").below(endPublishDate).createQuery());
         }
-        if (null != categoryId) {
-            termination.must(new TermQuery(new Term("categoryId", categoryId.toString())));
+        if (CommonUtils.notEmpty(categoryIds)) {
+            @SuppressWarnings("rawtypes")
+            BooleanJunction<BooleanJunction> tempJunction = queryBuilder.bool();
+            for (Integer categoryId : categoryIds) {
+                tempJunction.should(new TermQuery(new Term("categoryId", categoryId.toString())));
+            }
+            termination.must(tempJunction.createQuery());
         }
-        if (null != modelId) {
-            termination.must(new TermQuery(new Term("modelId", modelId)));
+        if (CommonUtils.notEmpty(modelIds)) {
+            @SuppressWarnings("rawtypes")
+            BooleanJunction<BooleanJunction> tempJunction = queryBuilder.bool();
+            for (String modelId : modelIds) {
+                tempJunction.should(new TermQuery(new Term("modelId", modelId)));
+            }
+            termination.must(tempJunction.createQuery());
         }
         FullTextQuery query = getFullTextQuery(termination.createQuery());
         return getPage(query, pageIndex, pageSize);

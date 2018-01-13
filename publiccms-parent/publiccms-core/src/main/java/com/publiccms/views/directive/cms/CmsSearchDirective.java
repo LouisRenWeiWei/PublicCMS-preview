@@ -41,8 +41,10 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
             Integer pageIndex = handler.getInteger("pageIndex", 1);
             Integer count = handler.getInteger("count", 30);
             try {
-                page = service.query(site.getId(), word, tagIds, handler.getInteger("categoryId"), handler.getString("modelId"),
-                        handler.getDate("startPublishDate"), CommonUtils.getDate(), pageIndex, count);
+                page = service.query(site.getId(), word, tagIds, handler.getInteger("categoryId"),
+                        handler.getBoolean("containChild"), handler.getIntegerArray("categoryIds"),
+                        handler.getStringArray("modelIds"), handler.getDate("startPublishDate"), CommonUtils.getDate(), pageIndex,
+                        count);
             } catch (Exception e) {
                 page = new PageHandler(pageIndex, count, 0, null);
             }

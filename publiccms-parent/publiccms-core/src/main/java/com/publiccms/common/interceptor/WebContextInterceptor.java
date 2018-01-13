@@ -2,6 +2,7 @@ package com.publiccms.common.interceptor;
 
 import java.util.Date;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.base.BaseInterceptor;
@@ -40,6 +42,7 @@ public class WebContextInterceptor extends BaseInterceptor {
     private SiteComponent siteComponent;
     @Autowired
     private LogLoginService logLoginService;
+    protected LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
 
     protected SysUser initUser(SysUser user, String channel, String cookiesName, SysSite site, HttpServletRequest request,
             HttpServletResponse response) {
@@ -83,7 +86,7 @@ public class WebContextInterceptor extends BaseInterceptor {
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
         HttpSession session = request.getSession();
         SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = initUser(AbstractController.getUserFromSession(session), LogLoginService.CHANNEL_WEB,
@@ -115,6 +118,7 @@ public class WebContextInterceptor extends BaseInterceptor {
                 }
             }
         }
+        localeChangeInterceptor.preHandle(request, response, handler);
         return true;
     }
 }

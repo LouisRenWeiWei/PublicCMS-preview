@@ -35,6 +35,7 @@ public abstract class AbstractController implements Base {
     protected static final String FORWARD = UrlBasedViewResolver.FORWARD_URL_PREFIX;
     protected static final String TEMPLATE_INDEX = "index";
     protected static final String TEMPLATE_DONE = "common/ajaxDone";
+    protected static final String TEMPLATE_DONEANDREFRESH = "common/ajaxDoneAndRefresh";
     protected static final String TEMPLATE_ERROR = "common/ajaxError";
     protected static final String MESSAGE = "message";
     protected static final String SUCCESS = "success";

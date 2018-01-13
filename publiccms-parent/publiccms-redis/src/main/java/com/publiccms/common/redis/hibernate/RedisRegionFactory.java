@@ -30,10 +30,10 @@ public class RedisRegionFactory extends AbstractRedisRegionFactory {
     }
 
     @Override
-    public void start(SessionFactoryOptions options, Properties properties) throws CacheException {
+    public void start(SessionFactoryOptions option, Properties properties) throws CacheException {
         log.debug("RedisRegionFactory is starting... ");
 
-        this.options = options;
+        this.options = option;
         try {
             if (redisClient == null) {
                 String configurationResourceName = (String) properties

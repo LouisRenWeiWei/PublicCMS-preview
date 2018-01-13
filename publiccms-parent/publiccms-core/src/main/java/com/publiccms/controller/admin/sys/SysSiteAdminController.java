@@ -126,7 +126,7 @@ public class SysSiteAdminController extends AbstractController {
                             "save.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         siteComponent.clear();
-        return TEMPLATE_DONE;
+        return TEMPLATE_DONEANDREFRESH;
     }
 
     /**
