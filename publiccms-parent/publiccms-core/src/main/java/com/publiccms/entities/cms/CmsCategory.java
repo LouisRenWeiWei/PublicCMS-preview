@@ -66,8 +66,6 @@ public class CmsCategory implements java.io.Serializable {
     private boolean hidden;
     @GeneratorColumn(title = "是否删除", condition = true)
     private boolean disabled;
-    @GeneratorColumn(title = "内容数")
-    private int contents;
     @GeneratorColumn(title = "扩展ID")
     private Integer extendId;
 
@@ -75,7 +73,7 @@ public class CmsCategory implements java.io.Serializable {
     }
 
     public CmsCategory(short siteId, String name, String path, boolean onlyUrl, boolean hasStatic, boolean containChild,
-            boolean allowContribute, int sort, boolean hidden, boolean disabled, int contents) {
+            boolean allowContribute, int sort, boolean hidden, boolean disabled) {
         this.siteId = siteId;
         this.name = name;
         this.path = path;
@@ -86,13 +84,12 @@ public class CmsCategory implements java.io.Serializable {
         this.sort = sort;
         this.hidden = hidden;
         this.disabled = disabled;
-        this.contents = contents;
     }
 
     public CmsCategory(short siteId, String name, Integer parentId, Integer typeId, String childIds, String tagTypeIds, String code,
             String templatePath, String path, boolean onlyUrl, boolean hasStatic, String url, String contentPath,
             boolean containChild, Integer pageSize, boolean allowContribute, int sort, boolean hidden, boolean disabled,
-            int contents, Integer extendId) {
+            Integer extendId) {
         this.siteId = siteId;
         this.name = name;
         this.parentId = parentId;
@@ -112,7 +109,6 @@ public class CmsCategory implements java.io.Serializable {
         this.sort = sort;
         this.hidden = hidden;
         this.disabled = disabled;
-        this.contents = contents;
         this.extendId = extendId;
     }
 
@@ -297,15 +293,6 @@ public class CmsCategory implements java.io.Serializable {
 
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
-    }
-
-    @Column(name = "contents", nullable = false)
-    public int getContents() {
-        return this.contents;
-    }
-
-    public void setContents(int contents) {
-        this.contents = contents;
     }
 
     @Column(name = "extend_id")

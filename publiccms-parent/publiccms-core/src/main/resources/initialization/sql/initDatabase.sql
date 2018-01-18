@@ -25,7 +25,6 @@ CREATE TABLE `cms_category` (
   `sort` int(11) NOT NULL default '0' COMMENT '顺序',
   `hidden` tinyint(1) NOT NULL COMMENT '隐藏',
   `disabled` tinyint(1) NOT NULL COMMENT '是否删除',
-  `contents` int(11) NOT NULL default '0' COMMENT '内容数',
   `extend_id` int(11) default NULL COMMENT '扩展ID',
   PRIMARY KEY  (`id`),
   KEY `parent_id` (`parent_id`),

@@ -184,17 +184,6 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
         }
     }
 
-    /**
-     * @param id
-     * @param num
-     */
-    public void updateContents(Serializable id, int num) {
-        CmsCategory entity = getEntity(id);
-        if (null != entity) {
-            entity.setContents(entity.getContents() + num);
-        }
-    }
-
     @Autowired
     private CmsCategoryDao dao;
 }

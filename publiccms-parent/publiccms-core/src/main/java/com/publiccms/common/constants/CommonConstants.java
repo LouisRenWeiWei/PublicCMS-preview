@@ -19,7 +19,7 @@ public class CommonConstants {
      */
     public static final String INSTALL_LOCK_FILENAME = "/install.lock";
     /**
-     * 安装锁
+     * 授权文件
      */
     public static final String LICENSE_FILENAME = "/license.dat";
     

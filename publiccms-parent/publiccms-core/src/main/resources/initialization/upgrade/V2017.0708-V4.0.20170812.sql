@@ -97,3 +97,5 @@ ALTER TABLE `cms_lottery` DROP COLUMN `interval_hour`,DROP COLUMN `gift`,DROP CO
 ALTER TABLE `cms_vote` DROP COLUMN `anonymous`,DROP COLUMN `interval_hour`,DROP COLUMN `item_extend_id` , DROP INDEX `disabled`, ADD INDEX  `disabled` (`site_id`,`end_date`,`disabled`);
 DROP TABLE IF EXISTS `cms_vote_item_attribute`;
 DROP TABLE IF EXISTS `cms_lottery_user_attribute`;
+-- 2018-01-18 --
+ALTER TABLE `cms_category` DROP COLUMN `contents`;

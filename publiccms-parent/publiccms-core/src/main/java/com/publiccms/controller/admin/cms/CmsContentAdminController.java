@@ -176,8 +176,6 @@ public class CmsContentAdminController extends AbstractController {
             service.save(entity);
             if (CommonUtils.notEmpty(entity.getParentId())) {
                 service.updateChilds(entity.getParentId(), 1);
-            } else {
-                categoryService.updateContents(entity.getCategoryId(), 1);
             }
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.content",
                     RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
@@ -382,11 +380,8 @@ public class CmsContentAdminController extends AbstractController {
             if (null != categoryModel) {
                 if (CommonUtils.notEmpty(entity.getParentId())) {
                     service.updateChilds(entity.getParentId(), -1);
-                } else {
-                    categoryService.updateContents(entity.getCategoryId(), -1);
                 }
                 service.updateCategoryId(entity.getSiteId(), entity.getId(), categoryId);
-                categoryService.updateContents(categoryId, 1);
                 templateComponent.createContentFile(site, entity, null, categoryModel);
                 return true;
             }
@@ -456,8 +451,6 @@ public class CmsContentAdminController extends AbstractController {
                 if (!entity.isDisabled() && site.getId() == entity.getSiteId()) {
                     if (CommonUtils.notEmpty(entity.getParentId())) {
                         service.updateChilds(entity.getParentId(), -1);
-                    } else {
-                        categoryService.updateContents(entity.getCategoryId(), -1);
                     }
                 } else {
                     ArrayUtils.removeElements(ids, entity.getId());
@@ -485,8 +478,6 @@ public class CmsContentAdminController extends AbstractController {
                 if (entity.isDisabled() && site.getId() == entity.getSiteId()) {
                     if (CommonUtils.notEmpty(entity.getParentId())) {
                         service.updateChilds(entity.getParentId(), 1);
-                    } else {
-                        categoryService.updateContents(entity.getCategoryId(), 1);
                     }
                 }
             }

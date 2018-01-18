@@ -136,8 +136,6 @@ public class ContentController extends AbstractController {
             service.save(entity);
             if (CommonUtils.notEmpty(entity.getParentId())) {
                 service.updateChilds(entity.getParentId(), 1);
-            } else {
-                categoryService.updateContents(entity.getCategoryId(), 1);
             }
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "save.content",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
