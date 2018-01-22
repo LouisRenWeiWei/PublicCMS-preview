@@ -1,6 +1,6 @@
 package com.publiccms.logic.dao.sys;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -65,7 +65,7 @@ public class SysRoleMoudleDao extends BaseDao<SysRoleMoudle> {
             queryHandler.condition("bean.id.moudleId in (:moudleIds)").setParameter("moudleIds", moudleIds);
             return (List<SysRoleMoudle>) getList(queryHandler);
         }
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
     /**

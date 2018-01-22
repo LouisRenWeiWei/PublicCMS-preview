@@ -7,7 +7,7 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.channels.FileLock;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -100,7 +100,8 @@ public class FreeMarkerUtils implements Base {
      */
     public static String generateStringByFile(String template, Configuration configuration)
             throws IOException, TemplateException {
-        return generateStringByFile(template, configuration, new HashMap<String, Object>());
+        Map<String, Object> model = Collections.emptyMap();
+        return generateStringByFile(template, configuration, model);
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.publiccms.logic.dao.sys;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -30,7 +30,7 @@ public class SysExtendFieldDao extends BaseDao<SysExtendField> {
             queryHandler.order("bean.sort asc");
             return (List<SysExtendField>) getList(queryHandler);
         }
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
     @Override

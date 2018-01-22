@@ -1,7 +1,7 @@
 package com.publiccms.logic.dao.cms;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 // Generated 2015-5-8 16:50:23 by com.publiccms.common.source.SourceGenerator
@@ -33,7 +33,7 @@ public class CmsContentAttributeDao extends BaseDao<CmsContentAttribute> {
             queryHandler.condition("bean.contentId in (:ids)").setParameter("ids", ids);
             return (List<CmsContentAttribute>) getList(queryHandler);
         }
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
     @Override

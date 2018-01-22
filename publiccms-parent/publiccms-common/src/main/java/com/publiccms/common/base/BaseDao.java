@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -179,7 +180,7 @@ public abstract class BaseDao<E> implements Base {
             queryHandler.setCacheable(false);
             return (List<E>) getList(queryHandler);
         }
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
     /**
