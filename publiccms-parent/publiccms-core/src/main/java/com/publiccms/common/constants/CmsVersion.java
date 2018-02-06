@@ -36,7 +36,7 @@ public class CmsVersion {
      * @return whether the domain authorized
      */
     public static boolean verifyDomain(String domain) {
-        return copyright.verify(CommonConstants.CMS_FILEPATH + CommonConstants.LICENSE_FILENAME);
+        return copyright.verify(CommonConstants.CMS_FILEPATH + CommonConstants.LICENSE_FILENAME, domain);
     }
 
     /**
