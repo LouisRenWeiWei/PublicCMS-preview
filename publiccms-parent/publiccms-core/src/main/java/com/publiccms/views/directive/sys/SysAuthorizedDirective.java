@@ -29,7 +29,7 @@ public class SysAuthorizedDirective extends AbstractTemplateDirective {
         String url = handler.getString("url");
         String[] urls = handler.getStringArray("urls");
         if (CommonUtils.notEmpty(roleIds)) {
-            if (CommonUtils.notEmpty(url) && sysRoleService.showAllMoudle(roleIds)) {
+            if (CommonUtils.notEmpty(url) && sysRoleService.showAllModule(roleIds)) {
                 handler.put("object", true).render();
             } else if (CommonUtils.notEmpty(url)) {
                 SysRoleAuthorizedId[] ids = new SysRoleAuthorizedId[roleIds.length];
@@ -41,7 +41,7 @@ public class SysAuthorizedDirective extends AbstractTemplateDirective {
                 }
             } else if (CommonUtils.notEmpty(urls)) {
                 Map<String, Boolean> map = new LinkedHashMap<>();
-                if (sysRoleService.showAllMoudle(roleIds)) {
+                if (sysRoleService.showAllModule(roleIds)) {
                     for (String u : urls) {
                         map.put(u, true);
                     }

@@ -18,14 +18,14 @@ import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysRole;
-import com.publiccms.entities.sys.SysRoleMoudle;
-import com.publiccms.entities.sys.SysRoleMoudleId;
+import com.publiccms.entities.sys.SysRoleModule;
+import com.publiccms.entities.sys.SysRoleModuleId;
 import com.publiccms.entities.sys.SysRoleUser;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.logic.service.sys.SysMoudleService;
+import com.publiccms.logic.service.sys.SysModuleService;
 import com.publiccms.logic.service.sys.SysRoleAuthorizedService;
-import com.publiccms.logic.service.sys.SysRoleMoudleService;
+import com.publiccms.logic.service.sys.SysRoleModuleService;
 import com.publiccms.logic.service.sys.SysRoleService;
 import com.publiccms.logic.service.sys.SysRoleUserService;
 import com.publiccms.logic.service.sys.SysUserService;
@@ -43,9 +43,9 @@ public class SysRoleAdminController extends AbstractController {
     @Autowired
     private SysRoleUserService roleUserService;
     @Autowired
-    private SysRoleMoudleService roleMoudleService;
+    private SysRoleModuleService roleModuleService;
     @Autowired
-    private SysMoudleService moudleService;
+    private SysModuleService moduleService;
     @Autowired
     private SysRoleAuthorizedService roleAuthorizedService;
     @Autowired
@@ -55,18 +55,18 @@ public class SysRoleAdminController extends AbstractController {
 
     /**
      * @param entity
-     * @param moudleIds
+     * @param moduleIds
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysRole entity, Integer[] moudleIds, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String save(SysRole entity, Integer[] moduleIds, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (entity.isOwnsAllRight()) {
-            moudleIds = null;
-            entity.setShowAllMoudle(false);
+            moduleIds = null;
+            entity.setShowAllModule(false);
         }
         if (null != entity.getId()) {
             SysRole oldEntity = service.getEntity(entity.getId());
@@ -74,7 +74,7 @@ public class SysRoleAdminController extends AbstractController {
                 return TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, ignoreProperties);
-            roleMoudleService.updateRoleMoudles(entity.getId(), moudleIds);
+            roleModuleService.updateRoleModules(entity.getId(), moduleIds);
             if (null != entity) {
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.role", RequestUtils.getIpAddress(request),
@@ -83,19 +83,19 @@ public class SysRoleAdminController extends AbstractController {
         } else {
             entity.setSiteId(site.getId());
             service.save(entity);
-            if (CommonUtils.notEmpty(moudleIds)) {
-                List<SysRoleMoudle> list = new ArrayList<>();
-                for (int moudleId : moudleIds) {
-                    list.add(new SysRoleMoudle(new SysRoleMoudleId(entity.getId(), moudleId)));
+            if (CommonUtils.notEmpty(moduleIds)) {
+                List<SysRoleModule> list = new ArrayList<>();
+                for (int moduleId : moduleIds) {
+                    list.add(new SysRoleModule(new SysRoleModuleId(entity.getId(), moduleId)));
                 }
-                roleMoudleService.save(list);
+                roleModuleService.save(list);
             }
             logOperateService
                     .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "save.role", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        roleAuthorizedService.dealRoleMoudles(entity.getId(), entity.isShowAllMoudle(), moudleService.getEntitys(moudleIds),
-                moudleService.getPageUrl(null));
+        roleAuthorizedService.dealRoleModules(entity.getId(), entity.isShowAllModule(), moduleService.getEntitys(moduleIds),
+                moduleService.getPageUrl(null));
         return TEMPLATE_DONE;
     }
 
@@ -121,7 +121,7 @@ public class SysRoleAdminController extends AbstractController {
                 userService.deleteRoleIds(roleUser.getId().getUserId(), id);
             }
             roleUserService.deleteByRoleId(id);
-            roleMoudleService.deleteByRoleId(id);
+            roleModuleService.deleteByRoleId(id);
             roleAuthorizedService.deleteByRoleId(id);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.role", RequestUtils.getIpAddress(request), CommonUtils.getDate(),

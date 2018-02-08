@@ -35,14 +35,14 @@
 	</@_categoryList>
 </#macro>
 <div class="accordion">
-<@_sysMoudleList parentId=parentId>
+<@_sysModuleList parentId=parentId>
 	<#list page.list as a>
-		<@t.merge 'moudleIds' a.id!/>
+		<@t.merge 'moduleIds' a.id!/>
 	</#list>
-	<@_sysRoleMoudle roleIds=admin.roles moudleIds=t.moudleIds!><#assign roleMoudleMap=map!/></@_sysRoleMoudle>
+	<@_sysRoleModule roleIds=admin.roles moduleIds=t.moduleIds!><#assign roleModuleMap=map!/></@_sysRoleModule>
 	
 	<#list page.list as a>
-		<#if (roleMoudleMap[a.id?string])??&&roleMoudleMap[a.id?string]>
+		<#if (roleModuleMap[a.id?string])??&&roleModuleMap[a.id?string]>
 	<div class="accordionHeader">
 		<h2>${a.attached?no_esc!} ${a.name} <i class="icon icon-chevron-up"></i></h2>
 	</div>
@@ -77,21 +77,21 @@
 			<#break>
 		<#default>
 			<ul class="tree">
-			<@_sysMoudleList parentId=a.id>
+			<@_sysModuleList parentId=a.id>
 				<#list page.list as a>
-					<@t.merge 'childMoudleIds' a.id!/>
+					<@t.merge 'childModuleIds' a.id!/>
 				</#list>
-				<@_sysRoleMoudle roleIds=admin.roles moudleIds=t.childMoudleIds!><#assign childRoleMoudleMap=map!/></@_sysRoleMoudle>
+				<@_sysRoleModule roleIds=admin.roles moduleIds=t.childModuleIds!><#assign childRoleModuleMap=map!/></@_sysRoleModule>
 				<#list page.list as a>
-					<#if (childRoleMoudleMap[a.id?string])?has_content&&childRoleMoudleMap[a.id?string]>
+					<#if (childRoleModuleMap[a.id?string])?has_content&&childRoleModuleMap[a.id?string]>
 				<li><a href="${(a.url)!}" target="navTab" rel="${(a.url)!}" ${(a.url!'')?starts_with('report')?then('external="true"','')?no_esc}>${(a.attached?no_esc)!} ${(a.name)!}</a></li>
 					</#if>
 				</#list>
-			</@_sysMoudleList>
+			</@_sysModuleList>
 			</ul>
 	</#switch>
 	</div>
 		</#if>
 	</#list>
-</@_sysMoudleList>
+</@_sysModuleList>
 </div>

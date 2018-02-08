@@ -5,7 +5,7 @@ package com.publiccms.views.directive.sys;
 import java.io.IOException;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.logic.service.sys.SysRoleMoudleService;
+import com.publiccms.logic.service.sys.SysModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,16 +14,20 @@ import com.publiccms.common.handler.RenderHandler;
 
 /**
  *
- * SysRoleMoudleListDirective
+ * SysModuleListDirective
  * 
  */
 @Component
-public class SysRoleMoudleListDirective extends AbstractTemplateDirective {
+public class SysModuleListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(handler.getInteger("roleId"), handler.getInteger("moudleId"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("count"));
+        Boolean menu = null;
+        if (!handler.getBoolean("advanced", false)) {
+            menu = handler.getBoolean("menu", true);
+        }
+        PageHandler page = service.getPage(handler.getInteger("parentId"), menu, handler.getInteger("pageIndex", 1),
+                handler.getInteger("count", 30));
         handler.put("page", page).render();
     }
 
@@ -33,6 +37,6 @@ public class SysRoleMoudleListDirective extends AbstractTemplateDirective {
     }
 
     @Autowired
-    private SysRoleMoudleService service;
+    private SysModuleService service;
 
 }

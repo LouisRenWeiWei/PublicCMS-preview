@@ -1,5 +1,5 @@
 <#macro lookupTree parentId='' deep=1>
-	<@_sysMoudleList advanced=true parentId=parentId>
+	<@_sysModuleList advanced=true parentId=parentId>
 		<#list page.list as a>
 			<li>
 				<a href="javascript:;" onclick="$.bringBack({parentId:'${a.id}',parentName:'${a.name}'});return false;">${(a.attached?no_esc)!} ${a.name!}</a>
@@ -10,7 +10,7 @@
 				</#if>
 			</li>
 		</#list>
-	</@_sysMoudleList>
+	</@_sysModuleList>
 </#macro>
 <div class="pageFormContent" layoutH="19">
 	<ul class="tree treeFolder expand">

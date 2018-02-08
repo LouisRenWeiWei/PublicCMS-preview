@@ -34,16 +34,16 @@ public class SysRole implements java.io.Serializable {
     @GeneratorColumn(title = "拥有全部权限")
     private boolean ownsAllRight;
     @GeneratorColumn(title = "显示全部模块")
-    private boolean showAllMoudle;
+    private boolean showAllModule;
 
     public SysRole() {
     }
 
-    public SysRole(short siteId, String name, boolean ownsAllRight, boolean showAllMoudle) {
+    public SysRole(short siteId, String name, boolean ownsAllRight, boolean showAllModule) {
         this.siteId = siteId;
         this.name = name;
         this.ownsAllRight = ownsAllRight;
-        this.showAllMoudle = showAllMoudle;
+        this.showAllModule = showAllModule;
     }
 
     @Id
@@ -85,13 +85,13 @@ public class SysRole implements java.io.Serializable {
         this.ownsAllRight = ownsAllRight;
     }
 
-    @Column(name = "show_all_moudle", nullable = false)
-    public boolean isShowAllMoudle() {
-        return this.showAllMoudle;
+    @Column(name = "show_all_module", nullable = false)
+    public boolean isShowAllModule() {
+        return this.showAllModule;
     }
 
-    public void setShowAllMoudle(boolean showAllMoudle) {
-        this.showAllMoudle = showAllMoudle;
+    public void setShowAllModule(boolean showAllModule) {
+        this.showAllModule = showAllModule;
     }
 
 }

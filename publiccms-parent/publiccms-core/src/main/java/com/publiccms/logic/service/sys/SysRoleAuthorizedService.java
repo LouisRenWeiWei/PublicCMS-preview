@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.entities.sys.SysMoudle;
+import com.publiccms.entities.sys.SysModule;
 import com.publiccms.entities.sys.SysRoleAuthorized;
 import com.publiccms.entities.sys.SysRoleAuthorizedId;
 import com.publiccms.logic.dao.sys.SysRoleAuthorizedDao;
@@ -48,28 +48,28 @@ public class SysRoleAuthorizedService extends BaseService<SysRoleAuthorized> {
 
     /**
      * @param roleId
-     * @param showAllMoudle
-     * @param moudles
+     * @param showAllModule
+     * @param modules
      * @param pageUrls
      */
-    public void dealRoleMoudles(Integer roleId, boolean showAllMoudle, List<SysMoudle> moudles, Set<String> pageUrls) {
+    public void dealRoleModules(Integer roleId, boolean showAllModule, List<SysModule> modules, Set<String> pageUrls) {
         if (CommonUtils.notEmpty(roleId)) {
             Set<String> urls = new HashSet<>();
-            if (CommonUtils.notEmpty(moudles)) {
-                for (SysMoudle moudle : moudles) {
-                    if (CommonUtils.notEmpty(moudle.getUrl()) && !showAllMoudle) {
-                        int index = moudle.getUrl().indexOf("?");
-                        urls.add(moudle.getUrl().substring(0, index > 0 ? index : moudle.getUrl().length()));
+            if (CommonUtils.notEmpty(modules)) {
+                for (SysModule module : modules) {
+                    if (CommonUtils.notEmpty(module.getUrl()) && !showAllModule) {
+                        int index = module.getUrl().indexOf("?");
+                        urls.add(module.getUrl().substring(0, index > 0 ? index : module.getUrl().length()));
                     }
-                    if (CommonUtils.notEmpty(moudle.getAuthorizedUrl())) {
-                        for (String url : StringUtils.split(moudle.getAuthorizedUrl(), ',')) {
+                    if (CommonUtils.notEmpty(module.getAuthorizedUrl())) {
+                        for (String url : StringUtils.split(module.getAuthorizedUrl(), ',')) {
                             urls.add(url);
                         }
                     }
                 }
             }
 
-            if (showAllMoudle) {
+            if (showAllModule) {
                 urls.addAll(pageUrls);
             }
 

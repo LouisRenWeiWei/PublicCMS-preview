@@ -18,32 +18,32 @@ import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
-import com.publiccms.entities.sys.SysMoudle;
+import com.publiccms.entities.sys.SysModule;
 import com.publiccms.entities.sys.SysRole;
-import com.publiccms.entities.sys.SysRoleMoudle;
+import com.publiccms.entities.sys.SysRoleModule;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.logic.service.sys.SysMoudleService;
+import com.publiccms.logic.service.sys.SysModuleService;
 import com.publiccms.logic.service.sys.SysRoleAuthorizedService;
-import com.publiccms.logic.service.sys.SysRoleMoudleService;
+import com.publiccms.logic.service.sys.SysRoleModuleService;
 import com.publiccms.logic.service.sys.SysRoleService;
 
 /**
  *
- * SysMoudleAdminController
+ * SysModuleAdminController
  * 
  */
 @Controller
-@RequestMapping("sysMoudle")
-public class SysMoudleAdminController extends AbstractController {
+@RequestMapping("sysModule")
+public class SysModuleAdminController extends AbstractController {
     @Autowired
-    private SysMoudleService service;
+    private SysModuleService service;
     @Autowired
     private SysRoleService roleService;
     @Autowired
-    private SysMoudleService moudleService;
+    private SysModuleService moduleService;
     @Autowired
-    private SysRoleMoudleService roleMoudleService;
+    private SysRoleModuleService roleModuleService;
     @Autowired
     private SysRoleAuthorizedService roleAuthorizedService;
 
@@ -57,7 +57,7 @@ public class SysMoudleAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysMoudle entity, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String save(SysModule entity, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return TEMPLATE_ERROR;
@@ -66,17 +66,17 @@ public class SysMoudleAdminController extends AbstractController {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {
                 @SuppressWarnings("unchecked")
-                List<SysRoleMoudle> roleMoudleList = (List<SysRoleMoudle>) roleMoudleService
+                List<SysRoleModule> roleModuleList = (List<SysRoleModule>) roleModuleService
                         .getPage(null, entity.getId(), null, null).getList();
-                dealRoleAuthorized(roleMoudleList);
+                dealRoleAuthorized(roleModuleList);
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "update.moudle", RequestUtils.getIpAddress(request),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "update.module", RequestUtils.getIpAddress(request),
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.moudle", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.module", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     JsonUtils.getString(entity)));
         }
         return TEMPLATE_DONE;
@@ -96,32 +96,32 @@ public class SysMoudleAdminController extends AbstractController {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return TEMPLATE_ERROR;
         }
-        SysMoudle entity = service.getEntity(id);
+        SysModule entity = service.getEntity(id);
         if (null != entity) {
             service.delete(id);
-            List<SysRoleMoudle> roleMoudleList = (List<SysRoleMoudle>) roleMoudleService.getPage(null, id, null, null).getList();
-            roleMoudleService.deleteByMoudleId(id);
-            dealRoleAuthorized(roleMoudleList);
+            List<SysRoleModule> roleModuleList = (List<SysRoleModule>) roleModuleService.getPage(null, id, null, null).getList();
+            roleModuleService.deleteByModuleId(id);
+            dealRoleAuthorized(roleModuleList);
             logOperateService.save(new LogOperate(getSite(request).getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.moudle", RequestUtils.getIpAddress(request),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.module", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return TEMPLATE_DONE;
     }
 
     @SuppressWarnings("unchecked")
-    private void dealRoleAuthorized(List<SysRoleMoudle> roleMoudleList) {
-        Set<String> pageUrls = moudleService.getPageUrl(null);
-        for (SysRoleMoudle roleMoudle : roleMoudleList) {
-            Set<Integer> moudleIds = new HashSet<Integer>();
-            for (SysRoleMoudle roleMoudle2 : (List<SysRoleMoudle>) roleMoudleService
-                    .getPage(roleMoudle.getId().getRoleId(), null, null, null).getList()) {
-                moudleIds.add(roleMoudle2.getId().getMoudleId());
+    private void dealRoleAuthorized(List<SysRoleModule> roleModuleList) {
+        Set<String> pageUrls = moduleService.getPageUrl(null);
+        for (SysRoleModule roleModule : roleModuleList) {
+            Set<Integer> moduleIds = new HashSet<Integer>();
+            for (SysRoleModule roleModule2 : (List<SysRoleModule>) roleModuleService
+                    .getPage(roleModule.getId().getRoleId(), null, null, null).getList()) {
+                moduleIds.add(roleModule2.getId().getModuleId());
             }
-            SysRole role = roleService.getEntity(roleMoudle.getId().getRoleId());
-            if (!moudleIds.isEmpty() && null != role && !role.isOwnsAllRight()) {
-                roleAuthorizedService.dealRoleMoudles(roleMoudle.getId().getRoleId(), role.isShowAllMoudle(),
-                        service.getEntitys(moudleIds.toArray(new Integer[moudleIds.size()])), pageUrls);
+            SysRole role = roleService.getEntity(roleModule.getId().getRoleId());
+            if (!moduleIds.isEmpty() && null != role && !role.isOwnsAllRight()) {
+                roleAuthorizedService.dealRoleModules(roleModule.getId().getRoleId(), role.isShowAllModule(),
+                        service.getEntitys(moduleIds.toArray(new Integer[moduleIds.size()])), pageUrls);
             }
         }
     }

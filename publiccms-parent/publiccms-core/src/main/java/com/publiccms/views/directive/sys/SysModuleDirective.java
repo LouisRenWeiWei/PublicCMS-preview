@@ -11,31 +11,31 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.entities.sys.SysMoudle;
-import com.publiccms.logic.service.sys.SysMoudleService;
+import com.publiccms.entities.sys.SysModule;
+import com.publiccms.logic.service.sys.SysModuleService;
 
 /**
  *
- * SysMoudleDirective
+ * SysModuleDirective
  * 
  */
 @Component
-public class SysMoudleDirective extends AbstractTemplateDirective {
+public class SysModuleDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Integer id = handler.getInteger("id");
         if (CommonUtils.notEmpty(id)) {
-            SysMoudle entity = service.getEntity(id);
+            SysModule entity = service.getEntity(id);
             if (null != entity) {
                 handler.put("object", entity).render();
             }
         } else {
             Integer[] ids = handler.getIntegerArray("ids");
             if (CommonUtils.notEmpty(ids)) {
-                List<SysMoudle> entityList = service.getEntitys(ids);
-                Map<String, SysMoudle> map = new LinkedHashMap<>();
-                for (SysMoudle entity : entityList) {
+                List<SysModule> entityList = service.getEntitys(ids);
+                Map<String, SysModule> map = new LinkedHashMap<>();
+                for (SysModule entity : entityList) {
                     map.put(String.valueOf(entity.getId()), entity);
                 }
                 handler.put("map", map).render();
@@ -49,6 +49,6 @@ public class SysMoudleDirective extends AbstractTemplateDirective {
     }
 
     @Autowired
-    private SysMoudleService service;
+    private SysModuleService service;
 
 }

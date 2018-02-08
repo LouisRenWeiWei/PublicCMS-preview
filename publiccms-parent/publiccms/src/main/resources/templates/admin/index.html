@@ -75,21 +75,21 @@ $(function(){
 		</li>
 	</ul>
 	<ul id="navMenu">
-<@_sysMoudleList>
+<@_sysModuleList>
 	<#list page.list as a>
-		<@t.merge 'moudleIds' a.id!/>
+		<@t.merge 'moduleIds' a.id!/>
 	</#list>
-	<@_sysRoleMoudle roleIds=admin.roles moudleIds=t.moudleIds!><#assign roleMoudleMap=map!/></@_sysRoleMoudle>
+	<@_sysRoleModule roleIds=admin.roles moduleIds=t.moduleIds!><#assign roleModuleMap=map!/></@_sysRoleModule>
 
 	<#list page.list as a>
-		<#if (roleMoudleMap[a.id?string])??&&roleMoudleMap[a.id?string]>
+		<#if (roleModuleMap[a.id?string])??&&roleModuleMap[a.id?string]>
 			<#if !parentId?has_content><#assign parentId=a.id/></#if>
 			<li>
 				<a href="${a.url?has_content?then(a.url,'menus.html?parentId='+a.id)}">${(a.attached?no_esc)!} ${a.name}</a>
 			</li>
 		</#if>
 	</#list>
-</@_sysMoudleList>
+</@_sysModuleList>
 <@_masterSite>
 	<@_sysAuthorized roleIds=admin.roles url='sysSite/menu'>
 		<li>

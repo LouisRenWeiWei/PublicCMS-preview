@@ -99,3 +99,8 @@ DROP TABLE IF EXISTS `cms_vote_item_attribute`;
 DROP TABLE IF EXISTS `cms_lottery_user_attribute`;
 -- 2018-01-18 --
 ALTER TABLE `cms_category` DROP COLUMN `contents`;
+-- 2018-02-28 --
+ALTER TABLE `sys_moudle` RENAME `sys_module`;
+ALTER TABLE `sys_role_moudle` RENAME `sys_role_module`;
+ALTER TABLE `sys_role_module` CHANGE COLUMN `moudle_id` `module_id`  int(11) NOT NULL COMMENT '模块ID' AFTER `role_id`;
+ALTER TABLE `sys_role` CHANGE COLUMN `show_all_moudle` `show_all_module`  int(11) NOT NULL COMMENT '显示全部模块' AFTER `owns_all_right`;

@@ -10,37 +10,37 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.entities.sys.SysRoleMoudle;
-import com.publiccms.logic.service.sys.SysRoleMoudleService;
+import com.publiccms.entities.sys.SysRoleModule;
+import com.publiccms.logic.service.sys.SysRoleModuleService;
 import com.publiccms.logic.service.sys.SysRoleService;
 
 /**
  *
- * SysRoleMoudleDirective
+ * SysRoleModuleDirective
  * 
  */
 @Component
-public class SysRoleMoudleDirective extends AbstractTemplateDirective {
+public class SysRoleModuleDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Integer[] roleIds = handler.getIntegerArray("roleIds");
-        Integer moudleId = handler.getInteger("moudleId");
+        Integer moduleId = handler.getInteger("moduleId");
         if (CommonUtils.notEmpty(roleIds)) {
-            if (CommonUtils.notEmpty(moudleId)) {
-                SysRoleMoudle entity = service.getEntity(roleIds, moudleId);
+            if (CommonUtils.notEmpty(moduleId)) {
+                SysRoleModule entity = service.getEntity(roleIds, moduleId);
                 handler.put("object", entity).render();
             } else {
-                Integer[] moudleIds = handler.getIntegerArray("moudleIds");
-                if (CommonUtils.notEmpty(moudleIds)) {
+                Integer[] moduleIds = handler.getIntegerArray("moduleIds");
+                if (CommonUtils.notEmpty(moduleIds)) {
                     Map<String, Boolean> map = new LinkedHashMap<>();
-                    if (sysRoleService.showAllMoudle(roleIds)) {
-                        for (Integer id : moudleIds) {
+                    if (sysRoleService.showAllModule(roleIds)) {
+                        for (Integer id : moduleIds) {
                             map.put(String.valueOf(id), true);
                         }
                     } else {
-                        for (SysRoleMoudle entity : service.getEntitys(roleIds, moudleIds)) {
-                            map.put(String.valueOf(entity.getId().getMoudleId()), true);
+                        for (SysRoleModule entity : service.getEntitys(roleIds, moduleIds)) {
+                            map.put(String.valueOf(entity.getId().getModuleId()), true);
                         }
                     }
                     handler.put("map", map).render();
@@ -57,6 +57,6 @@ public class SysRoleMoudleDirective extends AbstractTemplateDirective {
     @Autowired
     private SysRoleService sysRoleService;
     @Autowired
-    private SysRoleMoudleService service;
+    private SysRoleModuleService service;
 
 }

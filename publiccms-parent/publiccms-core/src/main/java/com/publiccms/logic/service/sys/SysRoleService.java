@@ -38,10 +38,10 @@ public class SysRoleService extends BaseService<SysRole> {
      * @return
      */
     @Transactional(readOnly = true)
-    public boolean showAllMoudle(Integer[] roleIds) {
+    public boolean showAllModule(Integer[] roleIds) {
         List<SysRole> list = getEntitys(roleIds);
         for (SysRole role : list) {
-            if (role.isOwnsAllRight() || role.isShowAllMoudle()) {
+            if (role.isOwnsAllRight() || role.isShowAllModule()) {
                 return true;
             }
         }
