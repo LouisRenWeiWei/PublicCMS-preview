@@ -46,19 +46,6 @@ public class CmsLotteryService extends BaseService<CmsLottery> {
 
     /**
      * @param id
-     * @param extendId
-     * @return result
-     */
-    public CmsLottery updateExtendId(Serializable id, Integer extendId) {
-        CmsLottery entity = getEntity(id);
-        if (null != entity) {
-            entity.setExtendId(extendId);
-        }
-        return entity;
-    }
-
-    /**
-     * @param id
      */
     public void delete(Serializable id) {
         CmsLottery entity = getEntity(id);

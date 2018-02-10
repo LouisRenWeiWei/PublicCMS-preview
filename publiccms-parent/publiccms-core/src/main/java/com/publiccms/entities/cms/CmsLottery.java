@@ -59,8 +59,6 @@ public class CmsLottery implements java.io.Serializable {
     private String description;
     @GeneratorColumn(title = "已禁用", condition = true)
     private boolean disabled;
-    @GeneratorColumn(title = "扩展ID")
-    private Integer extendId;
 
     public CmsLottery() {
     }
@@ -80,7 +78,7 @@ public class CmsLottery implements java.io.Serializable {
     }
 
     public CmsLottery(short siteId, Date startDate, Date endDate, int totalGift, int lastGift, int lotteryCount, int fractions,
-            int numerator, String url, String title, String description, boolean disabled, Integer extendId) {
+            int numerator, String url, String title, String description, boolean disabled) {
         this.siteId = siteId;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -93,7 +91,6 @@ public class CmsLottery implements java.io.Serializable {
         this.title = title;
         this.description = description;
         this.disabled = disabled;
-        this.extendId = extendId;
     }
 
     @Id
@@ -216,15 +213,6 @@ public class CmsLottery implements java.io.Serializable {
 
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
-    }
-
-    @Column(name = "extend_id")
-    public Integer getExtendId() {
-        return this.extendId;
-    }
-
-    public void setExtendId(Integer extendId) {
-        this.extendId = extendId;
     }
 
 }

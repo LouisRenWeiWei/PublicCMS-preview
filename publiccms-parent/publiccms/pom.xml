@@ -7,23 +7,23 @@
 	<parent>
 		<groupId>com.publiccms</groupId>
 		<artifactId>publiccms-parent</artifactId>
-		<version>V4.0.20170812</version>
+		<version>V4.0.20180210</version>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>com.publiccms</groupId>
 			<artifactId>publiccms-core</artifactId>
-			<version>V4.0.20170812</version>
+			<version>V4.0.20180210</version>
 		</dependency>
 		<dependency>
 			<groupId>com.publiccms</groupId>
 			<artifactId>publiccms-oauth</artifactId>
-			<version>V4.0.20170812</version>
+			<version>V4.0.20180210</version>
 		</dependency>
 		<dependency>
 			<groupId>com.publiccms</groupId>
 			<artifactId>publiccms-redis</artifactId>
-			<version>V4.0.20170812</version>
+			<version>V4.0.20180210</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -58,21 +58,22 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 </project>

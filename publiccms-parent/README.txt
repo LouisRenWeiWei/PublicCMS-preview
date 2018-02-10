@@ -13,7 +13,7 @@
 配置myeclipse工程 ：eclipse:myeclipse
 清空idea配置 ：idea:clean
 配置idea工程 ：idea:idea
-运行工程：jetty:run
+运行工程：spring-boot:run
 
 gradle(使用以下文件：gradle,build.gradle,settings.gradle,gradlew,gradlew.bat)
 
