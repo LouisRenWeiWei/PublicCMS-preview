@@ -31,9 +31,11 @@ public class UserAgentDirective extends AbstractTemplateDirective {
             Map<String, Object> map = new HashMap<>();
             map.put("id", ua.getId());
             map.put("browser", ua.getBrowser());
+            map.put("browserGroup", ua.getBrowser().getGroup());
             map.put("browserType", ua.getBrowser().getBrowserType());
             map.put("browserVersion", ua.getBrowserVersion());
             map.put("operatingSystem", ua.getOperatingSystem());
+            map.put("operatingSystemGroup", ua.getOperatingSystem().getGroup());
             map.put("deviceType", ua.getOperatingSystem().getDeviceType());
             map.put("userAgent", userAgent);
             handler.put("object", map).render();

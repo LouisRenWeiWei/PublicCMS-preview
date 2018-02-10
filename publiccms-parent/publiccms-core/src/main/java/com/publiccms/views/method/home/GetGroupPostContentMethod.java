@@ -1,8 +1,6 @@
 package com.publiccms.views.method.home;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,22 +14,21 @@ import freemarker.template.TemplateModelException;
 
 /**
  *
- * GetHomeGroupPostContentsMethod
+ * GetGroupPostContentMethod
  * 
  */
 @Component
-public class GetHomeGroupPostContentsMethod extends BaseMethod {
+public class GetGroupPostContentMethod extends BaseMethod {
     
     @SuppressWarnings("unchecked")
     @Override
     public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
-        Long[] ids = getLongArray(0, arguments);
-        if (CommonUtils.notEmpty(ids)) {
-            Map<String, String> resultMap = new HashMap<>();
-            for (HomeGroupPostContent entity : service.getEntitys(ids)) {
-                resultMap.put(String.valueOf(entity.getPostId()), entity.getContent());
+        Long id = getLong(0, arguments);
+        if (CommonUtils.notEmpty(id)) {
+            HomeGroupPostContent entity = service.getEntity(id);
+            if (null != entity) {
+                return entity.getContent();
             }
-            return resultMap;
         }
         return null;
     }

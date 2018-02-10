@@ -7,32 +7,32 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.entities.home.HomeGroupPostContent;
-import com.publiccms.logic.service.home.HomeGroupPostContentService;
+import com.publiccms.entities.home.HomeArticleContent;
+import com.publiccms.logic.service.home.HomeArticleContentService;
 
 import freemarker.template.TemplateModelException;
 
 /**
  *
- * GetHomeGroupPostContentMethod
+ * GetArticleContentMethod
  * 
  */
 @Component
-public class GetHomeGroupPostContentMethod extends BaseMethod {
+public class GetArticleContentMethod extends BaseMethod {
     
     @SuppressWarnings("unchecked")
     @Override
     public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
         Long id = getLong(0, arguments);
         if (CommonUtils.notEmpty(id)) {
-            HomeGroupPostContent entity = service.getEntity(id);
-            if (null != entity) {
+            HomeArticleContent entity = service.getEntity(id);
+            if(null!=entity){
                 return entity.getContent();
             }
         }
         return null;
     }
-
+    
     @Override
     public boolean needAppToken() {
         return true;
@@ -44,6 +44,6 @@ public class GetHomeGroupPostContentMethod extends BaseMethod {
     }
 
     @Autowired
-    private HomeGroupPostContentService service;
+    private HomeArticleContentService service;
     
 }
