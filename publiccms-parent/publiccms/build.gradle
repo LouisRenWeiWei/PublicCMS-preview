@@ -10,7 +10,8 @@ dependencies {
     testCompile(
         // http://mvnrepository.com/artifact/junit/junit
         "junit:junit:4.12",
-        "org.springframework:spring-test:${springVersion}"
+        "org.springframework:spring-test:${springVersion}",
+        "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
     )
     providedCompile(
         // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core
@@ -22,7 +23,6 @@ dependencies {
         "org.springframework.boot:spring-boot-starter-web:${springBootVersion}") {
         exclude group:"org.springframework.boot", module: 'spring-boot-starter-logging'
     }
-    compile("org.springframework.boot:spring-boot-devtools:${springBootVersion}")
     compile fileTree(dir: 'src/main/webapp/WEB-INF/lib', include: ['*.jar'])
 }
 war{
