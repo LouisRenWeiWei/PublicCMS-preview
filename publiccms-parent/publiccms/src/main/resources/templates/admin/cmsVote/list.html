@@ -1,5 +1,4 @@
-<@_voteList startStartDate=startStartDate endStartDate=endStartDate
-            startEndDate=startEndDate endEndDate=endEndDate disabled=disabled
+<@_voteList startEndDate=startEndDate endEndDate=endEndDate disabled=disabled
             orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
 	<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
@@ -36,10 +35,11 @@
 		<thead>
 			<tr>
 				<th>ID</th>
-				<th orderField="endDate" class="<#if orderField??&&'endDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">结束</th>
-				<th>最大投票数</th>
-				<th>地址</th>
 				<th>标题</th>
+				<th>最大投票数</th>
+				<th orderField="endDate" class="<#if orderField??&&'endDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">结束</th>
+				
+				<th>网址</th>
 				<th>描述</th>
 				<th>参与人数</th>
 				<th>操作</th>
@@ -49,10 +49,10 @@
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td>${a.id!}</td>
-				<td>${a.endDate!}</td>
-				<td>${a.maxVote!}</td>
-				<td>${a.url!}</td>
 				<td>${a.title!}</td>
+				<td>${a.maxVote!}</td>
+				<td>${a.endDate!}</td>
+				<td>${a.url!}</td>
 				<td>${a.description!}</td>
 				<td>${a.userCounts!}</td>
 				<td>
