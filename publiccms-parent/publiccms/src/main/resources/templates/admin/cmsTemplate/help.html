@@ -146,6 +146,7 @@
 					<ul>
 						<li><a href="javascript:;" <@getAction r'<#assign attribute=getContentAttribute(contentId)/>' '内容扩展数据(参数为内容Id)'/>>内容扩展数据</a></li>
 						<li><a href="javascript:;" <@getAction r'<#assign attributeMap=getContentAttributes(contentIds)/>' '多个内容扩展数据(参数为多个内容ID以逗号分隔组成的字符串)'/>>多个内容扩展数据</a></li>
+						<li><a href="javascript:;" <@getAction r'<#assign contentPage=getContentPage(text,pageIndex)/>' '内容正文分页结果(参数为内容正文,页码)'/>>内容正文分页结果</a></li>
 						<li><a href="javascript:;" <@getAction r'<#assign attribute=getCategoryAttribute(categoryId)/>' '分类扩展数据(参数为分类ID)'/>>分类扩展数据</a></li>
 						<li><a href="javascript:;" <@getAction r'<#assign attributeMap=getCategoryAttributes(categoryIds)/>' '多个分类扩展数据(参数为多个分类ID以逗号分隔组成的字符串)'/>>多个分类扩展数据</a></li>
 						<li><a href="javascript:;" <@getAction r'<#assign attribute=getPlaceAttribute(placeId)/>' '推荐位数据扩展(参数为推荐位数据ID)'/>>推荐位数据扩展</a></li>
@@ -164,7 +165,7 @@
 						<li><a href="javascript:;" <@getAction r'${getHtml(url,paramter)}' '获取远程文本内容(参数1为网址，参数2为参数组成的map或字符串消息体，参数2可以为空)'/>>获取远程文本内容</a></li>
 						<li><a href="javascript:;" <@getAction r'<#list getKeywords(word) as a>${a}<#sep>,</#list>' '获取文字中的关键词(参数1为字符串内容)'/>>获取文字中的关键词</a></li>
 						<li><a href="javascript:;" <@getAction r'${getMd5(value)}' '输出文本MD5加密结果(参数1为字符串)'/>>输出文本MD5加密结果</a></li>
-						<li><a href="javascript:;" <@getAction r'${getPage(url,pageIndex)}' '获取静态化页面分页地址(参数1为页面地址，参数2为页码)'/>>获取静态化页面分页地址</a></li>
+						<li><a href="javascript:;" <@getAction r'${getPage(url,pageIndex,pageParamter)}' '获取静态化页面分页地址(参数1为页面地址，参数2为页码，参数3为页码参数名可以为空)'/>>获取页面分页地址</a></li>
 						<li><a href="javascript:;" <@getAction r'${getRandom(number)}' '输出随机数(参数1为最大值，参数可以为空)'/>>输出随机数</a></li>
 						<li><a href="javascript:;" <@getAction r'${getSha1Encode(value)}' '输出文本SHA-1加密结果(参数1为字符串)'/>>输出文本SHA-1加密结果</a></li>
 						<li><a href="javascript:;" <@getAction r'${getSleep(second)}' '睡眠一段时间(参数1睡眠时间)'/>>睡眠一段时间</a></li>
