@@ -44,13 +44,13 @@ public class LicenseGenerator implements Base {
                     DateFormatUtils.getDateFormat(LicenseUtils.DATE_FORMAT_STRING).format(DateUtils.addMonths(new Date(), 5)));
             license.setSignaturer(LicenseUtils.generateSignaturer(keyPair.getPrivate().getEncoded(), license));
             String s2 = LicenseUtils.generateSignaturer(keyPair.getPrivate().getEncoded(), license);
-            System.out.println(license.getSignaturer().equals(s2));
             String licenseText = LicenseUtils.writeLicense(license);
-            System.out.println("----------PublicCMS License-----------");
-            System.out.print(licenseText);
-            System.out.println("----------PublicCMS License-----------");
             License l = LicenseUtils.readLicense(licenseText);
-            System.out.println(LicenseUtils.verifyLicense(CommonConstants.PUBLIC_KEY, l));
+            if(license.getSignaturer().equals(s2) && LicenseUtils.verifyLicense(CommonConstants.PUBLIC_KEY, l)){
+                System.out.println("----------PublicCMS License-----------");
+                System.out.print(licenseText);
+                System.out.println("----------PublicCMS License-----------");
+            }
         } else {
             System.out.println(publicKey);
         }
