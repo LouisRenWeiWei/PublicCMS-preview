@@ -37,7 +37,7 @@ import freemarker.template.TemplateException;
 /**
  *
  * CmsTemplateAdminController
- * 
+ *
  */
 @Controller
 @RequestMapping("cmsTemplate")
@@ -211,7 +211,6 @@ public class CmsTemplateAdminController extends AbstractController {
                 }
                 metadataComponent.updatePlaceMetadata(filePath, metadata);
                 templateComponent.clearTemplateCache();
-                cacheComponent.clearViewCache();
                 logOperateService.save(
                         new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                 "update.template.meta", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
