@@ -114,7 +114,7 @@ public class CmsTemplateAdminController extends AbstractController {
         SysSite site = getSite(request);
         if (CommonUtils.notEmpty(path)) {
             try {
-                String filePath = siteComponent.getWebTemplateFilePath(site, path);
+                String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
 				File templateFile = new File(filePath);
                 if (CommonUtils.notEmpty(templateFile)) {
                     fileComponent.updateFile(templateFile, content);
