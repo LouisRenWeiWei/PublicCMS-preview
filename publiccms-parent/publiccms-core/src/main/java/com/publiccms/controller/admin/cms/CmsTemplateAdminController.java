@@ -101,6 +101,46 @@ public class CmsTemplateAdminController extends AbstractController {
         return TEMPLATE_DONE;
     }
 
+	/**
+     * @param path
+     * @param content
+     * @param request
+     * @param session
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("savePlace")
+    public String savePlace(String path, String content, HttpServletRequest request, HttpSession session, ModelMap model) {
+        SysSite site = getSite(request);
+        if (CommonUtils.notEmpty(path)) {
+            try {
+                String filePath = siteComponent.getWebTemplateFilePath(site, path);
+				File templateFile = new File(filePath);
+                if (CommonUtils.notEmpty(templateFile)) {
+                    fileComponent.updateFile(templateFile, content);
+                    logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                            LogLoginService.CHANNEL_WEB_MANAGER, "update.place.template", RequestUtils.getIpAddress(request),
+                            CommonUtils.getDate(), path));
+                } else {
+                    fileComponent.createFile(templateFile, content);
+                    logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                            LogLoginService.CHANNEL_WEB_MANAGER, "save.place.template", RequestUtils.getIpAddress(request),
+                            CommonUtils.getDate(), path));
+                }
+				templateComponent.clearTemplateCache();
+				if(site.isUseSsi()){
+				    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+	                templateComponent.staticPlace(site, path, metadata);
+				}
+            } catch (IOException | TemplateException e) {
+                model.addAttribute(ERROR, e.getMessage());
+                log.error(e.getMessage(), e);
+                return TEMPLATE_ERROR;
+            }
+        }
+        return TEMPLATE_DONE;
+    }
+
     /**
      * @param file
      * @param path
@@ -181,7 +221,6 @@ public class CmsTemplateAdminController extends AbstractController {
             metadataComponent.deletePlaceMetadata(filePath);
             cmsPlaceService.delete(site.getId(), path);
             templateComponent.clearTemplateCache();
-            cacheComponent.clearViewCache();
             logOperateService
                     .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "delete.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
@@ -210,11 +249,14 @@ public class CmsTemplateAdminController extends AbstractController {
                     fileComponent.createFile(templateFile, content);
                 }
                 metadataComponent.updatePlaceMetadata(filePath, metadata);
-                templateComponent.clearTemplateCache();
                 logOperateService.save(
                         new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                 "update.template.meta", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
-            } catch (IOException e) {
+                templateComponent.clearTemplateCache();
+                if(site.isUseSsi()){
+                    templateComponent.staticPlace(site, path, metadata);
+                }
+            } catch (IOException | TemplateException e) {
                 model.addAttribute(ERROR, e.getMessage());
                 log.error(e.getMessage(), e);
                 return TEMPLATE_ERROR;
