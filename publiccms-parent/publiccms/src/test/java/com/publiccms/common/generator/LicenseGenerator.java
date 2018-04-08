@@ -35,13 +35,13 @@ public class LicenseGenerator implements Base {
         if (CommonConstants.PUBLIC_KEY.equals(publicKey)) {
             License license = new License();
             license.setVersion("1.0");
-            license.setAuthorization("免费体验");
-            license.setOrganization("所有用户");
-            license.setIssue("PublicCMS官网");
-            license.setDomain("*");
+            license.setAuthorization("商业授权");
+            license.setOrganization("北京攸度传媒广告有限公司");
+            license.setIssue("锋云科技（北京）有限公司");
+            license.setDomain("udomedia.com.cn");
             license.setStartDate(DateFormatUtils.getDateFormat(LicenseUtils.DATE_FORMAT_STRING).format(new Date()));
             license.setEndDate(
-                    DateFormatUtils.getDateFormat(LicenseUtils.DATE_FORMAT_STRING).format(DateUtils.addMonths(new Date(), 5)));
+                    DateFormatUtils.getDateFormat(LicenseUtils.DATE_FORMAT_STRING).format(DateUtils.addYears(new Date(),100)));
             license.setSignaturer(LicenseUtils.generateSignaturer(keyPair.getPrivate().getEncoded(), license));
             String s2 = LicenseUtils.generateSignaturer(keyPair.getPrivate().getEncoded(), license);
             String licenseText = LicenseUtils.writeLicense(license);
