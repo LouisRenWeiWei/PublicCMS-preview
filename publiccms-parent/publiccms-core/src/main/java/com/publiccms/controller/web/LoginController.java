@@ -189,23 +189,35 @@ public class LoginController extends AbstractController {
     }
 
     /**
+     * @param userId
+     * @param returnUrl
      * @param request
      * @param response
      * @param model
+     * @return view name
      */
     @RequestMapping(value = "doLogout", method = RequestMethod.POST)
-    public void logout(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
-        Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
-        if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
-            String value = userCookie.getValue();
-            if (null != value) {
-                String[] userData = value.split(CommonConstants.getCookiesUserSplit());
-                if (userData.length > 1) {
-                    sysUserTokenService.delete(userData[1]);
+    public String logout(Long userId, String returnUrl, HttpServletRequest request, HttpServletResponse response,
+            ModelMap model) {
+        SysSite site = getSite(request);
+        if (CommonUtils.empty(returnUrl)) {
+            returnUrl = site.getDynamicPath();
+        }
+        SysUser user = getUserFromSession(request.getSession());
+        if (null != userId && null != user && userId == user.getId()) {
+            Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
+            if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
+                String value = userCookie.getValue();
+                if (null != value) {
+                    String[] userData = value.split(CommonConstants.getCookiesUserSplit());
+                    if (userData.length > 1) {
+                        sysUserTokenService.delete(userData[1]);
+                    }
                 }
             }
+            clearUserToSession(request.getContextPath(), request.getSession(), response);
         }
-        clearUserToSession(request.getContextPath(), request.getSession(), response);
+        return REDIRECT + returnUrl;
     }
 
     private void addLoginStatus(SysUser user, String authToken, HttpServletRequest request, HttpServletResponse response) {
