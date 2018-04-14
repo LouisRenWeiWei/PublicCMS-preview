@@ -13,7 +13,7 @@ footer{border-color:#C1C1C1;background-color:#F1F1F1;}
 
 /* NavMenu */
 #navMenu li.selected a,#navMenu li a:hover{ color:#333;background-color:#F1F1F1;}
-#navMenu li{ border-color:#C1C1C1;}
+#navMenu li a{ border-color:#C1C1C1;}
 
 /* TabsPage */
 .tabsPage .tabsPageHeader{ background-color:#F1F1F1;border-color:#C1C1C1;}

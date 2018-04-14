@@ -6,17 +6,17 @@ a{ color:#3C7FB1;}
 .tabs .tabsHeader li a{ color:#03408b;}
 .tabs .tabsHeader li span{ color:#183152;}
 .tabs .tabsContent{ border-color:#b8d0d6;background-color:#eef4f5;}
-
 /* Header */
-header{ border-color:#b8d0d6;}
-footer{ border-color:#b8d0d6;background-color:#d7ebf1;}
+header,footer{ border-color:#293950;background-color:#293950;color:#a4a4a4;}
+header a,footer a{ color:#ffffff;}
+main{ background-color:#48597A;}
 
 /* NavMenu */
-#navMenu li.selected,#navMenu li:hover{ color:#333;background-color:#d7ebf1;}
-#navMenu li{ border-color:#3C7FB1;}
+#navMenu li.selected a,#navMenu li a:hover{ background-color:#5A6D95;}
+#navMenu li a{ border-color:#293950;}
 
 /* TabsPage */
-.tabsPage .tabsPageHeader{ background-color:#d7ebf1;border-color:#b8d0d6;}
+.tabsPage .tabsPageHeader{ background-color:#F4F4F4;border-color:#b8d0d6;}
 .tabsPage .tabsPageHeader li{ border-right-color:#b8d0d6;}
 .tabsPage .tabsPageHeader li a{ color:#183152;}
 .tabsPage .tabsPageHeader li.selected{ background:#ffffff;}
@@ -25,7 +25,7 @@ footer{ border-color:#b8d0d6;background-color:#d7ebf1;}
 .tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{ color:#183152;}
 .toggleCollapse,.tabsPage .tabsLeft{ border-right-color:#b8d0d6;}
 .tabsPage .tabsRight,.tabsPage .tabsMore{ border-left-color:#b8d0d6;}
-.tabsPage .tabsLeftDisabled,.tabsPage .tabsRightDisabled{ color:#F1F1F1;}
+.tabsPage .tabsLeftDisabled,.tabsPage .tabsRightDisabled{ color:#a4a4a4;}
 .tabsPage .tabsMoreList{ border-color:#b8d0d6;background-color:#FFF;}
 .tabsPage{ border-color:#b8d0d6;background-color:#FFF;}
 
@@ -48,16 +48,13 @@ footer{ border-color:#b8d0d6;background-color:#d7ebf1;}
 .resizable{ border-color:#081629;background-color:#c3d7dc;}
 
 /* Tree */
-.tree ul{ background-color:#FFF;}
-.tree li a, .tree li span{ color:#183152;}
-.tree .hover{ background-color:#f5f5f5;}
-.tree .selected{ background-color:#e8edf3;}
+.tree .selected{ background-color:#5A6D95;}
+.tree .selected a{ color:#ffffff}
 
 /* Accordion */
-.accordion .accordionHeader h2{ color:#183152;}
-.accordion{ background-color:#FFF;}
-.accordion .accordionHeader{ background-color:#d7ebf1;}
-.accordion .accordionHeader,.accordion .accordionContent{ border-color:#b8d0d6;}
+.accordion,.accordion a{ color:#ffffff;}
+.accordion .accordionHeader{ background-color:#384963;}
+.accordion .accordionHeader,.accordion .accordionContent{ border-color:#384963;}
 
 /* Grid */
 .pagination, .pagination li.hover, .pagination li.hover a, .pagination li span,

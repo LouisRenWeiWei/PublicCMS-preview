@@ -12,8 +12,8 @@ header{ border-color:#91b3e0;background:url(images/header_background.jpg);backgr
 footer{ border-color:#88a0be;background-color:#b0cdf5;}
 
 /* NavMenu */
-#navMenu li.selected,#navMenu li:hover{ color:#333;background-color:#b0cdf5;}
-#navMenu li{ border-color:#3C7FB1;}
+#navMenu li.selected a,#navMenu li a:hover{ color:#333;background-color:#b0cdf5;}
+#navMenu li a{ border-color:#3C7FB1;}
 
 /* TabsPage */
 .tabsPage .tabsPageHeader{ background-color:#b0cdf5;border-color:#91b3e0;}

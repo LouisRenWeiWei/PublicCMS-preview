@@ -41,7 +41,7 @@ $(function(){
 		debug:false,	// 调试模式 【true|false】
 		callback:function(){
 			initEnv();
-			$("#themeList").theme({themeBase:"${res}/themes",defaultTheme:"azure"}); // themeBase 相对于index页面的主题base路径
+			$("#themeList").theme({themeBase:"${res}/themes",defaultTheme:"default"}); // themeBase 相对于index页面的主题base路径
 		}
 	});
 });
@@ -148,10 +148,10 @@ $(function(){
 </@_version>
 	Copyright &copy; ${.now?string('yyyy')}
 	<ul class="themeList" id="themeList">
-		<li theme="azure"><div class="selected">天蓝</div></li>
+		<li theme="default"><div>淡青</div></li>
+		<li theme="azure"><div>天蓝</div></li>
 		<li theme="silver"><div>银色</div></li>
 		<li theme="purple"><div>紫色</div></li>
-		<li theme="default"><div>淡青</div></li>
 	</ul>
 </footer>
 </body>
