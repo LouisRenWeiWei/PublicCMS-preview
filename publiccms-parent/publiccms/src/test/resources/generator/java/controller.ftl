@@ -14,6 +14,7 @@ import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CommonConstants;
 
 <#include "../include_imports/entity.ftl">
 import com.publiccms.entities.sys.SysSite;
@@ -52,7 +53,7 @@ public class ${entityName}${controllerSuffix} extends AbstractController {
                     .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "save.${entityName?uncap_first}", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
 	/**
@@ -69,7 +70,7 @@ public class ${entityName}${controllerSuffix} extends AbstractController {
 	        logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.${entityName?uncap_first}", RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, ',')));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
     
     @Autowired
