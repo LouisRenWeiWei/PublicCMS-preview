@@ -13,7 +13,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.publiccms.common.base.Base;
+import com.publiccms.common.constants.Constants;
 
 import freemarker.core.ParseException;
 import freemarker.template.Configuration;
@@ -28,7 +28,7 @@ import freemarker.template.TemplateNotFoundException;
  * FreeMarkerUtils
  * 
  */
-public class FreeMarkerUtils implements Base {
+public class FreeMarkerUtils {
     private final static Log log = LogFactory.getLog(FreeMarkerUtils.class);
 
     /**
@@ -82,7 +82,7 @@ public class FreeMarkerUtils implements Base {
             }
             try (FileOutputStream outputStream = new FileOutputStream(destFile, append);
                     FileLock fileLock = outputStream.getChannel().tryLock();) {
-                Writer out = new OutputStreamWriter(outputStream, DEFAULT_CHARSET);
+                Writer out = new OutputStreamWriter(outputStream, Constants.DEFAULT_CHARSET);
                 t.process(model, out);
             }
             log.info(destFilePath + "    saved!");

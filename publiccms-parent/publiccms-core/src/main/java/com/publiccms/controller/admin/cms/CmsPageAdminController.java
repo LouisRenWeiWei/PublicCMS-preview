@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
@@ -51,10 +53,10 @@ public class CmsPageAdminController extends AbstractController {
             CmsPageMetadata oldmetadata = metadataComponent.getTemplateMetadata(filePath);
             oldmetadata.setExtendDataList(placeParamters.getExtendDataList());
             metadataComponent.updateTemplateMetadata(filePath, oldmetadata);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.template.data", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
@@ -69,9 +71,9 @@ public class CmsPageAdminController extends AbstractController {
         if (CommonUtils.notEmpty(path)) {
             SysSite site = getSite(request);
             templateCacheComponent.deleteCachedFile(SiteComponent.getFullFileName(site, path));
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "clear.pageCache", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 }

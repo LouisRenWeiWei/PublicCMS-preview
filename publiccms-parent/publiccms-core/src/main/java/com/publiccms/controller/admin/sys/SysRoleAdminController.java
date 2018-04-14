@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
@@ -71,12 +72,12 @@ public class SysRoleAdminController extends AbstractController {
         if (null != entity.getId()) {
             SysRole oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
-                return TEMPLATE_ERROR;
+                return CommonConstants.TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, ignoreProperties);
             roleModuleService.updateRoleModules(entity.getId(), moduleIds);
             if (null != entity) {
-                logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.role", RequestUtils.getIpAddress(request),
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
@@ -91,12 +92,12 @@ public class SysRoleAdminController extends AbstractController {
                 roleModuleService.save(list);
             }
             logOperateService
-                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    .save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "save.role", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         roleAuthorizedService.dealRoleModules(entity.getId(), entity.isShowAllModule(), moduleService.getEntitys(moduleIds),
                 moduleService.getPageUrl(null));
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
@@ -112,7 +113,7 @@ public class SysRoleAdminController extends AbstractController {
         SysSite site = getSite(request);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
-                return TEMPLATE_ERROR;
+                return CommonConstants.TEMPLATE_ERROR;
             }
             service.delete(id);
             @SuppressWarnings("unchecked")
@@ -123,10 +124,10 @@ public class SysRoleAdminController extends AbstractController {
             roleUserService.deleteByRoleId(id);
             roleModuleService.deleteByRoleId(id);
             roleAuthorizedService.deleteByRoleId(id);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.role", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     JsonUtils.getString(entity)));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 }

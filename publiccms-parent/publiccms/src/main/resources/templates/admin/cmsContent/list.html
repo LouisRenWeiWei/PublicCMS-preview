@@ -79,6 +79,9 @@
 					<#break>
 				</#if>
 			</#list>
+			<#if size=0>
+				<li><a><i class="icon-ban-circle icon-large"></i> 该分类没有可发布内容</a></li>
+			</#if>
 		</@_modelList>
 	</#if>
 			<li><a href="cmsContent/add.html?id={sid}" target="navTab" rel="cmsContent/edit"><i class="icon-edit icon-large"></i> 修改内容</a></li>
@@ -113,7 +116,7 @@
 			<tr>
 				<th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 				<th width="30">ID</th>
-				<th width="250">标题</th>
+				<th width="200">标题</th>
 				<th width="40">发布</th>
 				<th width="30">分类</th>
 				<th width="30">模型</th>
@@ -142,24 +145,24 @@
 
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
-				<td><input name="ids" value="${a.id}" type="checkbox"></td>
-				<td>${a.id}</td>
+				<td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
+				<td class="center">${a.id}</td>
 				<td>${(a.copied?then('[转载]',''))!}<a href="cmsContent/view.html?id=${a.id}" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a></td>
-				<td>
+				<td class="center">
 					${(userMap[a.userId?string].nickName)!}
 				</td>
-				<td>
+				<td class="center">
 					${(categoryMap[a.categoryId?string].name)!}
 				</td>
-				<td>
+				<td class="center">
 					${(modelMap[a.modelId].name)!}
 				</td>
-				<td>${a.scores!}</td>
-				<td>${a.comments!}</td>
-				<td>${a.clicks!}</td>
-				<td>${a.publishDate!}</td>
-				<td>${a.createDate!}</td>
-				<td>${a.sort!}</td>
+				<td class="center">${a.scores!}</td>
+				<td class="center">${a.comments!}</td>
+				<td class="center">${a.clicks!}</td>
+				<td class="center">${a.publishDate!}</td>
+				<td class="center">${a.createDate!}</td>
+				<td class="center">${a.sort!}</td>
 				<td>
 					<@t.m 'status.content.'+a.status/>
 					<#if 1=a.status>/ ${(checkUserMap[a.checkUserId?string].nickName)!}</#if>

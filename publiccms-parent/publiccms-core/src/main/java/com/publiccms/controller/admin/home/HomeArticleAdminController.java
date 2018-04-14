@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
@@ -39,20 +40,20 @@ public class HomeArticleAdminController extends AbstractController {
      */
     @RequestMapping(value = "enable", method = RequestMethod.POST)
     public String enable(Long id, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyEquals("admin.operate", getAdminFromSession(session).getId(), id, model)) {
-            return TEMPLATE_ERROR;
+        if (ControllerUtils.verifyEquals("admin.operate", ControllerUtils.getAdminFromSession(session).getId(), id, model)) {
+            return CommonConstants.TEMPLATE_ERROR;
         }
         HomeArticle entity = service.getEntity(id);
         if (null != entity) {
             SysSite site = getSite(request);
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
-                return TEMPLATE_ERROR;
+                return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, false);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "enable.home.article", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
@@ -64,20 +65,20 @@ public class HomeArticleAdminController extends AbstractController {
      */
     @RequestMapping(value = "disable", method = RequestMethod.POST)
     public String disable(Long id, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyEquals("admin.operate", getAdminFromSession(session).getId(), id, model)) {
-            return TEMPLATE_ERROR;
+        if (ControllerUtils.verifyEquals("admin.operate", ControllerUtils.getAdminFromSession(session).getId(), id, model)) {
+            return CommonConstants.TEMPLATE_ERROR;
         }
         HomeArticle entity = service.getEntity(id);
         if (null != entity) {
             SysSite site = getSite(request);
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
-                return TEMPLATE_ERROR;
+                return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, true);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "disable.home.article", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
     
     @Autowired

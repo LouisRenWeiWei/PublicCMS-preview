@@ -161,10 +161,7 @@ table.list th.asc{ background:url(../default/images/order_up.gif) no-repeat righ
 table.list th.desc{ background:url(../default/images/order_down.gif) no-repeat right;cursor:pointer;}
 table.list tbody { background-color:#fff;}
 table.list .right { text-align:right;}
-table.list .trbg { background-color:#f8f8f8;}
-table.list .hover { background-color:#fff5c0;}
-table.list .selected { background-color:#CDE8FF;}
-table.list a { color:#3C7FB1;}
+table.list .center { text-align:center;}
 table.list a:hover { text-decoration:underline;}
 table.list td span.error { z-index:-1}
 table.nowrap tbody tr { border-bottom:solid 1px #ededed;}

@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
@@ -60,7 +61,7 @@ public class SysModuleAdminController extends AbstractController {
     public String save(SysModule entity, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
-            return TEMPLATE_ERROR;
+            return CommonConstants.TEMPLATE_ERROR;
         }
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
@@ -69,17 +70,17 @@ public class SysModuleAdminController extends AbstractController {
                 List<SysRoleModule> roleModuleList = (List<SysRoleModule>) roleModuleService
                         .getPage(null, entity.getId(), null, null).getList();
                 dealRoleAuthorized(roleModuleList);
-                logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.module", RequestUtils.getIpAddress(request),
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
             service.save(entity);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.module", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     JsonUtils.getString(entity)));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
@@ -94,7 +95,7 @@ public class SysModuleAdminController extends AbstractController {
     public String delete(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
-            return TEMPLATE_ERROR;
+            return CommonConstants.TEMPLATE_ERROR;
         }
         SysModule entity = service.getEntity(id);
         if (null != entity) {
@@ -102,11 +103,11 @@ public class SysModuleAdminController extends AbstractController {
             List<SysRoleModule> roleModuleList = (List<SysRoleModule>) roleModuleService.getPage(null, id, null, null).getList();
             roleModuleService.deleteByModuleId(id);
             dealRoleAuthorized(roleModuleList);
-            logOperateService.save(new LogOperate(getSite(request).getId(), getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(getSite(request).getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.module", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     @SuppressWarnings("unchecked")

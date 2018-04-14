@@ -3,6 +3,7 @@ package com.publiccms.logic.dao.home;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -58,7 +59,7 @@ public class HomeFileDao extends BaseDao<HomeFile> {
             orderType = ORDERTYPE_DESC;
         }
         if (null == orderField) {
-            orderField = BLANK;
+            orderField = CommonConstants.BLANK;
         }
         switch (orderField) {
         case "fileSize":

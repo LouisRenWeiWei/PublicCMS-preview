@@ -18,7 +18,6 @@ import com.publiccms.common.api.Cache;
 import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.base.Base;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -51,7 +50,7 @@ import freemarker.template.TemplateModelException;
  * 模板处理组件 Template Component
  *
  */
-public class TemplateComponent implements Cache, Base {
+public class TemplateComponent implements Cache {
     protected final Log log = LogFactory.getLog(getClass());
     /**
      * 包含目录 include directory
@@ -108,7 +107,7 @@ public class TemplateComponent implements Cache, Base {
             filePath = FreeMarkerUtils.generateStringByString(filePath, webConfiguration, model);
             model.put("url", site.getSitePath() + filePath);
             if (CommonUtils.notEmpty(pageIndex) && 1 < pageIndex) {
-                int index = filePath.lastIndexOf(DOT);
+                int index = filePath.lastIndexOf(CommonConstants.DOT);
                 filePath = filePath.substring(0, index) + '_' + pageIndex + filePath.substring(index, filePath.length());
             }
             FreeMarkerUtils.generateFileByFile(templatePath, siteComponent.getWebFilePath(site, filePath), webConfiguration,
@@ -324,7 +323,7 @@ public class TemplateComponent implements Cache, Base {
         if (CommonUtils.notEmpty(templatePath)) {
             Map<String, Object> model = new HashMap<>();
             exposePlace(site, templatePath, metadata, model);
-            String placeTemplatePath = INCLUDE_DIRECTORY + SEPARATOR + templatePath;
+            String placeTemplatePath = INCLUDE_DIRECTORY + CommonConstants.SEPARATOR + templatePath;
             FreeMarkerUtils.generateFileByFile(SiteComponent.getFullFileName(site, placeTemplatePath),
                     siteComponent.getWebFilePath(site, placeTemplatePath), webConfiguration, model);
         }

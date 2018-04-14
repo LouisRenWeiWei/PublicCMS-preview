@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 import org.apache.commons.lang3.time.DateUtils;
 
-import com.publiccms.common.base.Base;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.copyright.License;
 import com.publiccms.common.tools.DateFormatUtils;
@@ -19,7 +18,7 @@ import com.publiccms.common.tools.VerificationUtils;
  * LicenseGenerator
  * 
  */
-public class LicenseGenerator implements Base {
+public class LicenseGenerator {
 
     /**
      * @param arg
@@ -29,7 +28,7 @@ public class LicenseGenerator implements Base {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please Enter a password:");
         SecureRandom secrand = new SecureRandom();
-        secrand.setSeed(VerificationUtils.sha2Encode(sc.nextLine()).getBytes(DEFAULT_CHARSET)); // 初始化随机产生器
+        secrand.setSeed(VerificationUtils.sha2Encode(sc.nextLine()).getBytes(CommonConstants.DEFAULT_CHARSET)); // 初始化随机产生器
         KeyPair keyPair = VerificationUtils.generateKeyPair(1024, secrand);
         String publicKey = VerificationUtils.base64Encode(keyPair.getPublic().getEncoded());
         if (CommonConstants.PUBLIC_KEY.equals(publicKey)) {

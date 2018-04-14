@@ -19,6 +19,7 @@ import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.directive.BaseTemplateDirective;
 import com.publiccms.common.directive.HttpDirective;
 import com.publiccms.common.handler.HttpParameterHandler;
@@ -49,17 +50,17 @@ public class DirectiveController extends AbstractController {
             HttpDirective directive = actionMap.get(action);
             if (null != directive) {
                 request.setAttribute(AbstractFreemarkerView.CONTEXT_SITE, getSite(request));
-                directive.execute(mappingJackson2HttpMessageConverter, jsonMediaType, request, callback, response);
+                directive.execute(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request, callback, response);
             } else {
-                HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter, jsonMediaType,
+                HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType,
                         request, callback, response);
-                handler.put(ERROR, ApiController.INTERFACE_NOT_FOUND).render();
+                handler.put(CommonConstants.ERROR, ApiController.INTERFACE_NOT_FOUND).render();
             }
         } catch (Exception e) {
-            HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter, jsonMediaType, request,
+            HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request,
                     callback, response);
             try {
-                handler.put(ERROR, ApiController.EXCEPTION).render();
+                handler.put(CommonConstants.ERROR, ApiController.EXCEPTION).render();
             } catch (Exception renderException) {
                 log.error(renderException.getMessage());
             }

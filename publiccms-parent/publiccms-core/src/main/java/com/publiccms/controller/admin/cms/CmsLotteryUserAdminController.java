@@ -1,11 +1,13 @@
 package com.publiccms.controller.admin.cms;
 
-import com.publiccms.common.base.AbstractController;
-import com.publiccms.entities.cms.CmsLotteryUser;
-import com.publiccms.logic.service.cms.CmsLotteryUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.entities.cms.CmsLotteryUser;
+import com.publiccms.logic.service.cms.CmsLotteryUserService;
 /**
  *
  * CmsLotteryUserAdminController
@@ -28,7 +30,7 @@ public class CmsLotteryUserAdminController extends AbstractController {
         } else {
             service.save(entity);
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
@@ -38,7 +40,7 @@ public class CmsLotteryUserAdminController extends AbstractController {
     @RequestMapping("delete")
     public String delete(Integer id) {
         service.delete(id);
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
     
     @Autowired

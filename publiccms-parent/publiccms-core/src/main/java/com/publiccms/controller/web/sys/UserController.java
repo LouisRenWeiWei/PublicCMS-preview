@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
@@ -78,11 +79,11 @@ public class UserController extends AbstractController {
         if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
         }
-        SysUser user = getUserFromSession(session);
+        SysUser user = ControllerUtils.getUserFromSession(session);
         if (ControllerUtils.verifyNotEmpty("user", user, model) || ControllerUtils.verifyNotEmpty("password", password, model)
                 || ControllerUtils.verifyNotEquals("repassword", password, repassword, model) || ControllerUtils
                         .verifyNotEquals("password", user.getPassword(), VerificationUtils.md5Encode(oldpassword), model)) {
-            return REDIRECT + returnUrl;
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
             Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
             if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
@@ -94,12 +95,12 @@ public class UserController extends AbstractController {
                     }
                 }
             }
-            clearUserToSession(request.getContextPath(), session, response);
+            ControllerUtils.clearUserToSession(request.getContextPath(), session, response);
             service.updatePassword(user.getId(), VerificationUtils.md5Encode(password));
-            model.addAttribute(MESSAGE, SUCCESS);
+            model.addAttribute(CommonConstants.MESSAGE, CommonConstants.SUCCESS);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "changepassword",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), user.getPassword()));
-            return REDIRECT + returnUrl;
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
     }
 
@@ -122,12 +123,12 @@ public class UserController extends AbstractController {
         Map<String, String> config = configComponent.getConfigData(site.getId(), EmailComponent.CONFIG_CODE);
         String emailTitle = config.get(EmailTemplateConfigComponent.CONFIG_EMAIL_TITLE);
         String emailPath = config.get(EmailTemplateConfigComponent.CONFIG_EMAIL_PATH);
-        SysUser user = getUserFromSession(session);
+        SysUser user = ControllerUtils.getUserFromSession(session);
         if (ControllerUtils.verifyNotEmpty("user", user, model) || ControllerUtils.verifyNotEmpty("email", email, model)
                 || ControllerUtils.verifyNotEmpty("email.config", emailTitle, model)
-                || ControllerUtils.verifyNotEmpty("email.config", emailPath, model) || verifyNotEMail("email", email, model)
+                || ControllerUtils.verifyNotEmpty("email.config", emailPath, model) || ControllerUtils.verifyNotEMail("email", email, model)
                 || ControllerUtils.verifyHasExist("email", service.findByEmail(site.getId(), email), model)) {
-            return REDIRECT + returnUrl;
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
             SysEmailToken sysEmailToken = new SysEmailToken();
             sysEmailToken.setUserId(user.getId());
@@ -144,14 +145,14 @@ public class UserController extends AbstractController {
                         FreeMarkerUtils.generateStringByString(emailTitle, templateComponent.getWebConfiguration(), emailModel),
                         FreeMarkerUtils.generateStringByFile(siteComponent.getWebTemplateFilePath(site, emailPath),
                                 templateComponent.getWebConfiguration(), emailModel))) {
-                    model.addAttribute(MESSAGE, "sendEmail.success");
+                    model.addAttribute(CommonConstants.MESSAGE, "sendEmail.success");
                 } else {
-                    model.addAttribute(MESSAGE, "sendEmail.error");
+                    model.addAttribute(CommonConstants.MESSAGE, "sendEmail.error");
                 }
             } catch (IOException | TemplateException | MessagingException e) {
-                model.addAttribute(ERROR, "sendEmail.error");
+                model.addAttribute(CommonConstants.ERROR, "sendEmail.error");
             }
-            return REDIRECT + returnUrl;
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
     }
 
@@ -174,13 +175,13 @@ public class UserController extends AbstractController {
         SysEmailToken sysEmailToken = sysEmailTokenService.getEntity(authToken);
         if (ControllerUtils.verifyNotEmpty("verifyEmail.authToken", authToken, model)
                 || ControllerUtils.verifyNotExist("verifyEmail.sysEmailToken", sysEmailToken, model)) {
-            return REDIRECT + returnUrl;
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
             sysEmailTokenService.delete(sysEmailToken.getAuthToken());
             service.checked(sysEmailToken.getUserId(), sysEmailToken.getEmail());
-            clearUserTimeToSession(session);
-            model.addAttribute(MESSAGE, "verifyEmail.success");
-            return REDIRECT + returnUrl;
+            ControllerUtils.clearUserTimeToSession(session);
+            model.addAttribute(CommonConstants.MESSAGE, "verifyEmail.success");
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
     }
 
@@ -197,6 +198,6 @@ public class UserController extends AbstractController {
             returnUrl = site.getDynamicPath();
         }
         sysUserTokenService.delete(authToken);
-        return REDIRECT + returnUrl;
+        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 }

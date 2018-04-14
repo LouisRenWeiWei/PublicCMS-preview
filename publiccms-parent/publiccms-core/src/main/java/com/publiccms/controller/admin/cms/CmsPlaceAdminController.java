@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.ExtendUtils;
@@ -58,9 +59,9 @@ public class CmsPlaceAdminController extends AbstractController {
     public String save(CmsPlace entity, @ModelAttribute CmsPlaceParamters placeParamters, HttpServletRequest request,
             HttpSession session, ModelMap model) {
         if (null != entity && CommonUtils.notEmpty(entity.getPath())) {
-            entity.setPath(entity.getPath().replace("//", SEPARATOR));
+            entity.setPath(entity.getPath().replace("//", CommonConstants.SEPARATOR));
             SysSite site = getSite(request);
-            Long userId = getAdminFromSession(session).getId();
+            Long userId = ControllerUtils.getAdminFromSession(session).getId();
             if (CommonUtils.empty(entity.getItemType()) || CommonUtils.empty(entity.getItemId())) {
                 entity.setItemType(CmsPlaceService.ITEM_TYPE_CUSTOM);
                 entity.setItemId(null);
@@ -68,7 +69,7 @@ public class CmsPlaceAdminController extends AbstractController {
             if (null != entity.getId()) {
                 CmsPlace oldEntity = service.getEntity(entity.getId());
                 if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
-                    return TEMPLATE_ERROR;
+                    return CommonConstants.TEMPLATE_ERROR;
                 }
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 if (null != entity) {
@@ -89,7 +90,7 @@ public class CmsPlaceAdminController extends AbstractController {
             String extentString = ExtendUtils.getExtendString(map);
             attributeService.updateAttribute(entity.getId(), extentString);
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
@@ -104,11 +105,11 @@ public class CmsPlaceAdminController extends AbstractController {
         if (CommonUtils.notEmpty(ids)) {
             SysSite site = getSite(request);
             service.refresh(site.getId(), ids);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "refresh.place", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), StringUtils.join(ids, ',')));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
@@ -123,11 +124,11 @@ public class CmsPlaceAdminController extends AbstractController {
         if (CommonUtils.notEmpty(ids)) {
             SysSite site = getSite(request);
             service.check(site.getId(), ids);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     StringUtils.join(ids, ',')));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
@@ -143,10 +144,10 @@ public class CmsPlaceAdminController extends AbstractController {
             SysSite site = getSite(request);
             service.delete(site.getId(), path);
             logOperateService
-                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    .save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "clear.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
@@ -160,10 +161,10 @@ public class CmsPlaceAdminController extends AbstractController {
         if (CommonUtils.notEmpty(ids)) {
             SysSite site = getSite(request);
             service.delete(site.getId(), ids);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.place", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), StringUtils.join(ids, ',')));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.base.AbstractFreemarkerView;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
@@ -59,23 +60,23 @@ public class TaskTemplateAdminController extends AbstractController {
                 File templateFile = new File(filePath);
                 if (CommonUtils.notEmpty(templateFile)) {
                     fileComponent.updateFile(templateFile, content);
-                    logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                    logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "update.task.template", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), path));
                 } else {
                     fileComponent.createFile(templateFile, content);
-                    logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                    logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "save.task.template", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), path));
                 }
                 templateComponent.clearTaskTemplateCache();
             } catch (IOException e) {
-                model.addAttribute(ERROR, e.getMessage());
+                model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 log.error(e.getMessage(), e);
-                return TEMPLATE_ERROR;
+                return CommonConstants.TEMPLATE_ERROR;
             }
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
@@ -97,13 +98,13 @@ public class TaskTemplateAdminController extends AbstractController {
             model.addAttribute("result",
                     FreeMarkerUtils.generateStringByFile(fulllPath, templateComponent.getTaskConfiguration(), map));
         } catch (IOException | TemplateException e) {
-            model.addAttribute(ERROR, e.getMessage());
+            model.addAttribute(CommonConstants.ERROR, e.getMessage());
             log.error(e.getMessage(), e);
         }
-        logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+        logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                 LogLoginService.CHANNEL_WEB_MANAGER, "run.task.template", RequestUtils.getIpAddress(request),
                 CommonUtils.getDate(), JsonUtils.getString(model)));
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
@@ -119,14 +120,14 @@ public class TaskTemplateAdminController extends AbstractController {
             SysSite site = getSite(request);
             String filePath = siteComponent.getTaskTemplateFilePath(site, path);
             if (ControllerUtils.verifyCustom("notExist.template", !fileComponent.deleteFile(filePath), model)) {
-                return TEMPLATE_ERROR;
+                return CommonConstants.TEMPLATE_ERROR;
             }
             templateComponent.clearTaskTemplateCache();
             logOperateService
-                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    .save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "delete.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
 }

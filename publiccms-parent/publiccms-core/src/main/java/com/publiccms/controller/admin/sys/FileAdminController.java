@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
@@ -61,7 +62,7 @@ public class FileAdminController extends AbstractController {
 					model.put(originalField, originalName);
 				}
                 logUploadService.save(
-                        new LogUpload(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                        new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                 onlyImage, file.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
             } catch (IllegalStateException | IOException e) {
                 log.error(e.getMessage(), e);

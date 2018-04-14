@@ -15,10 +15,10 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
-import com.publiccms.common.base.Base;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.copyright.License;
 
-public class LicenseUtils implements Base {
+public class LicenseUtils {
     public static final String DATE_FORMAT_STRING = "yyyy-MM-dd";
 
     public static String writeLicense(License license) {
@@ -87,6 +87,6 @@ public class LicenseUtils implements Base {
                 }
             }
         }
-        return sb.toString().getBytes(DEFAULT_CHARSET);
+        return sb.toString().getBytes(Constants.DEFAULT_CHARSET);
     }
 }

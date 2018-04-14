@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.ExtendUtils;
@@ -57,7 +58,7 @@ public class SysConfigDataAdminController extends AbstractController {
             SysConfigData oldEntity = service.getEntity(entity.getId());
             if (null != oldEntity
                     && ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getId().getSiteId(), model)) {
-                return TEMPLATE_ERROR;
+                return CommonConstants.TEMPLATE_ERROR;
             }
             Map<String, String> map = ExtendUtils.getExtentDataMap(sysConfigParamters.getExtendDataList(),
                     configComponent.getFieldList(site, entity.getId().getCode(), null, RequestContextUtils.getLocale(request)));
@@ -65,7 +66,7 @@ public class SysConfigDataAdminController extends AbstractController {
             if (null != oldEntity) {
                 entity = service.update(oldEntity.getId(), entity, ignoreProperties);
                 if (null != entity) {
-                    logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                    logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "update.configData", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), JsonUtils.getString(entity)));
                     configComponent.removeCache(site.getId(), entity.getId().getCode());
@@ -73,13 +74,13 @@ public class SysConfigDataAdminController extends AbstractController {
             } else {
                 entity.getId().setSiteId(site.getId());
                 service.save(entity);
-                logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "save.configData", RequestUtils.getIpAddress(request),
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
                 configComponent.removeCache(site.getId(), entity.getId().getCode());
             }
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
@@ -94,12 +95,12 @@ public class SysConfigDataAdminController extends AbstractController {
         SysConfigData entity = service.getEntity(new SysConfigDataId(site.getId(), code));
         if (null != entity) {
             service.delete(entity.getId());
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.configData", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
             configComponent.removeCache(site.getId(), entity.getId().getCode());
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     @Autowired

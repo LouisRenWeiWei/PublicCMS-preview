@@ -17,7 +17,7 @@ import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
 
-import com.publiccms.common.base.Base;
+import com.publiccms.common.constants.Constants;
 
 /**
  * 压缩/解压缩zip包处理类
@@ -25,7 +25,7 @@ import com.publiccms.common.base.Base;
  * ZipUtils
  *
  */
-public class ZipUtils implements Base {
+public class ZipUtils {
     static {
         System.setProperty("sun.zip.encoding", System.getProperty("sun.jnu.encoding"));
     }
@@ -59,7 +59,7 @@ public class ZipUtils implements Base {
                         ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
                         FileLock fileLock = outputStream.getChannel().tryLock();) {
                     zipOutputStream.setEncoding(ENCODING);
-                    compress(Paths.get(sourceFilePath), zipOutputStream, BLANK);
+                    compress(Paths.get(sourceFilePath), zipOutputStream, Constants.BLANK);
                     return true;
                 }
             }
@@ -78,10 +78,10 @@ public class ZipUtils implements Base {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(sourceFilePath);) {
                 for (Path entry : stream) {
                     BasicFileAttributes attrs = Files.readAttributes(entry, BasicFileAttributes.class);
-                    String fullName = BLANK.equals(basedir) ? entry.toFile().getName()
-                            : basedir + SEPARATOR + entry.toFile().getName();
+                    String fullName = Constants.BLANK.equals(basedir) ? entry.toFile().getName()
+                            : basedir + Constants.SEPARATOR + entry.toFile().getName();
                     if (attrs.isDirectory()) {
-                        ZipEntry zipEntry = new ZipEntry(fullName + SEPARATOR);
+                        ZipEntry zipEntry = new ZipEntry(fullName + Constants.SEPARATOR);
                         out.putNextEntry(zipEntry);
                         compress(entry, out, fullName);
                     } else {
@@ -117,7 +117,7 @@ public class ZipUtils implements Base {
      * @throws IOException
      */
     public static void unzipHere(String zipFilePath) throws IOException {
-        int index = zipFilePath.lastIndexOf("/");
+        int index = zipFilePath.lastIndexOf(Constants.SEPARATOR);
         if (0 > index) {
             index = zipFilePath.lastIndexOf("\\");
         }
@@ -129,7 +129,7 @@ public class ZipUtils implements Base {
      * @throws IOException
      */
     public static void unzip(String zipFilePath) throws IOException {
-        unzip(zipFilePath, zipFilePath.substring(0, zipFilePath.lastIndexOf(DOT)), true);
+        unzip(zipFilePath, zipFilePath.substring(0, zipFilePath.lastIndexOf(Constants.DOT)), true);
     }
 
     /**

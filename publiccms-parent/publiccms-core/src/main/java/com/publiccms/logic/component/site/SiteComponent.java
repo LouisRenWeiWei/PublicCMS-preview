@@ -7,9 +7,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.publiccms.common.api.Cache;
-import com.publiccms.common.base.Base;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
@@ -21,7 +21,7 @@ import com.publiccms.logic.service.sys.SysSiteService;
  * SiteComponent
  * 
  */
-public class SiteComponent implements Cache, Base {
+public class SiteComponent implements Cache {
 
     /**
      * 
@@ -69,10 +69,10 @@ public class SiteComponent implements Cache, Base {
      * @return full file name
      */
     public static String getFullFileName(SysSite site, String path) {
-        if (path.startsWith(SEPARATOR) || path.startsWith("\\")) {
+        if (path.startsWith(CommonConstants.SEPARATOR) || path.startsWith("\\")) {
             return SITE_PATH_PREFIX + site.getId() + path;
         }
-        return SITE_PATH_PREFIX + site.getId() + SEPARATOR + path;
+        return SITE_PATH_PREFIX + site.getId() + CommonConstants.SEPARATOR + path;
     }
 
     /**
@@ -91,7 +91,8 @@ public class SiteComponent implements Cache, Base {
      * @return view name prefix
      */
     public String getViewNamePrefix(SysSite site, SysDomain sysDomain) {
-        return getFullFileName(site, CommonUtils.empty(sysDomain.getPath()) ? BLANK : sysDomain.getPath() + SEPARATOR);
+        return getFullFileName(site,
+                CommonUtils.empty(sysDomain.getPath()) ? CommonConstants.BLANK : sysDomain.getPath() + CommonConstants.SEPARATOR);
     }
 
     /**
@@ -104,7 +105,8 @@ public class SiteComponent implements Cache, Base {
             sysDomain = sysDomainService.getEntity(serverName);
             if (null == sysDomain) {
                 int index;
-                if (null != serverName && 0 < (index = serverName.indexOf(DOT)) && index != serverName.lastIndexOf(DOT)) {
+                if (null != serverName && 0 < (index = serverName.indexOf(CommonConstants.DOT))
+                        && index != serverName.lastIndexOf(CommonConstants.DOT)) {
                     sysDomain = getDomain(serverName.substring(index + 1));
                     if (null != sysDomain.getName()) {
                         if (!sysDomain.isWild()) {
@@ -198,7 +200,7 @@ public class SiteComponent implements Cache, Base {
      * @param masterSiteIds
      */
     public void setMasterSiteIds(String masterSiteIds) {
-        String[] masters = StringUtils.split(masterSiteIds, COMMA_DELIMITED);
+        String[] masters = StringUtils.split(masterSiteIds, CommonConstants.COMMA_DELIMITED);
         for (String master : masters) {
             try {
                 Short id = Short.parseShort(master);
@@ -213,8 +215,8 @@ public class SiteComponent implements Cache, Base {
      */
     public void setRootPath(String rootPath) {
         if (CommonUtils.notEmpty(rootPath)) {
-            if (!(rootPath.endsWith(SEPARATOR) || rootPath.endsWith("\\"))) {
-                rootPath += SEPARATOR;
+            if (!(rootPath.endsWith(CommonConstants.SEPARATOR) || rootPath.endsWith("\\"))) {
+                rootPath += CommonConstants.SEPARATOR;
             }
         }
         this.rootPath = rootPath;

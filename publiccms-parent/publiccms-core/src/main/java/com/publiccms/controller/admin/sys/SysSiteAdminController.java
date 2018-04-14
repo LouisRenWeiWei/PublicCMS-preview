@@ -91,7 +91,7 @@ public class SysSiteAdminController extends AbstractController {
             HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
-            return TEMPLATE_ERROR;
+            return CommonConstants.TEMPLATE_ERROR;
         }
         if (!entity.isUseStatic()) {
             entity.setUseSsi(false);
@@ -99,7 +99,7 @@ public class SysSiteAdminController extends AbstractController {
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {
-                logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.site", RequestUtils.getIpAddress(request),
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
@@ -109,7 +109,7 @@ public class SysSiteAdminController extends AbstractController {
                     || ControllerUtils.verifyNotEmpty("userName", userName, model)
                     || ControllerUtils.verifyNotEmpty("password", password, model)
                     || ControllerUtils.verifyHasExist("domain", service.getEntity(domainName), model)) {
-                return TEMPLATE_ERROR;
+                return CommonConstants.TEMPLATE_ERROR;
             }
             service.save(entity);
             SysDomain domain = new SysDomain(domainName, entity.getId(), false);
@@ -123,11 +123,11 @@ public class SysSiteAdminController extends AbstractController {
             userService.save(user);// 初始化用户
             roleUserService.save(new SysRoleUser(new SysRoleUserId(role.getId(), user.getId())));// 初始化角色用户映射
             logOperateService
-                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    .save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "save.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         siteComponent.clear();
-        return TEMPLATE_DONEANDREFRESH;
+        return CommonConstants.TEMPLATE_DONEANDREFRESH;
     }
 
     /**
@@ -142,12 +142,12 @@ public class SysSiteAdminController extends AbstractController {
     public String delete(Short id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
-            return TEMPLATE_ERROR;
+            return CommonConstants.TEMPLATE_ERROR;
         }
         SysSite entity = service.getEntity(id);
         if (null != entity) {
             service.delete(id);
-            Long userId = getAdminFromSession(session).getId();
+            Long userId = ControllerUtils.getAdminFromSession(session).getId();
             Date now = CommonUtils.getDate();
             String ip = RequestUtils.getIpAddress(request);
             for (SysDomain domain : (List<SysDomain>) domainService.getPage(entity.getId(), null, null, null).getList()) {
@@ -158,7 +158,7 @@ public class SysSiteAdminController extends AbstractController {
             logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "delete.site", ip,
                     now, JsonUtils.getString(entity)));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
@@ -172,7 +172,7 @@ public class SysSiteAdminController extends AbstractController {
     public String execSql(String sql, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
-            return TEMPLATE_ERROR;
+            return CommonConstants.TEMPLATE_ERROR;
         }
         if (-1 < sql.indexOf(" ")) {
             String type = sql.substring(0, sql.indexOf(" "));
@@ -190,11 +190,11 @@ public class SysSiteAdminController extends AbstractController {
                 model.addAttribute("error", e.getMessage());
             }
             model.addAttribute("sql", sql);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "execsql.site", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(model)));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
@@ -208,20 +208,20 @@ public class SysSiteAdminController extends AbstractController {
     public String upload(MultipartFile file, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
-            return TEMPLATE_ERROR;
+            return CommonConstants.TEMPLATE_ERROR;
         }
         if (null != file && !file.isEmpty()) {
             try {
                 fileComponent.upload(file, siteComponent.getRootPath() + CommonConstants.LICENSE_FILENAME);
-                logUploadService.save(new LogUpload(site.getId(), getAdminFromSession(session).getId(),
+                logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, false, file.getSize(), RequestUtils.getIpAddress(request),
                         CommonUtils.getDate(), CommonConstants.LICENSE_FILENAME));
-                return TEMPLATE_DONE;
+                return CommonConstants.TEMPLATE_DONE;
             } catch (IllegalStateException | IOException e) {
                 log.error(e.getMessage(), e);
             }
         }
-        return TEMPLATE_ERROR;
+        return CommonConstants.TEMPLATE_ERROR;
     }
 
     /**
@@ -233,9 +233,9 @@ public class SysSiteAdminController extends AbstractController {
     public String reCreateIndex(HttpServletRequest request, HttpSession session) {
         contentService.reCreateIndex();
         SysSite site = getSite(request);
-        Long userId = getAdminFromSession(session).getId();
+        Long userId = ControllerUtils.getAdminFromSession(session).getId();
         logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "delete.site",
-                RequestUtils.getIpAddress(request), CommonUtils.getDate(), BLANK));
-        return TEMPLATE_DONE;
+                RequestUtils.getIpAddress(request), CommonUtils.getDate(), CommonConstants.BLANK));
+        return CommonConstants.TEMPLATE_DONE;
     }
 }
