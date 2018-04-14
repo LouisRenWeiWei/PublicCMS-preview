@@ -74,7 +74,7 @@
 							<a href="cmsWebFile/unzipHere.do?path=${filePath?url}" title="确定要解压缩这个文件到当前目录么?" target="ajaxTodo">解压缩到当前目录</a>
 						</#if>
 						<#if editableSubfix?seq_contains(a.fileName?keep_after_last('.')?lower_case)>
-						  <a href="cmsWebFile/content.html?path=${filePath?url}" target="navTab" rel="cmsWebFile/content" icon="<i class='icon-edit icon-large'></i>" title="文件编辑:${filePath}">编辑</a>
+						  <a href="cmsWebFile/content.html?path=${filePath?url}" target="navTab" rel="cmsWebFile/content:${filePath}" icon="<i class='icon-edit icon-large'></i>" title="文件编辑:${filePath}">编辑</a>
 						</#if>
 						<a href="${site.sitePath+filePath?keep_after('/')}" target="_blank" title="查看">查看</a>
 					</#if>
