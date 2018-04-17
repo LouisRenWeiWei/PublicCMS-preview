@@ -55,6 +55,7 @@ main{ background-color:#48597A;color:#293950;}
 .accordion,.accordion a{ color:#ffffff;}
 .accordion .accordionHeader{ background-color:#384963;}
 .accordion .accordionHeader,.accordion .accordionContent{ border-color:#384963;}
+.accordion .accordionContent{ background-color: #48597A;}
 
 /* Grid */
 .pagination, .pagination li.hover, .pagination li.hover a, .pagination li span,
