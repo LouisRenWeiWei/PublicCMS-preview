@@ -25,6 +25,7 @@ function clickAddTag(){
 				<li>
 					<label><input type="checkbox" name="checked" onclick="if($(this).is(':checked')){$('input[name=draft]',navTab.getCurrentPanel()).parent().parent().hide();}else{$('input[name=draft]',navTab.getCurrentPanel()).parent().parent().show();}"/>直接审核通过</label>
 				</li>
+			<#if 1=a.status><script>$('input[name=checked]',navTab.getCurrentPanel()).click();</script></#if>
 			</@_sysAuthorized>
 			<li><button type="submit" class="buttonActive">保存</button></li>
 			<li><button type="button" class="button close">关闭</button></li>

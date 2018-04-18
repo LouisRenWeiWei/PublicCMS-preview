@@ -1,4 +1,4 @@
-﻿package com.publiccms.logic.component.template;
+package com.publiccms.logic.component.template;
 
 import java.io.File;
 import java.io.IOException;
