@@ -67,16 +67,16 @@ function clickAddTagType(){
 <@tagTypes ((a.tagTypeIds)!'')/>
 <#if site.useStatic>
 				<dl class="nowrap onlyUrl">
-					<dt>静态化模板路径:</dt>
+					<dt>分类模板路径:</dt>
 					<dd>
 						<input name="templatePath" type="text" maxlength="255" size="30" value="${(a.templatePath)!}"/>
 						<a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup="">选择静态化模板</a>
-						<span class="info">模板路径为空时不生成静态化页面</span>
+						<span class="info">分类模板路径为空时不生成静态化页面，分类访问路径为动态时，请不要选择分类模板路径</span>
 					</dd>
 				</dl>
 </#if>
 				<dl class="nowrap">
-					<dt>分类页面访问路径:</dt>
+					<dt>分类访问路径:</dt>
 					<dd>
 						<input class="required" name="path" type="text" maxlength="500" size="50" value="${(a.path)!(category.path)!}"/>
 						<a class="btnLook onlyUrl" href="cmsCategory/categoryPath.html" width="920" lookupGroup="">选择路径</a>
