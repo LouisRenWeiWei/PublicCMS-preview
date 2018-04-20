@@ -69,8 +69,8 @@ public class AdminContextInterceptor extends WebContextInterceptor {
                 }
             }
             SysUser entity = sysUserService.getEntity(user.getId());
-            if (null != entity && !entity.isDisabled() && !entity.isSuperuserAccess() && null != site && !site.isDisabled()
-                    && site.getId() != entity.getSiteId()) {
+            if (null == entity || entity.isDisabled() || !entity.isSuperuserAccess() || null == site || site.isDisabled()
+                    || site.getId() != entity.getSiteId()) {
                 try {
                     redirectLogin(ctxPath, path, request.getQueryString(), request.getHeader("X-Requested-With"), response);
                     return false;
@@ -80,7 +80,8 @@ public class AdminContextInterceptor extends WebContextInterceptor {
             } else if (verifyNeedAuthorized(path)) {
                 if (!CommonConstants.SEPARATOR.equals(path)) {
                     int index = path.lastIndexOf(CommonConstants.DOT);
-                    path = path.substring(path.indexOf(CommonConstants.SEPARATOR) > 0 ? 0 : 1, index > -1 ? index : path.length());
+                    path = path.substring(path.indexOf(CommonConstants.SEPARATOR) > 0 ? 0 : 1,
+                            index > -1 ? index : path.length());
                     if (0 == roleAuthorizedService.count(entity.getRoles(), path) && !ownsAllRight(entity.getRoles())) {
                         try {
                             StringBuilder sb = new StringBuilder(ctxPath);
