@@ -46,7 +46,7 @@ import com.publiccms.logic.service.tools.SqlService;
 /**
  *
  * SysSiteAdminController
- * 
+ *
  */
 @Controller
 @RequestMapping("sysSite")
@@ -108,7 +108,7 @@ public class SysSiteAdminController extends AbstractController {
                     || ControllerUtils.verifyCustom("unauthorizedDomain", !CmsVersion.verifyDomain(domainName), model)
                     || ControllerUtils.verifyNotEmpty("userName", userName, model)
                     || ControllerUtils.verifyNotEmpty("password", password, model)
-                    || ControllerUtils.verifyHasExist("domain", service.getEntity(domainName), model)) {
+                    || ControllerUtils.verifyHasExist("domain", domainService.getEntity(domainName), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.save(entity);
