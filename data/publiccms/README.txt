@@ -15,3 +15,4 @@ install.lock
 
 database.properties
 	数据库配置,其中jdbc.encryptPassword为加密数据库密码优先级高于jdbc.password
+

@@ -10,8 +10,8 @@
 					<label>登录结果:</label>
 					<select class="combox" name="result">
 						<option value=""${(!result?has_content)?then(' selected="true"','')?no_esc}>不限</option>
-						<option value="true"${(result?has_content&&"1"==result)?then(' selected="true"','')?no_esc}>成功</option>
-						<option value="false"${(result?has_content&&"0"==result)?then(' selected="true"','')?no_esc}>失败</option>
+						<option value="true"${(result?has_content&&"true"==result)?then(' selected="true"','')?no_esc}>成功</option>
+						<option value="false"${(result?has_content&&"false"==result)?then(' selected="true"','')?no_esc}>失败</option>
 					</select>
 				</li>
 				<li>

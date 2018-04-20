@@ -107,6 +107,7 @@ public class TemplateComponent implements Cache {
             filePath = FreeMarkerUtils.generateStringByString(filePath, webConfiguration, model);
             model.put("url", site.getSitePath() + filePath);
             if (CommonUtils.notEmpty(pageIndex) && 1 < pageIndex) {
+                model.put("pageIndex", pageIndex);
                 int index = filePath.lastIndexOf(CommonConstants.DOT);
                 filePath = filePath.substring(0, index) + '_' + pageIndex + filePath.substring(index, filePath.length());
             }
@@ -288,12 +289,10 @@ public class TemplateComponent implements Cache {
 
         if (CommonUtils.notEmpty(totalPage) && pageIndex + 1 <= totalPage) {
             for (int i = pageIndex + 1; i <= totalPage; i++) {
-                model.put("pageIndex", i);
                 createStaticFile(site, templatePath, filePath, i, null, model);
             }
         }
 
-        model.put("pageIndex", pageIndex);
         return createStaticFile(site, templatePath, filePath, 1, null, model);
     }
 
