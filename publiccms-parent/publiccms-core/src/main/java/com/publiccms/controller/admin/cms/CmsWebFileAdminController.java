@@ -89,9 +89,9 @@ public class CmsWebFileAdminController extends AbstractController {
                 SysSite site = getSite(request);
                 path = path + CommonConstants.SEPARATOR + file.getOriginalFilename();
                 fileComponent.upload(file, siteComponent.getWebFilePath(site, path));
-                logUploadService.save(
-                        new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                false, file.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, false, file.getSize(), RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), path));
             } catch (IOException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 log.error(e.getMessage(), e);
@@ -140,15 +140,21 @@ public class CmsWebFileAdminController extends AbstractController {
             File file = new File(filePath);
             if (CommonUtils.notEmpty(file) && file.isDirectory()) {
                 try {
-                    ZipUtils.zip(filePath, filePath + ".zip");
+                    String zipFileName = null;
+                    if (path.endsWith("/") || path.endsWith("\\")) {
+                        zipFileName = filePath + "files.zip";
+                    } else {
+                        zipFileName = filePath + ".zip";
+                    }
+                    ZipUtils.zip(filePath, zipFileName);
                 } catch (IOException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
                     log.error(e.getMessage(), e);
                 }
             }
-            logOperateService
-                    .save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "zip.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "zip.web.webfile", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -203,9 +209,9 @@ public class CmsWebFileAdminController extends AbstractController {
                     log.error(e.getMessage(), e);
                 }
             }
-            logOperateService
-                    .save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "unzip.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "unzip.web.webfile", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), path));
         }
     }
 
@@ -225,9 +231,9 @@ public class CmsWebFileAdminController extends AbstractController {
             String filePath = siteComponent.getWebFilePath(site, path);
             File file = new File(filePath);
             file.mkdirs();
-            logOperateService
-                    .save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "createDirectory.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "createDirectory.web.webfile", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

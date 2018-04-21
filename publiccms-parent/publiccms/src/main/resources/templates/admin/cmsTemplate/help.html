@@ -229,7 +229,7 @@
 				</li>
 			<#elseif metaDataMap[a.fileName]?has_content&&metaDataMap[a.fileName].allowContribute>
 				<li>
-					<a href="placeTemplate/form.html?path=${path!}" target="dialog" mask="true">
+					<a href="placeTemplate/form.html?path=${(path?url)!}" target="dialog" mask="true">
 						${(metaDataMap[a.fileName].alias)!a.fileName}
 					</a>
 				</li>

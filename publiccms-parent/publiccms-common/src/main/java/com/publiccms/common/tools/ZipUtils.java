@@ -58,9 +58,11 @@ public class ZipUtils {
                 try (FileOutputStream outputStream = new FileOutputStream(zipFile);
                         ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
                         FileLock fileLock = outputStream.getChannel().tryLock();) {
-                    zipOutputStream.setEncoding(ENCODING);
-                    compress(Paths.get(sourceFilePath), zipOutputStream, Constants.BLANK);
-                    return true;
+                    if (null != fileLock) {
+                        zipOutputStream.setEncoding(ENCODING);
+                        compress(Paths.get(sourceFilePath), zipOutputStream, Constants.BLANK);
+                        return true;
+                    }
                 }
             }
         }
@@ -154,7 +156,9 @@ public class ZipUtils {
                         try (InputStream inputStream = zipFile.getInputStream(zipEntry);
                                 FileOutputStream outputStream = new FileOutputStream(targetFile);
                                 FileLock fileLock = outputStream.getChannel().tryLock();) {
-                            StreamUtils.copy(inputStream, outputStream);
+                            if (null != fileLock) {
+                                StreamUtils.copy(inputStream, outputStream);
+                            }
                         }
                     }
                 }

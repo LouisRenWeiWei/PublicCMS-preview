@@ -82,12 +82,16 @@ public class FreeMarkerUtils {
             }
             try (FileOutputStream outputStream = new FileOutputStream(destFile, append);
                     FileLock fileLock = outputStream.getChannel().tryLock();) {
-                Writer out = new OutputStreamWriter(outputStream, Constants.DEFAULT_CHARSET);
-                t.process(model, out);
+                if (null == fileLock) {
+                    log.warn(destFilePath + " locked by others!");
+                } else {
+                    Writer out = new OutputStreamWriter(outputStream, Constants.DEFAULT_CHARSET);
+                    t.process(model, out);
+                    log.info(destFilePath + " saved!");
+                }
             }
-            log.info(destFilePath + "    saved!");
         } else {
-            log.error(destFilePath + "    already exists!");
+            log.error(destFilePath + " already exists!");
         }
     }
 
