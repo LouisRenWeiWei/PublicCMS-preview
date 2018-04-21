@@ -40,7 +40,7 @@
             <dd class="licenseVerify"></dd>
         </dl>
         <script>
-            $.getJSON('//cms.publiccms.com/api/directive/licenseVerify?callback=?&licenseData=${getLicenseData()?url}&signaturer=${license.signaturer?url}',function(data){
+            $.getJSON('//cms.publiccms.com/api/directive/licenseVerify?callback=?&licenseData=${getLicenseData()?url}',function(data){
                 if(data.result){
                 	$('.licenseVerify').append('验证通过');
                 }else{
