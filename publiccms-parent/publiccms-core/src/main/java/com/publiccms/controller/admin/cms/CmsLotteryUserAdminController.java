@@ -17,7 +17,7 @@ import com.publiccms.logic.service.cms.CmsLotteryUserService;
 @RequestMapping("cmsLotteryUser")
 public class CmsLotteryUserAdminController extends AbstractController {
 
-	private String[] ignoreProperties = new String[]{"id"};
+    private String[] ignoreProperties = new String[]{"id"};
 
     /**
      * @param entity

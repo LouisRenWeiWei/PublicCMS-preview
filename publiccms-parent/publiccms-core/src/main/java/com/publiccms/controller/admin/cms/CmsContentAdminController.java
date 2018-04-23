@@ -152,12 +152,12 @@ public class CmsContentAdminController extends AbstractController {
             entity.setPublishDate(now);
         }
 
-		if (null != attribute.getText()) {
-			String text = HtmlUtils.removeHtmlTag(attribute.getText());
+        if (null != attribute.getText()) {
+            String text = HtmlUtils.removeHtmlTag(attribute.getText());
             attribute.setWordCount(text.length());
-			if(CommonUtils.empty(entity.getDescription())){
-				entity.setDescription(StringUtils.substring(text,0,300));
-			}
+            if (CommonUtils.empty(entity.getDescription())) {
+                entity.setDescription(StringUtils.substring(text, 0, 300));
+            }
         }
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());

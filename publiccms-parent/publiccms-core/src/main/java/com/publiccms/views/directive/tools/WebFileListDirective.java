@@ -20,19 +20,19 @@ import com.publiccms.common.handler.RenderHandler;
 @Component
 public class WebFileListDirective extends AbstractTemplateDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		String path = handler.getString("path", CommonConstants.SEPARATOR);
-		handler.put("list", fileComponent.getFileList(siteComponent.getWebFilePath(getSite(handler), path)))
-				.render();
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        String path = handler.getString("path", CommonConstants.SEPARATOR);
+        handler.put("list", fileComponent.getFileList(siteComponent.getWebFilePath(getSite(handler), path)))
+                .render();
+    }
 
-	@Override
-	public boolean needAppToken() {
-		return true;
-	}
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
 
-	@Autowired
-	private FileComponent fileComponent;
-	
+    @Autowired
+    private FileComponent fileComponent;
+    
 }

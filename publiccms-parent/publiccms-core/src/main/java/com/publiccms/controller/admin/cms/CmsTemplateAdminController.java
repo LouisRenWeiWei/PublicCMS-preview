@@ -101,7 +101,7 @@ public class CmsTemplateAdminController extends AbstractController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-	/**
+    /**
      * @param path
      * @param content
      * @param request
@@ -115,7 +115,7 @@ public class CmsTemplateAdminController extends AbstractController {
         if (CommonUtils.notEmpty(path)) {
             try {
                 String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
-				File templateFile = new File(filePath);
+                File templateFile = new File(filePath);
                 if (CommonUtils.notEmpty(templateFile)) {
                     fileComponent.updateFile(templateFile, content);
                     logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
@@ -127,11 +127,11 @@ public class CmsTemplateAdminController extends AbstractController {
                             LogLoginService.CHANNEL_WEB_MANAGER, "save.place.template", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), path));
                 }
-				templateComponent.clearTemplateCache();
-				if(site.isUseSsi()){
-				    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
-	                templateComponent.staticPlace(site, path, metadata);
-				}
+                templateComponent.clearTemplateCache();
+                if(site.isUseSsi()){
+                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+                    templateComponent.staticPlace(site, path, metadata);
+                }
             } catch (IOException | TemplateException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 log.error(e.getMessage(), e);

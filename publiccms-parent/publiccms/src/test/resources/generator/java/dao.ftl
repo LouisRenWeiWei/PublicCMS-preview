@@ -19,8 +19,8 @@ import com.publiccms.common.tools.CommonUtils;
  */
 @Repository
 public class ${entityName}${daoSuffix} extends BaseDao<${entityName}> {
-	
-	<#include "../include_condition/comment.ftl">
+    
+    <#include "../include_condition/comment.ftl">
     public PageHandler getPage(<#include "../include_condition/condition.ftl">) {
         QueryHandler queryHandler = getQueryHandler("from ${entityName} bean");
         <#include "../include_condition/hql.ftl">

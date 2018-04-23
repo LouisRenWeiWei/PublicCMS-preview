@@ -31,9 +31,9 @@ import com.publiccms.logic.service.log.LogLoginService;
 @RequestMapping("${entityName?uncap_first}")
 public class ${entityName}${controllerSuffix} extends AbstractController {
 
-	private String[] ignoreProperties = new String[]{"id"};
-	
-	/**
+    private String[] ignoreProperties = new String[]{"id"};
+    
+    /**
      * @param entity
      * @param request
      * @param session
@@ -41,7 +41,7 @@ public class ${entityName}${controllerSuffix} extends AbstractController {
      */
     @RequestMapping("save")
     public String save(${entityName} entity, HttpServletRequest request, HttpSession session) {
-    	SysSite site = getSite(request);
+        SysSite site = getSite(request);
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             logOperateService.save(
@@ -56,7 +56,7 @@ public class ${entityName}${controllerSuffix} extends AbstractController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-	/**
+    /**
      * @param ids
      * @param request
      * @param session
@@ -64,10 +64,10 @@ public class ${entityName}${controllerSuffix} extends AbstractController {
      */
     @RequestMapping("delete")
     public String delete(Integer[] ids, HttpServletRequest request, HttpSession session) {
-    	SysSite site = getSite(request);
-    	if (CommonUtils.notEmpty(ids)) {
-	        service.delete(ids);
-	        logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+        SysSite site = getSite(request);
+        if (CommonUtils.notEmpty(ids)) {
+            service.delete(ids);
+            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.${entityName?uncap_first}", RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, ',')));
         }
         return CommonConstants.TEMPLATE_DONE;

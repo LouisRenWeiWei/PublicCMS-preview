@@ -50,17 +50,17 @@ public class FileAdminController extends AbstractController {
             ModelMap model) {
         SysSite site = getSite(request);
         if (null != file && !file.isEmpty()) {
-			String originalName = file.getOriginalFilename();
-			String suffix = fileComponent.getSuffix(originalName);
+            String originalName = file.getOriginalFilename();
+            String suffix = fileComponent.getSuffix(originalName);
             String fileName = fileComponent.getUploadFileName(suffix);
             try {
                 fileComponent.upload(file, siteComponent.getWebFilePath(site, fileName));
                 model.put("field", field);
                 model.put(field, fileName);
-				if(CommonUtils.notEmpty(originalField)){
-					model.put("originalField", originalField);
-					model.put(originalField, originalName);
-				}
+                if(CommonUtils.notEmpty(originalField)){
+                    model.put("originalField", originalField);
+                    model.put(originalField, originalName);
+                }
                 logUploadService.save(
                         new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                 onlyImage, file.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
