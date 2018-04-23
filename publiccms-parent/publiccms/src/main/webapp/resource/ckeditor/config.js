@@ -8,6 +8,9 @@ CKEDITOR.editorConfig = function( config ) {
 	// config.language = 'fr';
 	// config.uiColor = '#AADC6E';
 	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
+    config.extraPlugins = 'codesnippet';
+    odeSnippet_theme: 'zenburn';
+
 	config.filebrowserImageUploadUrl = base + '/ckeditor/upload.json?type=image';//定义图片上传的地址
 	config.filebrowserImageBrowseUrl = base + '/cmsWebFile/browse.html?type=image';  //定义图片的浏览服务器窗口.
      
