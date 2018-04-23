@@ -26,7 +26,7 @@ public class LicenseGenerator {
      */
     public static void main(String[] arg) throws Throwable {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Please Enter a password:");
+        System.out.println("Please input a password:");
         SecureRandom secrand = new SecureRandom();
         secrand.setSeed(VerificationUtils.sha2Encode(sc.nextLine()).getBytes(CommonConstants.DEFAULT_CHARSET)); // 初始化随机产生器
         KeyPair keyPair = VerificationUtils.generateKeyPair(1024, secrand);
@@ -34,10 +34,10 @@ public class LicenseGenerator {
         if (CommonConstants.PUBLIC_KEY.equals(publicKey)) {
             License license = new License();
             license.setVersion("1.0");
-            license.setAuthorization("商业授权");
-            license.setOrganization("北京攸度传媒广告有限公司");
-            license.setIssue("锋云科技（北京）有限公司");
-            license.setDomain("udomedia.com.cn");
+            license.setAuthorization("免费体验");
+            license.setOrganization("所有用户");
+            license.setIssue("PublicCMS官网");
+            license.setDomain("*");
             license.setStartDate(DateFormatUtils.getDateFormat(LicenseUtils.DATE_FORMAT_STRING).format(new Date()));
             license.setEndDate(
                     DateFormatUtils.getDateFormat(LicenseUtils.DATE_FORMAT_STRING).format(DateUtils.addYears(new Date(),100)));
