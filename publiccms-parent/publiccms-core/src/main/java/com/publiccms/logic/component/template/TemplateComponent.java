@@ -297,13 +297,9 @@ public class TemplateComponent implements Cache {
     }
 
     private void exposePlace(SysSite site, String templatePath, CmsPlaceMetadata metadata, Map<String, Object> model) {
-        int pageSize = 10;
-        if (CommonUtils.notEmpty(metadata.getSize())) {
-            pageSize = metadata.getSize();
-        }
-        if (pageSize > 0) {
-            model.put("page", placeService.getPage(site.getId(), null, templatePath, null, null, null, CommonUtils.getMinuteDate(),
-                    CmsPlaceService.STATUS_NORMAL, false, null, null, 1, pageSize));
+        if (null != metadata.getSize() && metadata.getSize() > 0) {
+            model.put("page", placeService.getPage(site.getId(), null, templatePath, null, null, null,
+                    CommonUtils.getMinuteDate(), CmsPlaceService.STATUS_NORMAL, false, null, null, 1, metadata.getSize()));
         }
         model.put("metadata", metadata);
         AbstractFreemarkerView.exposeSite(model, site);
@@ -425,6 +421,7 @@ public class TemplateComponent implements Cache {
     public void clearTemplateCache() {
         webConfiguration.clearTemplateCache();
     }
+
     /**
      * 清理任务计划模板缓存
      * 

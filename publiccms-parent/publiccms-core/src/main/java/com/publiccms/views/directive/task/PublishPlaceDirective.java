@@ -34,12 +34,12 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
         String path = handler.getString("path", CommonConstants.SEPARATOR);
         SysSite site = getSite(handler);
         if (site.isUseSsi()) {
-            String fullPath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + CommonConstants.SEPARATOR + path);
+            String fullPath = siteComponent.getWebTemplateFilePath(site,
+                    TemplateComponent.INCLUDE_DIRECTORY + CommonConstants.SEPARATOR + path);
             File file = new File(fullPath);
             if (file.isFile()) {
                 Map<String, Boolean> map = new LinkedHashMap<>();
-                CmsPlaceMetadata metadata = metadataComponent
-                        .getPlaceMetadata(fullPath);
+                CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(file.getName());
                 try {
                     if (null == metadata) {
                         metadata = new CmsPlaceMetadata();
@@ -59,10 +59,10 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
     private Map<String, Boolean> deal(SysSite site, String path) {
         path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
-        List<FileInfo> list = fileComponent
-                .getFileList(siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + CommonConstants.SEPARATOR + path));
-        Map<String, CmsPlaceMetadata> metadataMap = metadataComponent
-                .getPlaceMetadataMap(siteComponent.getWebTemplateFilePath(site, path));
+        String realPath = siteComponent.getWebTemplateFilePath(site,
+                TemplateComponent.INCLUDE_DIRECTORY + CommonConstants.SEPARATOR + path);
+        List<FileInfo> list = fileComponent.getFileList(realPath);
+        Map<String, CmsPlaceMetadata> metadataMap = metadataComponent.getPlaceMetadataMap(realPath);
         for (FileInfo fileInfo : list) {
             String filePath = path + fileInfo.getFileName();
             if (fileInfo.isDirectory()) {
