@@ -287,7 +287,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             if (siteId == entity.getSiteId() && !entity.isDisabled()) {
                 if (0 < entity.getChilds()) {
                     for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
-                            entity.getId(), null, null, null, null, null, null, null, null), null, null, null, null, null)
+                            entity.getId(), null, null, null, null, null, null, null, null, null), null, null, null, null, null)
                                     .getList()) {
                         child.setDisabled(true);
                         entityList.add(child);
@@ -332,7 +332,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             if (siteId == entity.getSiteId() && entity.isDisabled()) {
                 if (0 < entity.getChilds()) {
                     for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
-                            entity.getId(), null, null, null, null, null, null, null, null), false, null, null, null, null)
+                            entity.getId(), null, null, null, null, null, null, null, null, null), false, null, null, null, null)
                                     .getList()) {
                         child.setDisabled(false);
                         entityList.add(child);
@@ -357,7 +357,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             if (siteId == entity.getSiteId() && entity.isDisabled()) {
                 if (0 < entity.getChilds()) {
                     for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
-                            entity.getId(), null, null, null, null, null, null, null, null), false, null, null, null, null)
+                            entity.getId(), null, null, null, null ,null, null, null, null, null), false, null, null, null, null)
                                     .getList()) {
                         delete(child.getId());
                     }
