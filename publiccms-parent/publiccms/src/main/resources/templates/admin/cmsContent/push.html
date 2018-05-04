@@ -12,7 +12,7 @@
     </#list>
     <@_content ids=t.contentIds!><#assign contentMap=map!/></@_content>
     <#list page.list as a>
-            <a href="${(contentMap[a.contentId?string].url)!}" target="_blank">${(contentMap[a.contentId?string].title)!}</a> (${(a.clicks)!})<br/>
+            <a href="${(contentMap[a.contentId?string].url)!}" target="_blank">${(contentMap[a.contentId?string].title)!}</a> (${(a.clicks)!}) <a href="cmsContent/unrelated.do?id=${a.id}" title="确定要删除这条推荐么?" target="ajaxTodo" callback="$.pdialog.closeCurrent()">删除</a><br/>
     </#list>
         </p>
 </@_contentRelatedList>
@@ -26,7 +26,7 @@
         </p>
         <p>
     <#list page.list as a>
-        ${a.path[0..a.path?last_index_of('/')]}<@_placeMetadata path=a.path>${(object.alias)!}</@_placeMetadata> (${a.clicks})<br/>
+        ${a.path[0..a.path?last_index_of('/')]}<@_placeMetadata path=a.path>${(object.alias)!}</@_placeMetadata> (${a.clicks}) <a href="cmsPlace/delete.do?ids=${a.id}" title="确定要删除这条推荐么?" target="ajaxTodo" callback="$.pdialog.closeCurrent()">删除</a><br/>
     </#list>
         </p>
 </@_placeList>

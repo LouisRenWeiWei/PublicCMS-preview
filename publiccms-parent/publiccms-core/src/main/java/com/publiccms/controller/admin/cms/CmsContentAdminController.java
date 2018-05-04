@@ -334,6 +334,30 @@ public class CmsContentAdminController extends AbstractController {
     }
 
     /**
+     * @param id
+     * @param request
+     * @param session
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("unrelated")
+    public String unrelated(Long id, HttpServletRequest request, HttpSession session, ModelMap model) {
+        CmsContentRelated entity = cmsContentRelatedService.getEntity(id);
+        if (null != entity) {
+            SysSite site = getSite(request);
+            CmsContent content = service.getEntity(entity.getContentId());
+            if (site.getId() == content.getSiteId()) {
+                cmsContentRelatedService.delete(id);
+                publish(new Long[] { entity.getContentId() }, request, session, model);
+                logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "unrelated.content", RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+            }
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
      * @param ids
      * @param categoryId
      * @param request

@@ -35,7 +35,7 @@ header .nav ul { display:none; width:100px; border:solid 1px #06223e; overflow:h
 header .nav ul li { margin-top:5px; line-height:26px;}
 header .nav ul li a { color:#000;}
 header .nav .selected ul {display:block;}
-#navMenu{ float:left;display:block;position:absolute;top:18px;left:200px;z-index:1;}
+#navMenu{ float:left;display:block;position:absolute;top:32px;left:200px;z-index:1;}
 #navMenu li{ float:left;margin:0px 1px;}
 #navMenu li a{ font-size:15px;font-weight:bold;line-height:36px;text-decoration:none;padding:8px 12px;border-style: solid;border-width: 1px;border-radius: 5px;}
 
