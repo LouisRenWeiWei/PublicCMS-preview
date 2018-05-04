@@ -682,7 +682,7 @@ INSERT INTO `sys_module` VALUES ('19', '审核', null, 'cmsContent/check', null,
 INSERT INTO `sys_module` VALUES ('20', '刷新', null, 'cmsContent/refresh', null, '12', '1', '0');
 INSERT INTO `sys_module` VALUES ('21', '生成', null, 'cmsContent/publish', null, '12', '1', '0');
 INSERT INTO `sys_module` VALUES ('22', '移动', 'cmsContent/moveParameters', 'cmsContent/move', null, '12', '1', '0');
-INSERT INTO `sys_module` VALUES ('23', '推荐', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsPlace/add,cmsPlace/save,cmsContent/related', null, '12', '1', '0');
+INSERT INTO `sys_module` VALUES ('23', '推荐', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsPlace/add,cmsPlace/save,cmsContent/related,cmsContent/unrelated,cmsPlace/delete', null, '12', '1', '0');
 INSERT INTO `sys_module` VALUES ('24', '分类管理', 'cmsCategory/list', null, '<i class=\"icon-folder-open icon-large\"></i>', '3', '1', '0');
 INSERT INTO `sys_module` VALUES ('25', '增加/修改', 'cmsCategory/add', 'cmsCategory/addMore,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsCategory/save', null, '24', '1', '0');
 INSERT INTO `sys_module` VALUES ('26', '删除', null, 'cmsCategory/delete', null, '24', '1', '0');

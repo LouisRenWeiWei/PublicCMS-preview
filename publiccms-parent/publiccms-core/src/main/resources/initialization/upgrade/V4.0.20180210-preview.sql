@@ -22,3 +22,5 @@ DROP TABLE IF EXISTS `home_score`;
 DROP TABLE IF EXISTS `home_user`;
 UPDATE `sys_module` SET `parent_id` = 149 WHERE  `id` in (150,151,152,153,154);
 UPDATE `sys_module` SET `parent_id` = 99 WHERE  `id` in (145,146);
+-- 20180504 --
+UPDATE `sys_module` SET `authorized_url` = 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsPlace/add,cmsPlace/save,cmsContent/related,cmsContent/unrelated,cmsPlace/delete' WHERE  `id` = 23;
