@@ -411,6 +411,7 @@ public class TemplateComponent implements Cache {
     public void clear() {
         adminConfiguration.clearTemplateCache();
         clearTemplateCache();
+        clearTaskTemplateCache();
     }
 
     /**
