@@ -59,7 +59,8 @@ public class TaskTemplateAdminController extends AbstractController {
                 String filePath = siteComponent.getTaskTemplateFilePath(site, path);
                 File templateFile = new File(filePath);
                 if (CommonUtils.notEmpty(templateFile)) {
-                    fileComponent.updateFile(templateFile, content);
+                    String historyFilePath = siteComponent.getTaskTemplateHistoryFilePath(site, path);
+                    fileComponent.updateFile(templateFile, historyFilePath, content);
                     logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "update.task.template", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), path));
@@ -119,13 +120,14 @@ public class TaskTemplateAdminController extends AbstractController {
         if (CommonUtils.notEmpty(path)) {
             SysSite site = getSite(request);
             String filePath = siteComponent.getTaskTemplateFilePath(site, path);
-            if (ControllerUtils.verifyCustom("notExist.template", !fileComponent.deleteFile(filePath), model)) {
+            String backupFilePath = siteComponent.getTaskTemplateBackupFilePath(site, path);
+            if (ControllerUtils.verifyCustom("notExist.template", !fileComponent.moveFile(filePath, backupFilePath), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             templateComponent.clearTaskTemplateCache();
-            logOperateService
-                    .save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "delete.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.task.template", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

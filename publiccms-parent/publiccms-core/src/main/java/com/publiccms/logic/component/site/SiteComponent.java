@@ -11,6 +11,7 @@ import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.sys.SysDomainService;
@@ -27,6 +28,14 @@ public class SiteComponent implements Cache {
      * 
      */
     public static final String TEMPLATE_PATH = "template";
+    /**
+     * 
+     */
+    public static final String BACKUP_PATH = "backup";
+    /**
+     * 
+     */
+    public static final String HISTORY_PATH = "history";
     /**
      * 
      */
@@ -49,12 +58,23 @@ public class SiteComponent implements Cache {
      */
     public static final String CONFIG_FILE = "config.data";
 
+    private static final String FILE_NAME_FORMAT_STRING = "yyyy-MM-dd_HH-mm-ssSSSS";
+
     private CacheEntity<String, SysSite> siteCache;
     private CacheEntity<String, SysDomain> domainCache;
     private String rootPath;
     private String webFilePath;
     private String taskTemplateFilePath;
     private String webTemplateFilePath;
+    
+    private String webBackupFilePath;
+    private String webTemplateBackupFilePath;
+    private String taskTemplateBackupFilePath;
+    
+    private String webHistoryFilePath;
+    private String webTemplateHistoryFilePath;
+    private String taskTemplateHistoryFilePath;
+    
 
     private short defaultSiteId;
     private Set<Short> masterSiteIdSet = new HashSet<>();
@@ -157,6 +177,28 @@ public class SiteComponent implements Cache {
 
     /**
      * @param site
+     * @param filePath
+     * @return web history file path
+     */
+    public String getWebHistoryFilePath(SysSite site, String filePath) {
+        StringBuilder sb = new StringBuilder(webHistoryFilePath);
+        sb.append(getFullFileName(site, filePath));
+        sb.append(CommonConstants.SEPARATOR);
+        sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
+        return sb.toString();
+    }
+
+    /**
+     * @param site
+     * @param filePath
+     * @return web backup file path
+     */
+    public String getWebBackupFilePath(SysSite site, String filePath) {
+        return webBackupFilePath + getFullFileName(site, filePath);
+    }
+
+    /**
+     * @param site
      * @param templatePath
      * @return task template file path
      */
@@ -167,10 +209,54 @@ public class SiteComponent implements Cache {
     /**
      * @param site
      * @param templatePath
+     * @return task template history file path
+     */
+    public String getTaskTemplateHistoryFilePath(SysSite site, String templatePath) {
+        StringBuilder sb = new StringBuilder(taskTemplateHistoryFilePath);
+        sb.append(getFullFileName(site, templatePath));
+        sb.append(CommonConstants.SEPARATOR);
+        sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
+        return sb.toString();
+    }
+
+    /**
+     * @param site
+     * @param templatePath
+     * @return task template backup file path
+     */
+    public String getTaskTemplateBackupFilePath(SysSite site, String templatePath) {
+        return taskTemplateBackupFilePath + getFullFileName(site, templatePath);
+    }
+
+    /**
+     * @param site
+     * @param templatePath
      * @return web template file path
      */
     public String getWebTemplateFilePath(SysSite site, String templatePath) {
         return getWebTemplateFilePath() + getFullFileName(site, templatePath);
+    }
+
+    /**
+     * @param site
+     * @param templatePath
+     * @return web template history file path
+     */
+    public String getWebTemplateHistoryFilePath(SysSite site, String templatePath) {
+        StringBuilder sb = new StringBuilder(webTemplateHistoryFilePath);
+        sb.append(getFullFileName(site, templatePath));
+        sb.append(CommonConstants.SEPARATOR);
+        sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
+        return sb.toString();
+    }
+
+    /**
+     * @param site
+     * @param templatePath
+     * @return web template backup file path
+     */
+    public String getWebTemplateBackupFilePath(SysSite site, String templatePath) {
+        return webTemplateBackupFilePath + getFullFileName(site, templatePath);
     }
 
     /**
@@ -223,6 +309,12 @@ public class SiteComponent implements Cache {
         this.webFilePath = rootPath + STATIC_FILE_PATH_WEB;
         this.taskTemplateFilePath = rootPath + TASK_FILE_PATH;
         this.webTemplateFilePath = rootPath + TEMPLATE_PATH;
+        this.webTemplateBackupFilePath = rootPath + BACKUP_PATH + CommonConstants.SEPARATOR + TEMPLATE_PATH;
+        this.taskTemplateBackupFilePath = rootPath + BACKUP_PATH + CommonConstants.SEPARATOR + TASK_FILE_PATH;
+        this.webBackupFilePath = rootPath + BACKUP_PATH + CommonConstants.SEPARATOR + STATIC_FILE_PATH_WEB;
+        this.webTemplateHistoryFilePath = rootPath + HISTORY_PATH + CommonConstants.SEPARATOR + TEMPLATE_PATH;
+        this.taskTemplateHistoryFilePath = rootPath + HISTORY_PATH + CommonConstants.SEPARATOR + TASK_FILE_PATH;
+        this.webHistoryFilePath = rootPath + HISTORY_PATH + CommonConstants.SEPARATOR + STATIC_FILE_PATH_WEB;
     }
 
     @Override

@@ -77,16 +77,28 @@ public class FileComponent {
     }
 
     /**
-     * 删除文件或目录
+     * 移动文件或目录
      *
      * @param filePath
-     * @return whether to delete successfully
+     * @param backupFilePath
+     * @return whether to move successfully
      */
-    public boolean deleteFile(String filePath) {
+    public boolean moveFile(String filePath, String backupFilePath) {
         File file = new File(filePath);
         if (CommonUtils.notEmpty(file)) {
-            FileUtils.deleteQuietly(file);
-            return true;
+            File backupFile = new File(backupFilePath);
+            try {
+                if(backupFile.exists()) {
+                    FileUtils.deleteQuietly(backupFile);
+                }
+                if (file.isDirectory()) {
+                    FileUtils.moveDirectory(file, backupFile);
+                } else {
+                    FileUtils.moveFile(file, backupFile);
+                }
+                return true;
+            } catch (IOException e) {
+            }
         }
         return false;
     }
@@ -95,12 +107,18 @@ public class FileComponent {
      * 修改文件内容
      *
      * @param file
+     * @param historyFilePath
      * @param content
      * @return whether to modify successfully
      * @throws IOException
      */
-    public boolean updateFile(File file, String content) throws IOException {
-        if (CommonUtils.notEmpty(file) && CommonUtils.notEmpty(content)) {
+    public boolean updateFile(File file, String historyFilePath, String content) throws IOException {
+        if (CommonUtils.notEmpty(file) && null != content) {
+            File history = new File(historyFilePath);
+            if (null != history.getParentFile()) {
+                history.getParentFile().mkdirs();
+            }
+            FileUtils.copyFile(file, history);
             try (FileOutputStream outputStream = new FileOutputStream(file);) {
                 outputStream.write(content.getBytes(CommonConstants.DEFAULT_CHARSET));
             }

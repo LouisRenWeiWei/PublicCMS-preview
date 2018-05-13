@@ -55,7 +55,8 @@ public class CmsWebFileAdminController extends AbstractController {
                 String filePath = siteComponent.getWebFilePath(site, path);
                 File webFile = new File(filePath);
                 if (CommonUtils.notEmpty(webFile)) {
-                    fileComponent.updateFile(webFile, content);
+                    String historyFilePath = siteComponent.getWebHistoryFilePath(site, path);
+                    fileComponent.updateFile(webFile, historyFilePath, content);
                     logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "update.web.webfile", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), path));
@@ -114,7 +115,8 @@ public class CmsWebFileAdminController extends AbstractController {
             SysSite site = getSite(request);
             for (String path : paths) {
                 String filePath = siteComponent.getWebFilePath(site, path);
-                if (ControllerUtils.verifyCustom("notExist.webfile", !fileComponent.deleteFile(filePath), model)) {
+                String backupFilePath = siteComponent.getWebBackupFilePath(site, path);
+                if (ControllerUtils.verifyCustom("notExist.webfile", !fileComponent.moveFile(filePath, backupFilePath), model)) {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
             }
